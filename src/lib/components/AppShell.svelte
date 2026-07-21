@@ -6,6 +6,7 @@
 	import GlobalSearch from './GlobalSearch.svelte';
 	import { darkMode, cart, pedidos, mensajes } from '$lib/stores/app.svelte';
 	import { citas } from '$lib/stores/citas.svelte';
+	import { storeUi } from '$lib/stores/storeUi.svelte';
 	import { USUARIO } from '$lib/data/mock';
 	import type { Snippet } from 'svelte';
 
@@ -22,9 +23,30 @@
 		{ id: 'perfil',   label: 'Perfil',   icon: 'user',    path: '/app/profile' },
 	];
 
+	// Dentro de una tienda, la barra inferior se dedica a esa tienda en vez
+	// de a la navegación global — más espacio y más foco para comprar.
+	const STORE_NAV = [
+		{ id: 'search',   label: 'Buscar',   icon: 'search'  },
+		{ id: 'promos',   label: 'Promos',   icon: 'fire'    },
+		{ id: 'carrito',  label: 'Carrito',  icon: 'cart',    path: '/app/cart' },
+		{ id: 'mensajes', label: 'Mensajes', icon: 'message', path: '/app/messages' },
+		{ id: 'info',     label: 'Tienda',   icon: 'store'   },
+	];
+
+	const isStoreDetail = $derived($page.url.pathname.startsWith('/app/store/'));
+
 	function currentId() {
 		const seg = $page.url.pathname.split('/')[2] ?? 'inicio';
 		return seg;
+	}
+
+	function navActive(item: { id: string }) {
+		return isStoreDetail ? storeUi.tab === item.id : currentId() === item.id;
+	}
+
+	function onNavClick(item: { id: string; path?: string }) {
+		if (item.path) goto(item.path);
+		else storeUi.setTab(item.id as 'search' | 'promos' | 'info');
 	}
 
 	function badge(id: string) {
@@ -139,26 +161,28 @@
 
 	<!-- Main -->
 	<main class="flex-1 min-w-0 flex flex-col">
-		<!-- Mobile header -->
-		<header class="lg:hidden sticky top-0 z-40 flex items-center gap-2.5 px-4 py-3 border-b border-[var(--c-border-soft)]"
-			style="background:var(--c-bg-card)">
-			<Logo size={32}/>
-			<span class="font-display text-[17px] font-extrabold tracking-wide">PLAZACOMER</span>
-			<div class="ml-auto flex gap-1.5">
-				<button
-					onclick={() => (searchOpen = true)}
-					class="w-9 h-9 rounded-[10px] flex items-center justify-center text-[var(--c-text-secondary)]"
-				>
-					<Icon name="search" size={19}/>
-				</button>
-				<button
-					onclick={() => darkMode.toggle()}
-					class="w-9 h-9 rounded-[10px] flex items-center justify-center text-[var(--c-text-secondary)]"
-				>
-					<Icon name={darkMode.value ? 'sun' : 'moon'} size={19}/>
-				</button>
-			</div>
-		</header>
+		<!-- Mobile header (oculto dentro de una tienda para ganar espacio) -->
+		{#if !isStoreDetail}
+			<header class="lg:hidden sticky top-0 z-40 flex items-center gap-2.5 px-4 py-3 border-b border-[var(--c-border-soft)]"
+				style="background:var(--c-bg-card)">
+				<Logo size={32}/>
+				<span class="font-display text-[17px] font-extrabold tracking-wide">PLAZACOMER</span>
+				<div class="ml-auto flex gap-1.5">
+					<button
+						onclick={() => (searchOpen = true)}
+						class="w-9 h-9 rounded-[10px] flex items-center justify-center text-[var(--c-text-secondary)]"
+					>
+						<Icon name="search" size={19}/>
+					</button>
+					<button
+						onclick={() => darkMode.toggle()}
+						class="w-9 h-9 rounded-[10px] flex items-center justify-center text-[var(--c-text-secondary)]"
+					>
+						<Icon name={darkMode.value ? 'sun' : 'moon'} size={19}/>
+					</button>
+				</div>
+			</header>
+		{/if}
 
 		<div class="flex-1 pb-20 lg:pb-0">
 			{@render children()}
@@ -169,11 +193,11 @@
 			class="lg:hidden fixed bottom-0 left-0 right-0 z-30 flex justify-around items-center px-1 border-t border-[var(--c-border-soft)]"
 			style="background:var(--c-bg-card);padding-bottom:max(12px,env(safe-area-inset-bottom));padding-top:8px;box-shadow:0 -4px 20px rgba(0,0,0,.04)"
 		>
-			{#each NAV as item}
-				{@const active = currentId() === item.id}
+			{#each (isStoreDetail ? STORE_NAV : NAV) as item}
+				{@const active = navActive(item)}
 				{@const count = badge(item.id)}
 				<button
-					onclick={() => goto(item.path)}
+					onclick={() => onNavClick(item)}
 					class="flex flex-col items-center gap-0.5 px-2.5 py-1.5 min-w-14 relative"
 					style="color:{active ? 'var(--c-brand)' : 'var(--c-text-muted)'}"
 				>
