@@ -16,6 +16,7 @@
 		{ id: 'citas',    label: 'Citas',      icon: 'calendar', path: '/seller/appointments' },
 		{ id: 'catalogo', label: 'Catálogo',   icon: 'store',    path: '/seller/catalog' },
 		{ id: 'ofertas',  label: 'Ofertas',    icon: 'tag',      path: '/seller/deals' },
+		{ id: 'fidelidad', label: 'Fidelidad', icon: 'heart',    path: '/seller/loyalty' },
 	];
 
 	function currentId() {

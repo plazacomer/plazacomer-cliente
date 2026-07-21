@@ -494,3 +494,35 @@ Actualmente implementado de forma básica:
 - **Responsive** — diseñado mobile-first con breakpoints `lg:` para tablet/desktop. Navegación inferior en mobile, lateral en desktop.
 - **Dark mode** — implementado con variable CSS `--c-*` y clase `dark` en el `<html>`. Persiste en localStorage.
 - **Multi-tienda** — el carrito y el checkout soportan nativamente productos de múltiples tiendas con flujos de pago independientes por tienda.
+
+---
+
+## 12. Backlog: Tarjeta de fidelidad por tienda (pendiente de configuración)
+
+> Pedido por el usuario 2026-07-20, a partir de feedback sobre la nueva pantalla de restaurante
+> (`RestaurantLanding.svelte`). **No implementar hasta que se aborde en una sesión dedicada** —
+> queda documentado aquí para que esa sesión no tenga que re-derivar el contexto.
+
+**Idea central:** tarjeta de sellos por tienda — ej. "a la 5ª compra, algo gratis". Distinto del
+club de fidelidad global de 4 niveles mencionado en la sección 10 (ese es a nivel plataforma,
+por puntos; esto es a nivel tienda individual, por conteo de compras).
+
+**Punto clave del pedido:** el **premio lo define el comercial (vendedor)**, no está fijo en el
+producto. Debe soportar al menos:
+- Producto específico gratis (de su propio catálogo)
+- Descuento (porcentaje o monto fijo) en la siguiente compra
+- Envío gratis
+- (dejar extensible — el vendedor podría querer combinar tipos a futuro)
+
+**Preguntas abiertas para esa sesión:**
+- ¿El umbral de compras (hoy "5") es fijo o configurable por el vendedor?
+- ¿Dónde vive la configuración? Presumiblemente un panel nuevo en `seller/*` (el vendedor es
+  quien la define), con el progreso visible al comprador en la pantalla de tienda / perfil.
+- ¿Cómo se cuenta una "compra"? ¿Por pedido confirmado, por tienda, con o sin mínimo de monto?
+- ¿La recompensa se aplica automáticamente en el checkout o el usuario debe reclamarla?
+- Modelo de datos: necesitará algo como `LoyaltyCardConfig` (tiendaId, umbral, tipo de premio,
+  valor/producto del premio, activo) + progreso por usuario (compras acumuladas desde el último
+  premio reclamado).
+
+**Fuera de alcance hoy:** cualquier implementación de UI o lógica — solo queda registrado el
+requerimiento y las preguntas a resolver antes de diseñar la solución.

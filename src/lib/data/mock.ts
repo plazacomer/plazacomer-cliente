@@ -537,6 +537,31 @@ export const DEALS: Deal[] = [
 	},
 ];
 
+export type LoyaltyRewardType = 'product' | 'discount_percent' | 'discount_fixed' | 'free_shipping';
+export type LoyaltyCountingMode = 'all' | 'selected_products' | 'minimum_amount';
+
+export type LoyaltyCardConfig = {
+	storeId: string;
+	active: boolean;
+	threshold: number;
+	countingMode: LoyaltyCountingMode;
+	eligibleProductIds?: string[];
+	minimumAmount?: number;
+	rewardType: LoyaltyRewardType;
+	rewardProductId?: string;
+	rewardValue?: number;
+};
+
+export const LOYALTY_CARDS: LoyaltyCardConfig[] = [
+	{
+		storeId: 't1',
+		active: true,
+		threshold: 5,
+		countingMode: 'all',
+		rewardType: 'free_shipping',
+	},
+];
+
 export type FeedItem =
 	| { kind: 'deal'; dealId: string }
 	| { kind: 'product'; productId: string; extra?: string | null; timeAgo: string }
