@@ -17,10 +17,12 @@
 	import Icon from '$lib/components/ui/Icon.svelte';
 	import CustomizeModal, { type CartLineItem } from '$lib/components/CustomizeModal.svelte';
 	import ServicioPerfil from '$lib/components/ServicioPerfil.svelte';
+	import RestaurantLanding from '$lib/components/RestaurantLanding.svelte';
 
 	const tiendaId = $derived($page.params.id ?? '');
 	const tienda = $derived(getStore(tiendaId));
 	const esServicio = $derived(isServiceStore(tienda));
+	const esRestaurante = $derived(!esServicio && tienda.category === 'food');
 	const productos = $derived(getStoreProducts(tiendaId));
 	const ofertas = $derived(getStoreDeals(tiendaId));
 	const resenas = $derived(getStoreReviews(tiendaId));
@@ -108,18 +110,22 @@
 		fashion: [
 			{ q: '¿Cómo sé qué talla pedir?', a: 'En cada producto tienes guía de medidas. Si dudas, escríbenos por chat.' },
 			{ q: '¿Puedo devolver una prenda?', a: 'Sí, hasta 30 días después de recibirla, sin estrenar y con etiquetas.' },
+			{ q: '¿Hacen prendas a la medida?', a: 'Algunos productos sí, escríbenos para confirmar y agendamos toma de medidas.' },
 		],
 		tech:    [
 			{ q: '¿Cuánto se demora una reparación?', a: 'La mayoría queda el mismo día. Cambios de pantalla en 1 hora.' },
 			{ q: '¿Si pierdo mis datos durante la reparación?', a: 'Antes de reparar te pedimos respaldo. También hacemos backup gratuito si lo solicitas.' },
+			{ q: '¿Atienden a domicilio?', a: 'Sí, para limpiezas, instalaciones y diagnósticos. La reparación física se hace en taller.' },
 		],
 		beauty:  [
 			{ q: '¿Tienen muestras antes de comprar?', a: 'Sí, en pedidos sobre $80.000 incluimos muestras gratuitas.' },
 			{ q: '¿Cómo sé qué producto necesito?', a: 'Escríbenos por chat y te recomendamos sin presión de venta.' },
+			{ q: '¿Manejan piel sensible o problemas específicos?', a: 'Sí, tenemos línea específica para piel sensible, acné y manchas. Filtros disponibles en catálogo.' },
 		],
 		crafts:  [
 			{ q: '¿Por qué cuesta más que las del mercado?', a: 'Porque cada pieza toma entre 15 y 30 días de tejido a mano por una artesana.' },
 			{ q: '¿Puedo pedir una a la medida?', a: 'Sí, escríbenos. Las piezas a la medida toman 6-8 semanas.' },
+			{ q: '¿Llevan certificado de origen?', a: 'Sí, cada pieza viene con tarjeta firmada por la artesana y certificado de origen.' },
 		],
 		services: [
 			{ q: '¿Atienden emergencias en fin de semana?', a: 'Sí, con un recargo del 20% en horario no laboral.' },
@@ -127,12 +133,22 @@
 		],
 	};
 
+	const CATEGORY_EYEBROW: Record<string, string> = {
+		food: 'Cocina con sabor',
+		market: 'Del campo a tu casa',
+		fashion: 'Diseñado en Colombia',
+		tech: 'Tecnología que se repara',
+		beauty: 'Cuidado consciente',
+		crafts: 'Tejido a mano',
+		services: 'Servicio profesional',
+	};
+
 	const CATEGORY_GALERIA: Record<string, GaleriaItem[]> = {
 		food:    [
 			{ label: 'Plato del día emplatado',      tono: '#FED7AA' },
 			{ label: 'Cocina abierta · al wok',      tono: '#FEF3C7' },
 			{ label: 'Mesa del equipo · domingo',    tono: '#FFEDD5' },
-			{ label: 'Empaque ecológico domicilio',  tono: '#FFE4E6' },
+			{ label: 'Empaque ecológico para domicilio', tono: '#FFE4E6' },
 		],
 		market:  [
 			{ label: 'Frutas seleccionadas del día', tono: '#DCFCE7' },
@@ -142,12 +158,12 @@
 		],
 		fashion: [
 			{ label: 'Taller de confección',         tono: '#F3E8FF' },
-			{ label: 'Drop temporada',               tono: '#EDE9FE' },
+			{ label: 'Drop temporada otoño',         tono: '#EDE9FE' },
 			{ label: 'Estampado a mano',             tono: '#FCE7F3' },
 			{ label: 'Modelos locales · campaña',    tono: '#E0E7FF' },
 		],
 		tech:    [
-			{ label: 'Mesa de reparación',           tono: '#DBEAFE' },
+			{ label: 'Mesa de reparación · microscopio', tono: '#DBEAFE' },
 			{ label: 'Antes / después · pantalla',   tono: '#E0E7FF' },
 			{ label: 'Limpieza profunda laptop',     tono: '#DCFCE7' },
 			{ label: 'Stock de repuestos OEM',       tono: '#FEF3C7' },
@@ -180,6 +196,9 @@
 	const galeria = $derived(
 		tienda.landing?.galeria ?? CATEGORY_GALERIA[tienda.category] ?? CATEGORY_GALERIA.food
 	);
+	const eyebrow = $derived(
+		tienda.landing?.eyebrow ?? CATEGORY_EYEBROW[tienda.category] ?? CATEGORY_EYEBROW.food
+	);
 	const tagline = $derived(
 		tienda.landing?.tagline ?? (() => {
 			const map: Record<string, string> = {
@@ -200,11 +219,18 @@
 			? `🔥 ${ofertas.length} oferta${ofertas.length > 1 ? 's' : ''} activa${ofertas.length > 1 ? 's' : ''} hoy · Aprovecha antes de que se agoten`
 			: `Sigue a ${tienda.name} y entérate primero de cada novedad`)
 	);
+	const is24 = $derived((tienda.hours ?? '').includes('24'));
 	const stats = $derived([
-		{ valor: String(productos.length), label: tienda.category === 'food' ? 'platos en menú' : 'productos' },
+		{
+			valor: String(productos.length),
+			label: tienda.category === 'food' ? 'platos en menú' : tienda.category === 'tech' ? 'servicios' : 'productos',
+		},
 		{ valor: tienda.rating.toFixed(1), label: 'calificación' },
 		{ valor: ((tienda.ratingSummary?.total ?? 0) + 50).toLocaleString('es-CO'), label: 'pedidos entregados' },
-		{ valor: tienda.category === 'food' ? '30 min' : tienda.category === 'market' ? '2 horas' : '1-3 días', label: 'tiempo de entrega' },
+		{
+			valor: is24 ? '24/7' : tienda.category === 'food' ? '30 min' : tienda.category === 'market' ? '2 horas' : tienda.category === 'tech' ? '1 día' : '1-3 días',
+			label: tienda.category === 'tech' ? 'tiempo de reparación' : 'tiempo de entrega',
+		},
 	]);
 
 	// Destacados: productos con oferta primero, luego los demás
@@ -227,6 +253,8 @@
 
 {#if esServicio}
 	<ServicioPerfil {tienda} {servicios} onBack={goBack}/>
+{:else if esRestaurante}
+	<RestaurantLanding {tienda} {productos} {ofertas} {accent} {isOpen} onOpenProduct={openProducto}/>
 {:else}
 <div class="max-w-5xl mx-auto pb-32 md:pb-24">
 
@@ -246,7 +274,7 @@
 		<div class="absolute left-6 md:left-14 bottom-9 md:bottom-12 right-[140px] md:right-[50%]">
 			<div class="inline-block mb-3 px-3 py-1 rounded-full font-mono text-[11px] font-bold uppercase tracking-[1.2px]"
 				style="background:rgba(255,255,255,.92);color:{accent}">
-				{getCategory(tienda.category).label}
+				{getCategory(tienda.category).label} · {eyebrow}
 			</div>
 			<h1 class="font-display text-white font-extrabold leading-[1.1] tracking-[-0.5px] text-balance drop-shadow-[0_4px_24px_rgba(0,0,0,.25)]"
 				style="font-size:clamp(20px,3.5vw,36px);text-shadow:0 4px 24px rgba(0,0,0,.25)">
