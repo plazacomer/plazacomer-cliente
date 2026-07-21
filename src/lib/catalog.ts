@@ -96,7 +96,8 @@ export async function createStore(store: {
       'Content-Type': 'application/x-protobuf',
       'Accept': 'application/x-protobuf'
     },
-    body: requestBytes
+    body: requestBytes,
+    credentials: 'include'
   });
 
   if (!response.ok) throw new Error('Error creating store');
@@ -132,7 +133,8 @@ export async function createProduct(storeId: number, product: {
       'Content-Type': 'application/x-protobuf',
       'Accept': 'application/x-protobuf'
     },
-    body: requestBytes
+    body: requestBytes,
+    credentials: 'include'
   });
 
   if (!response.ok) throw new Error('Error creating product');
@@ -165,7 +167,8 @@ export async function createDeal(productId: number, deal: {
       'Content-Type': 'application/x-protobuf',
       'Accept': 'application/x-protobuf'
     },
-    body: requestBytes
+    body: requestBytes,
+    credentials: 'include'
   });
 
   if (!response.ok) throw new Error('Error creating deal');

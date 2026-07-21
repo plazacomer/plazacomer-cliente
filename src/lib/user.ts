@@ -26,7 +26,8 @@ export async function loginUser(): Promise<{ success: boolean; message: string; 
     headers: {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/x-protobuf'
-    }
+    },
+    credentials: 'include'
   });
 
   if (!response.ok) {
@@ -71,7 +72,8 @@ export async function updateUser(name: string, email: string, phone: string): Pr
       'Content-Type': 'application/x-protobuf',
       'Accept': 'application/x-protobuf'
     },
-    body: requestBody
+    body: requestBody,
+    credentials: 'include'
   });
 
   if (!response.ok) {
@@ -103,7 +105,8 @@ export async function getUserById(id: string): Promise<{ success: boolean; messa
     headers: {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/x-protobuf'
-    }
+    },
+    credentials: 'include'
   });
 
   if (!response.ok) {
