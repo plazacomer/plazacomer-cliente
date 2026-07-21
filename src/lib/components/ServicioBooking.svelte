@@ -1,0 +1,319 @@
+<script lang="ts">
+	import type { Store, Servicio } from '$lib/data/mock';
+	import { citas } from '$lib/stores/citas.svelte';
+	import { toast } from '$lib/stores/app.svelte';
+	import { fmtCOP } from '$lib/utils';
+	import Icon from '$lib/components/ui/Icon.svelte';
+
+	type Props = {
+		open: boolean;
+		servicio: Servicio | null;
+		tienda: Store;
+		onclose: () => void;
+	};
+	let { open, servicio, tienda, onclose }: Props = $props();
+
+	const accent = $derived(tienda.logoColor);
+
+	type Step = 'form' | 'confirm' | 'success';
+	let step = $state<Step>('form');
+
+	// Form fields
+	let nombre = $state('');
+	let telefono = $state('');
+	let email = $state('');
+	let fecha = $state('');
+	let hora = $state('');
+	let notas = $state('');
+	let modalidad = $state('');
+
+	// Validation
+	const formValid = $derived(() => {
+		if (!servicio) return false;
+		if (!nombre.trim() || !telefono.trim()) return false;
+		if (servicio.cta === 'agendar' && !fecha) return false;
+		return true;
+	});
+
+	$effect(() => {
+		if (!open) {
+			setTimeout(() => {
+				step = 'form';
+				nombre = '';
+				telefono = '';
+				email = '';
+				fecha = '';
+				hora = '';
+				notas = '';
+				modalidad = '';
+			}, 300);
+		}
+	});
+
+	function handleSubmit() {
+		if (!formValid() || !servicio) return;
+		step = 'confirm';
+	}
+
+	function handleConfirm() {
+		if (!servicio) return;
+		citas.add({
+			servicio,
+			tienda,
+			cta: servicio.cta,
+			datos: { nombre, telefono, email, fecha, hora, notas, modalidad },
+		});
+		step = 'success';
+	}
+
+	function handleClose() {
+		onclose();
+	}
+
+	const HORAS = ['7:00 am','7:30 am','8:00 am','8:30 am','9:00 am','9:30 am','10:00 am','10:30 am',
+		'11:00 am','11:30 am','12:00 pm','2:00 pm','2:30 pm','3:00 pm','3:30 pm','4:00 pm','4:30 pm',
+		'5:00 pm','5:30 pm','6:00 pm'];
+
+	// Modal cta labels
+	const modalTitle: Record<string, string> = {
+		agendar: 'Agendar cita',
+		cotizar: 'Solicitar cotización',
+		mensaje: 'Enviar consulta',
+	};
+	const submitLabel: Record<string, string> = {
+		agendar: 'Confirmar cita',
+		cotizar: 'Solicitar cotización',
+		mensaje: 'Enviar mensaje',
+	};
+	const successTitle: Record<string, string> = {
+		agendar: '¡Cita solicitada! 🎉',
+		cotizar: '¡Cotización enviada! 📋',
+		mensaje: '¡Mensaje enviado! ✉️',
+	};
+	const successMsg: Record<string, string> = {
+		agendar: 'Te confirmamos dentro de las próximas 2 horas hábiles por WhatsApp o al correo que dejaste.',
+		cotizar: 'Recibirás la cotización detallada en menos de 24 horas por WhatsApp o correo.',
+		mensaje: 'Te respondemos en un máximo de 24 horas hábiles.',
+	};
+
+	// Backdrop click
+	function onBackdrop(e: MouseEvent) {
+		if ((e.target as HTMLElement).dataset.backdrop) handleClose();
+	}
+</script>
+
+{#if open && servicio}
+	<!-- Backdrop -->
+	<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+	<div class="fixed inset-0 z-[100] flex items-end md:items-center justify-center"
+		data-backdrop="1"
+		onclick={onBackdrop}
+		style="background:rgba(0,0,0,.5);backdrop-filter:blur(3px)">
+
+		<!-- Sheet -->
+		<div class="relative w-full md:max-w-[480px] rounded-t-[24px] md:rounded-[24px] overflow-hidden flex flex-col"
+			style="background:var(--c-bg-card);max-height:90vh">
+
+			<!-- Header -->
+			<div class="flex items-center gap-3 px-5 py-4 border-b border-[var(--c-border-soft)] shrink-0">
+				<div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0"
+					style="background:{servicio.tone ?? accent}15">{servicio.icon}</div>
+				<div class="flex-1 min-w-0">
+					<div class="font-display text-[15px] font-bold leading-snug truncate">{servicio.nombre}</div>
+					<div class="text-[12px] truncate" style="color:var(--c-text-muted)">{tienda.name}</div>
+				</div>
+				<button onclick={handleClose} class="w-9 h-9 rounded-xl flex items-center justify-center"
+					style="background:var(--c-bg-secondary)">
+					<Icon name="close" size={16}/>
+				</button>
+			</div>
+
+			<!-- Body -->
+			<div class="overflow-y-auto flex-1">
+
+				{#if step === 'form'}
+					<div class="p-5 flex flex-col gap-4">
+
+						<!-- Servicio summary -->
+						<div class="p-3.5 rounded-[14px] border border-[var(--c-border-soft)]"
+							style="background:var(--c-bg-secondary)">
+							<div class="text-[12.5px] font-semibold mb-1">{servicio.tagline}</div>
+							<div class="flex gap-3 text-[11.5px]" style="color:var(--c-text-muted)">
+								{#if servicio.duracion}
+									<span class="flex items-center gap-1"><Icon name="timer" size={10}/>{servicio.duracion}</span>
+								{/if}
+								{#if servicio.modalidad}
+									<span class="flex items-center gap-1"><Icon name="location" size={10}/>{servicio.modalidad}</span>
+								{/if}
+								{#if servicio.precio != null}
+									<span class="flex items-center gap-1 ml-auto font-bold" style="color:{accent}">
+										{servicio.precio === 0 ? 'Gratis' : (servicio.precioDesde ? 'Desde ' : '') + fmtCOP(servicio.precio)}
+									</span>
+								{/if}
+							</div>
+						</div>
+
+						<!-- Title -->
+						<h3 class="font-display text-[18px] font-extrabold">
+							{modalTitle[servicio.cta] ?? 'Contactar'}
+						</h3>
+
+						<!-- Modalidad (si el servicio tiene opciones) -->
+						{#if servicio.modalidad?.includes('o')}
+							<div>
+								<label class="block text-[12px] font-bold mb-2 uppercase tracking-[0.8px]"
+									style="color:var(--c-text-muted)">Modalidad</label>
+								<div class="flex gap-2">
+									{#each servicio.modalidad.split(' o ') as opt}
+										<button onclick={() => modalidad = opt}
+											class="flex-1 py-2.5 rounded-xl border text-[13px] font-semibold transition-all"
+											style="background:{modalidad === opt ? accent : 'var(--c-bg-secondary)'};color:{modalidad === opt ? '#fff' : 'var(--c-text-primary)'};border-color:{modalidad === opt ? accent : 'var(--c-border)'}">
+											{opt}
+										</button>
+									{/each}
+								</div>
+							</div>
+						{/if}
+
+						<!-- Nombre -->
+						<div>
+							<label class="block text-[12px] font-bold mb-1.5 uppercase tracking-[0.8px]"
+								style="color:var(--c-text-muted)">
+								Nombre completo <span style="color:var(--c-error)">*</span>
+							</label>
+							<input bind:value={nombre} type="text" placeholder="Juan García"
+								class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+								style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
+						</div>
+
+						<!-- Teléfono -->
+						<div>
+							<label class="block text-[12px] font-bold mb-1.5 uppercase tracking-[0.8px]"
+								style="color:var(--c-text-muted)">
+								WhatsApp / Teléfono <span style="color:var(--c-error)">*</span>
+							</label>
+							<input bind:value={telefono} type="tel" placeholder="+57 300 000 0000"
+								class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+								style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
+						</div>
+
+						<!-- Email -->
+						<div>
+							<label class="block text-[12px] font-bold mb-1.5 uppercase tracking-[0.8px]"
+								style="color:var(--c-text-muted)">Correo electrónico</label>
+							<input bind:value={email} type="email" placeholder="tu@correo.com"
+								class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+								style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
+						</div>
+
+						<!-- Fecha + hora (solo para citas) -->
+						{#if servicio.cta === 'agendar'}
+							<div class="grid grid-cols-[1.2fr_1fr] gap-3">
+								<div>
+									<label class="block text-[12px] font-bold mb-1.5 uppercase tracking-[0.8px]"
+										style="color:var(--c-text-muted)">
+										Fecha <span style="color:var(--c-error)">*</span>
+									</label>
+									<input bind:value={fecha} type="date"
+										class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+										style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
+								</div>
+								<div>
+									<label class="block text-[12px] font-bold mb-1.5 uppercase tracking-[0.8px]"
+										style="color:var(--c-text-muted)">Hora preferida</label>
+									<select bind:value={hora}
+										class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+										style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)">
+										<option value="">Cualquiera</option>
+										{#each HORAS as h}
+											<option value={h}>{h}</option>
+										{/each}
+									</select>
+								</div>
+							</div>
+						{/if}
+
+						<!-- Notas / mensaje -->
+						<div>
+							<label class="block text-[12px] font-bold mb-1.5 uppercase tracking-[0.8px]"
+								style="color:var(--c-text-muted)">
+								{servicio.cta === 'cotizar' ? 'Cuéntanos qué necesitas' : servicio.cta === 'mensaje' ? 'Tu pregunta o mensaje' : 'Notas adicionales (opcional)'}
+							</label>
+							<textarea bind:value={notas} rows={3}
+								placeholder={servicio.cta === 'cotizar' ? 'Ej: Mudanza de apartamento 2 hab en El Poblado a Envigado...' : servicio.cta === 'mensaje' ? '¿En qué te podemos ayudar?' : 'Ej: tengo sensibilidad, alergias, preferencias...'}
+								class="w-full p-3.5 rounded-xl border text-[14px] outline-none resize-none leading-relaxed"
+								style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
+						</div>
+
+						<!-- Submit -->
+						<button onclick={handleSubmit} disabled={!formValid()}
+							class="w-full h-12 rounded-xl font-bold text-[15px] text-white mt-1 disabled:opacity-40"
+							style="background:{accent};box-shadow:0 4px 18px {accent}55">
+							{submitLabel[servicio.cta] ?? 'Enviar'}
+						</button>
+
+						<p class="text-center text-[11.5px]" style="color:var(--c-text-muted)">
+							Sin cargos adicionales por solicitar · Confirmamos en &lt;24 horas
+						</p>
+					</div>
+
+				{:else if step === 'confirm'}
+					<div class="p-5 flex flex-col gap-4">
+						<h3 class="font-display text-[18px] font-extrabold">Confirma los datos</h3>
+
+						<div class="p-4 rounded-[14px] border border-[var(--c-border-soft)] flex flex-col gap-2.5"
+							style="background:var(--c-bg-secondary)">
+							{#each [
+								{ label: 'Nombre', value: nombre },
+								{ label: 'Teléfono', value: telefono },
+								...(email ? [{ label: 'Email', value: email }] : []),
+								...(fecha ? [{ label: 'Fecha', value: fecha }] : []),
+								...(hora ? [{ label: 'Hora', value: hora }] : []),
+								...(modalidad ? [{ label: 'Modalidad', value: modalidad }] : []),
+								...(notas ? [{ label: 'Notas', value: notas }] : []),
+							] as row}
+								<div class="flex gap-3 text-[13px]">
+									<span class="w-20 shrink-0 font-semibold" style="color:var(--c-text-muted)">{row.label}</span>
+									<span class="flex-1">{row.value}</span>
+								</div>
+							{/each}
+						</div>
+
+						<div class="flex gap-2.5">
+							<button onclick={() => (step = 'form')}
+								class="flex-1 h-12 rounded-xl font-bold text-[14px] border"
+								style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)">
+								Editar
+							</button>
+							<button onclick={handleConfirm}
+								class="flex-1 h-12 rounded-xl font-bold text-[14px] text-white"
+								style="background:{accent};box-shadow:0 4px 18px {accent}55">
+								Confirmar
+							</button>
+						</div>
+					</div>
+
+				{:else}
+					<div class="p-8 flex flex-col items-center text-center gap-4">
+						<div class="w-20 h-20 rounded-full flex items-center justify-center text-4xl"
+							style="background:{accent}18">{servicio.icon}</div>
+						<h3 class="font-display text-[22px] font-extrabold">
+							{successTitle[servicio.cta] ?? '¡Enviado!'}
+						</h3>
+						<p class="text-[14px] leading-relaxed max-w-[300px]" style="color:var(--c-text-secondary)">
+							{successMsg[servicio.cta] ?? 'Te contactaremos pronto.'}
+						</p>
+						<div class="w-full flex gap-2.5 mt-2">
+							<button onclick={handleClose}
+								class="flex-1 h-12 rounded-xl font-bold text-[14px] text-white"
+								style="background:{accent}">
+								Cerrar
+							</button>
+						</div>
+					</div>
+				{/if}
+
+			</div>
+		</div>
+	</div>
+{/if}
