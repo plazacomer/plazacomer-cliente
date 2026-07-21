@@ -4,6 +4,7 @@
 	import { vendedor } from '$lib/stores/vendedor.svelte';
 	import Icon from '$lib/components/ui/Icon.svelte';
 	import Logo from '$lib/components/Logo.svelte';
+	import AuthGuard from '$lib/components/AuthGuard.svelte';
 	import type { Snippet } from 'svelte';
 
 	type Props = { children: Snippet };
@@ -23,6 +24,7 @@
 	}
 </script>
 
+<AuthGuard>
 <div class="flex min-h-screen" style="background:var(--c-bg-primary)">
 
 	<!-- Sidebar desktop -->
@@ -127,3 +129,4 @@
 		</nav>
 	</main>
 </div>
+</AuthGuard>

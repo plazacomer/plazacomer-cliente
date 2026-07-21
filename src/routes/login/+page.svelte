@@ -64,10 +64,6 @@
 		signingIn = null;
 		if (authStore.isAuthenticated) goto('/app/home');
 	}
-
-	function handleGuest() {
-		goto('/app/home');
-	}
 </script>
 
 <div
@@ -135,20 +131,6 @@
 						</button>
 					{/each}
 				</div>
-
-				<div class="flex items-center gap-3 my-7 text-xs" style="color:var(--c-text-muted)">
-					<div class="flex-1 h-px" style="background:var(--c-border-soft)"></div>
-					<span>o como invitado</span>
-					<div class="flex-1 h-px" style="background:var(--c-border-soft)"></div>
-				</div>
-
-				<button
-					onclick={handleGuest}
-					class="w-full py-3 rounded-xl text-sm font-medium transition-all border cursor-pointer"
-					style="border-color:var(--c-border);background:transparent;color:var(--c-text-secondary)"
-				>
-					Explorar sin iniciar sesión
-				</button>
 
 				<p class="mt-7 text-[11px] text-center leading-relaxed" style="color:var(--c-text-muted)">
 					Al continuar aceptas los
