@@ -3,6 +3,8 @@
 	import { STORES, PRODUCTS, CATEGORIES, getStore, type Store, type Product } from '$lib/data/mock';
 	import { fmtCOP } from '$lib/utils';
 	import Icon from './ui/Icon.svelte';
+	import { Dialog as DialogPrimitive } from 'bits-ui';
+	import * as Dialog from '$lib/components/ui/dialog';
 
 	type Props = { open: boolean; onclose: () => void };
 	let { open, onclose }: Props = $props();
@@ -57,22 +59,13 @@
 		onclose();
 	}
 
-	function handleBackdropKey(e: KeyboardEvent) { if (e.key === 'Escape') onclose(); }
-	function handleInputKey(e: KeyboardEvent) { if (e.key === 'Escape') onclose(); }
-
 	const TRENDING = ['🍔 Hamburguesas', '☕ Café', '🥑 Aguacate', '👕 Sudaderas', '💄 Labial', 'Cerca de mí'];
 </script>
 
-{#if open}
-<div
-	class="fixed inset-0 z-50 flex items-start justify-center"
-	style="background:rgba(0,0,0,.55);backdrop-filter:blur(4px)"
-	role="dialog"
-	aria-modal="true"
-	onclick={(e) => { if (e.target === e.currentTarget) onclose(); }}
-	onkeydown={handleBackdropKey}
-	tabindex="-1"
->
+<Dialog.Root {open} onOpenChange={(v) => { if (!v) onclose(); }}>
+<Dialog.Portal>
+<Dialog.Overlay />
+<DialogPrimitive.Content class="fixed inset-0 z-modal flex items-start justify-center outline-none">
 	<div
 		class="w-full flex flex-col overflow-hidden lg:rounded-2xl lg:mt-16 lg:max-w-2xl search-panel"
 		style="background:var(--c-bg-card)"
@@ -88,7 +81,6 @@
 					placeholder="Busca tiendas, productos o categorías"
 					class="flex-1 text-[15px] bg-transparent outline-none"
 					style="color:var(--c-text-primary)"
-					onkeydown={handleInputKey}
 				/>
 				{#if query}
 					<button onclick={() => (query = '')} style="color:var(--c-text-muted);font-size:18px;cursor:pointer;line-height:1">✕</button>
@@ -222,8 +214,9 @@
 			{/if}
 		</div>
 	</div>
-</div>
-{/if}
+</DialogPrimitive.Content>
+</Dialog.Portal>
+</Dialog.Root>
 
 <style>
 	.search-panel {

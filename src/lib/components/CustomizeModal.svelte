@@ -2,6 +2,7 @@
 	import { fmtCOP } from '$lib/utils';
 	import type { Product, Modificador, Deal } from '$lib/data/mock';
 	import Icon from './ui/Icon.svelte';
+	import * as Dialog from '$lib/components/ui/dialog';
 
 	export type CartLineItem = {
 		productoId: string;
@@ -118,23 +119,12 @@
 		onclose();
 	}
 
-	function handleKey(e: KeyboardEvent) { if (e.key === 'Escape') onclose(); }
+
 </script>
 
-{#if open && producto}
-<div
-	class="fixed inset-0 z-50 flex items-end lg:items-center justify-center"
-	style="background:rgba(0,0,0,.55);backdrop-filter:blur(4px)"
-	role="dialog"
-	aria-modal="true"
-	onclick={(e) => { if (e.target === e.currentTarget) onclose(); }}
-	onkeydown={handleKey}
-	tabindex="-1"
->
-	<div
-		class="w-full lg:max-w-lg rounded-t-3xl lg:rounded-2xl overflow-hidden flex flex-col"
-		style="background:var(--c-bg-card);max-height:92dvh"
-	>
+<Dialog.Root open={open && !!producto} onOpenChange={(v) => { if (!v) onclose(); }}>
+	<Dialog.Content showCloseButton={false} class="relative md:max-w-lg p-0 gap-0 flex flex-col max-h-[90vh] overflow-hidden">
+	{#if producto}
 		<!-- Header -->
 		<div class="flex items-center justify-between px-5 pt-5 pb-3 shrink-0">
 			<h2 class="font-display text-lg font-extrabold">
@@ -261,6 +251,6 @@
 				{initial ? 'Guardar cambios' : 'Agregar'} · {fmtCOP(total)}
 			</button>
 		</div>
-	</div>
-</div>
-{/if}
+	{/if}
+	</Dialog.Content>
+</Dialog.Root>

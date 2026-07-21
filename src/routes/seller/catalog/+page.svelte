@@ -2,6 +2,13 @@
 	import { vendedor, type ProductoVendedor } from '$lib/stores/vendedor.svelte';
 	import { fmtCOP } from '$lib/utils';
 	import Icon from '$lib/components/ui/Icon.svelte';
+	import * as Select from '$lib/components/ui/select';
+	import * as Tabs from '$lib/components/ui/tabs';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import * as Dialog from '$lib/components/ui/dialog';
+	import * as Card from '$lib/components/ui/card';
+	import { Input } from '$lib/components/ui/input';
+	import EllipsisVertical from '@lucide/svelte/icons/ellipsis-vertical';
 
 	// Nuevo producto modal
 	let modalOpen = $state(false);
@@ -12,17 +19,36 @@
 	let precio = $state('');
 	let emoji = $state('🍽️');
 	let stock = $state('10');
+	let categoria = $state('food');
+
+	const CATEGORIAS = [
+		{ value: 'food', label: 'Plato fuerte' },
+		{ value: 'drinks', label: 'Bebida' },
+		{ value: 'dessert', label: 'Postre' },
+		{ value: 'other', label: 'Otro' },
+	];
+	const categoriaLabel = $derived(CATEGORIAS.find(c => c.value === categoria)?.label ?? 'Categoría');
+
+	// Filtro por disponibilidad (tabs)
+	let filtro = $state<'todos' | 'disponibles' | 'agotados'>('todos');
+	const productosFiltrados = $derived(
+		vendedor.catalogo.filter(p => {
+			if (filtro === 'disponibles') return p.disponible;
+			if (filtro === 'agotados') return !p.disponible || p.stock === 0;
+			return true;
+		})
+	);
 
 	function abrirNuevo() {
 		editando = null;
-		nombre = ''; descripcion = ''; precio = ''; emoji = '🍽️'; stock = '10';
+		nombre = ''; descripcion = ''; precio = ''; emoji = '🍽️'; stock = '10'; categoria = 'food';
 		modalOpen = true;
 	}
 
 	function abrirEditar(p: ProductoVendedor) {
 		editando = p;
 		nombre = p.name; descripcion = p.description; precio = String(p.price);
-		emoji = p.emoji; stock = String(p.stock);
+		emoji = p.emoji; stock = String(p.stock); categoria = p.category;
 		modalOpen = true;
 	}
 
@@ -36,14 +62,14 @@
 			vendedor.updateStock(editando.id, stockNum);
 			// update nombre/desc in place
 			const p = vendedor.catalogo.find(p => p.id === editando!.id);
-			if (p) { p.name = nombre; p.description = descripcion; p.emoji = emoji; }
+			if (p) { p.name = nombre; p.description = descripcion; p.emoji = emoji; p.category = categoria; }
 		} else {
 			vendedor.addProducto({
 				name: nombre, description: descripcion,
 				price: precioNum,
 				emoji,
 				stock: stockNum,
-				category: 'food',
+				category: categoria,
 				disponible: stockNum > 0,
 			});
 		}
@@ -71,11 +97,20 @@
 		{disponibles} disponibles · {agotados} agotados
 	</p>
 
+	<!-- Filtro por disponibilidad -->
+	<Tabs.Root bind:value={filtro} class="mb-4">
+		<Tabs.List>
+			<Tabs.Trigger value="todos">Todos</Tabs.Trigger>
+			<Tabs.Trigger value="disponibles">Disponibles</Tabs.Trigger>
+			<Tabs.Trigger value="agotados">Agotados</Tabs.Trigger>
+		</Tabs.List>
+	</Tabs.Root>
+
 	<!-- Grid -->
 	<div class="flex flex-col gap-3">
-		{#each vendedor.catalogo as prod}
-			<div class="flex items-center gap-3.5 p-3.5 rounded-2xl border border-[var(--c-border-soft)]"
-				style="background:var(--c-bg-card);opacity:{prod.disponible ? 1 : 0.55}">
+		{#each productosFiltrados as prod}
+			<Card.Root class="flex-row items-center gap-3.5 p-3.5 rounded-2xl ring-0 border border-[var(--c-border-soft)]"
+				style="opacity:{prod.disponible ? 1 : 0.55}">
 				<!-- Emoji -->
 				<div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
 					style="background:var(--c-bg-secondary)">{prod.emoji}</div>
@@ -105,31 +140,34 @@
 						<div class="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all"
 							style="left:{prod.disponible ? '18px' : '2px'}"></div>
 					</button>
-					<button onclick={() => abrirEditar(prod)}
-						class="w-10 h-9 rounded-xl flex items-center justify-center"
-						style="background:var(--c-bg-secondary);color:var(--c-text-secondary)">
-						<Icon name="edit" size={14}/>
-					</button>
-					<button onclick={() => { if (confirm(`¿Eliminar ${prod.nombre}?`)) vendedor.removeProducto(prod.id); }}
-						class="w-10 h-9 rounded-xl flex items-center justify-center"
-						style="background:rgba(220,38,38,.06);color:var(--c-error)">
-						<Icon name="trash" size={14}/>
-					</button>
+					<DropdownMenu.Root>
+						<DropdownMenu.Trigger
+							class="w-10 h-9 rounded-xl flex items-center justify-center"
+							style="background:var(--c-bg-secondary);color:var(--c-text-secondary)">
+							<EllipsisVertical size={16}/>
+						</DropdownMenu.Trigger>
+						<DropdownMenu.Content>
+							<DropdownMenu.Item onclick={() => abrirEditar(prod)}>
+								<Icon name="edit" size={14}/>
+								Editar
+							</DropdownMenu.Item>
+							<DropdownMenu.Item
+								variant="destructive"
+								onclick={() => { if (confirm(`¿Eliminar ${prod.name}?`)) vendedor.removeProducto(prod.id); }}>
+								<Icon name="trash" size={14}/>
+								Eliminar
+							</DropdownMenu.Item>
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
 				</div>
-			</div>
+			</Card.Root>
 		{/each}
 	</div>
 </div>
 
 <!-- Modal nuevo/editar producto -->
-{#if modalOpen}
-	<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
-	<div class="fixed inset-0 z-[100] flex items-end md:items-center justify-center"
-		style="background:rgba(0,0,0,.5);backdrop-filter:blur(3px)"
-		onclick={(e) => { if ((e.target as HTMLElement).dataset.backdrop) modalOpen = false; }}
-		data-backdrop="1">
-		<div class="w-full md:max-w-sm rounded-t-[24px] md:rounded-[24px] p-6 flex flex-col gap-4"
-			style="background:var(--c-bg-card)">
+<Dialog.Root bind:open={modalOpen}>
+	<Dialog.Content showCloseButton={false} class="flex flex-col gap-4">
 			<div class="flex items-center justify-between">
 				<h3 class="font-display text-[18px] font-extrabold">
 					{editando ? 'Editar producto' : 'Nuevo producto'}
@@ -158,16 +196,16 @@
 			<!-- Nombre -->
 			<div>
 				<div class="text-[11px] font-bold uppercase tracking-widest mb-1.5" style="color:var(--c-text-muted)">Nombre *</div>
-				<input bind:value={nombre} type="text" placeholder="Ej: Bandeja Paisa"
-					class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+				<Input bind:value={nombre} type="text" placeholder="Ej: Bandeja Paisa"
+					class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
 					style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
 			</div>
 
 			<!-- Descripción -->
 			<div>
 				<div class="text-[11px] font-bold uppercase tracking-widest mb-1.5" style="color:var(--c-text-muted)">Descripción</div>
-				<input bind:value={descripcion} type="text" placeholder="Ej: Con fríjoles, chicharrón..."
-					class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+				<Input bind:value={descripcion} type="text" placeholder="Ej: Con fríjoles, chicharrón..."
+					class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
 					style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
 			</div>
 
@@ -175,17 +213,32 @@
 				<!-- Precio -->
 				<div class="flex-1">
 					<div class="text-[11px] font-bold uppercase tracking-widest mb-1.5" style="color:var(--c-text-muted)">Precio *</div>
-					<input bind:value={precio} type="number" placeholder="28000"
-						class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+					<Input bind:value={precio} type="number" placeholder="28000"
+						class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
 						style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
 				</div>
 				<!-- Stock -->
 				<div class="flex-1">
 					<div class="text-[11px] font-bold uppercase tracking-widest mb-1.5" style="color:var(--c-text-muted)">Stock</div>
-					<input bind:value={stock} type="number" placeholder="10"
-						class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+					<Input bind:value={stock} type="number" placeholder="10"
+						class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
 						style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
 				</div>
+			</div>
+
+			<!-- Categoría -->
+			<div>
+				<div class="text-[11px] font-bold uppercase tracking-widest mb-1.5" style="color:var(--c-text-muted)">Categoría</div>
+				<Select.Root type="single" bind:value={categoria}>
+					<Select.Trigger class="w-full h-11 rounded-xl">
+						{categoriaLabel}
+					</Select.Trigger>
+					<Select.Content>
+						{#each CATEGORIAS as c}
+							<Select.Item value={c.value} label={c.label}>{c.label}</Select.Item>
+						{/each}
+					</Select.Content>
+				</Select.Root>
 			</div>
 
 			<div class="flex gap-2.5 mt-1">
@@ -200,6 +253,5 @@
 					{editando ? 'Guardar' : 'Agregar'}
 				</button>
 			</div>
-		</div>
-	</div>
-{/if}
+	</Dialog.Content>
+</Dialog.Root>

@@ -4,6 +4,8 @@
 	import { toast } from '$lib/stores/app.svelte';
 	import { fmtCOP } from '$lib/utils';
 	import Icon from '$lib/components/ui/Icon.svelte';
+	import * as Dialog from '$lib/components/ui/dialog';
+	import { Input } from '$lib/components/ui/input';
 
 	type Props = {
 		open: boolean;
@@ -96,24 +98,11 @@
 		mensaje: 'Te respondemos en un máximo de 24 horas hábiles.',
 	};
 
-	// Backdrop click
-	function onBackdrop(e: MouseEvent) {
-		if ((e.target as HTMLElement).dataset.backdrop) handleClose();
-	}
 </script>
 
-{#if open && servicio}
-	<!-- Backdrop -->
-	<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
-	<div class="fixed inset-0 z-[100] flex items-end md:items-center justify-center"
-		data-backdrop="1"
-		onclick={onBackdrop}
-		style="background:rgba(0,0,0,.5);backdrop-filter:blur(3px)">
-
-		<!-- Sheet -->
-		<div class="relative w-full md:max-w-[480px] rounded-t-[24px] md:rounded-[24px] overflow-hidden flex flex-col"
-			style="background:var(--c-bg-card);max-height:90vh">
-
+<Dialog.Root open={open && !!servicio} onOpenChange={(v) => { if (!v) handleClose(); }}>
+	<Dialog.Content showCloseButton={false} class="relative md:max-w-[480px] p-0 gap-0 flex flex-col max-h-[90vh] overflow-hidden">
+		{#if servicio}
 			<!-- Header -->
 			<div class="flex items-center gap-3 px-5 py-4 border-b border-[var(--c-border-soft)] shrink-0">
 				<div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0"
@@ -181,8 +170,8 @@
 								style="color:var(--c-text-muted)">
 								Nombre completo <span style="color:var(--c-error)">*</span>
 							</label>
-							<input bind:value={nombre} type="text" placeholder="Juan García"
-								class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+							<Input bind:value={nombre} type="text" placeholder="Juan García"
+								class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
 								style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
 						</div>
 
@@ -192,8 +181,8 @@
 								style="color:var(--c-text-muted)">
 								WhatsApp / Teléfono <span style="color:var(--c-error)">*</span>
 							</label>
-							<input bind:value={telefono} type="tel" placeholder="+57 300 000 0000"
-								class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+							<Input bind:value={telefono} type="tel" placeholder="+57 300 000 0000"
+								class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
 								style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
 						</div>
 
@@ -201,8 +190,8 @@
 						<div>
 							<label class="block text-[12px] font-bold mb-1.5 uppercase tracking-[0.8px]"
 								style="color:var(--c-text-muted)">Correo electrónico</label>
-							<input bind:value={email} type="email" placeholder="tu@correo.com"
-								class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+							<Input bind:value={email} type="email" placeholder="tu@correo.com"
+								class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
 								style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
 						</div>
 
@@ -214,8 +203,8 @@
 										style="color:var(--c-text-muted)">
 										Fecha <span style="color:var(--c-error)">*</span>
 									</label>
-									<input bind:value={fecha} type="date"
-										class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+									<Input bind:value={fecha} type="date"
+										class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
 										style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
 								</div>
 								<div>
@@ -314,6 +303,6 @@
 				{/if}
 
 			</div>
-		</div>
-	</div>
-{/if}
+		{/if}
+	</Dialog.Content>
+</Dialog.Root>

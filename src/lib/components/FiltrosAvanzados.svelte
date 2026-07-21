@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as Dialog from '$lib/components/ui/dialog';
+
 	export type Filtros = {
 		abiertoAhora: boolean;
 		ratingMin: number;
@@ -44,23 +46,10 @@
 	);
 
 	function apply() { onapply(f); onclose(); }
-	function handleKey(e: KeyboardEvent) { if (e.key === 'Escape') onclose(); }
 </script>
 
-{#if open}
-<div
-	class="fixed inset-0 z-50 flex items-end lg:items-center justify-center"
-	style="background:rgba(0,0,0,.5);backdrop-filter:blur(3px)"
-	role="dialog"
-	aria-modal="true"
-	onclick={(e) => { if (e.target === e.currentTarget) onclose(); }}
-	onkeydown={handleKey}
-	tabindex="-1"
->
-	<div
-		class="w-full lg:max-w-lg rounded-t-3xl lg:rounded-2xl overflow-hidden flex flex-col"
-		style="background:var(--c-bg-card);max-height:92dvh"
-	>
+<Dialog.Root {open} onOpenChange={(v) => { if (!v) onclose(); }}>
+	<Dialog.Content showCloseButton={false} class="relative md:max-w-lg p-0 gap-0 flex flex-col max-h-[90vh] overflow-hidden">
 		<!-- Header -->
 		<div class="flex items-center justify-between px-5 pt-5 pb-3 shrink-0">
 			<div>
@@ -209,6 +198,5 @@
 				Aplicar{activeCount > 0 ? ` (${activeCount})` : ''}
 			</button>
 		</div>
-	</div>
-</div>
-{/if}
+	</Dialog.Content>
+</Dialog.Root>

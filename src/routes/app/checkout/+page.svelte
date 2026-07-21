@@ -8,6 +8,7 @@
 	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Icon from '$lib/components/ui/Icon.svelte';
+	import * as Dialog from '$lib/components/ui/dialog';
 
 	// Snapshot cart on mount so clearing it doesn't break the flow
 	let snapshot = $state<CartItem[]>([]);
@@ -703,18 +704,15 @@
 {/if}
 
 <!-- ── PAYMENT FLOW MODAL ── -->
-{#if paymentOpen}
-	<div
-		class="fixed inset-0 z-50 flex items-end sm:items-center justify-center"
-		style="background:rgba(0,0,0,0.55);backdrop-filter:blur(4px)"
-		role="dialog"
-		aria-modal="true"
+<!-- No se puede cerrar con click afuera ni Escape: es un flujo de pago en curso -->
+<Dialog.Root bind:open={paymentOpen}>
+	<Dialog.Content
+		showCloseButton={false}
+		interactOutsideBehavior="ignore"
+		escapeKeydownBehavior="ignore"
+		class="flex flex-col"
+		style="padding-bottom:max(24px,env(safe-area-inset-bottom))"
 	>
-		<div
-			class="w-full sm:max-w-sm rounded-t-[24px] sm:rounded-[20px] p-6 animate-slide-up sm:animate-scale-in"
-			style="background:var(--c-bg-card);padding-bottom:max(24px,env(safe-area-inset-bottom))"
-			onclick={(e) => e.stopPropagation()}
-		>
 			{#if paymentPhase === 'methods'}
 				<h2 class="font-display text-xl font-bold mb-1">Elige cómo pagar</h2>
 				<p class="text-sm mb-5" style="color:var(--c-text-muted)">
@@ -829,6 +827,5 @@
 					</div>
 				</div>
 			{/if}
-		</div>
-	</div>
-{/if}
+	</Dialog.Content>
+</Dialog.Root>

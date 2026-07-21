@@ -4,6 +4,8 @@
 	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
 	import Icon from '$lib/components/ui/Icon.svelte';
 	import ServicioBooking from '$lib/components/ServicioBooking.svelte';
+	import * as Card from '$lib/components/ui/card';
+	import * as Accordion from '$lib/components/ui/accordion';
 
 	type Props = {
 		tienda: Store;
@@ -25,9 +27,6 @@
 		}
 		return map;
 	});
-
-	// FAQ accordion
-	let faqOpen = $state<number | null>(null);
 
 	// Booking modal
 	let bookingServicio = $state<Servicio | null>(null);
@@ -54,10 +53,17 @@
 	};
 </script>
 
+{#snippet sectionHeader(eyebrow: string, title: string)}
+	<div class="mb-4">
+		<div class="font-mono text-[11px] font-semibold uppercase tracking-[1.5px] mb-1" style="color:{accent}">{eyebrow}</div>
+		<h2 class="font-display text-[22px] font-extrabold tracking-[-0.3px]">{title}</h2>
+	</div>
+{/snippet}
+
 <div class="max-w-5xl mx-auto pb-32 md:pb-24">
 
 	<!-- ── HERO ── -->
-	<div class="relative overflow-hidden rounded-b-[22px] md:rounded-b-[28px]"
+	<div class="relative overflow-hidden rounded-b-xl"
 		style="min-height:280px;height:clamp(280px,32vw,380px);background:{tienda.bannerGradient}">
 		<div class="absolute inset-0"
 			style="background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 1px,transparent 1px,transparent 14px)"/>
@@ -97,8 +103,7 @@
 	<div class="px-5 md:px-6">
 
 		<!-- ── HEADER CARD ── -->
-		<div class="-mt-10 rounded-[20px] p-5 border border-[var(--c-border-soft)] shadow-[var(--shadow-md)]"
-			style="background:var(--c-bg-card)">
+		<Card.Root class="-mt-10 p-5 gap-0 rounded-xl ring-1 ring-[var(--c-border-soft)] shadow-[var(--shadow-md)] bg-[var(--c-bg-card)] overflow-visible">
 			<div class="flex gap-3.5 items-start flex-wrap">
 				<div class="-mt-10">
 					<div class="p-0.5 rounded-full shadow-[var(--shadow-sm)]" style="background:var(--c-bg-card)">
@@ -161,16 +166,16 @@
 					</button>
 				{/if}
 			</div>
-		</div>
+		</Card.Root>
 
 		<!-- ── STATS ── -->
 		{#if land?.stats}
 			<div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-2.5">
 				{#each land.stats as s}
-					<div class="p-3.5 rounded-[14px] border border-[var(--c-border-soft)]" style="background:var(--c-bg-card)">
+					<Card.Root class="p-3.5 gap-0 rounded-lg ring-1 ring-[var(--c-border-soft)] bg-[var(--c-bg-card)]">
 						<div class="font-display font-extrabold leading-none tracking-[-0.5px] mb-1.5" style="font-size:26px;color:{accent}">{s.valor}</div>
 						<div class="text-[11.5px] leading-snug" style="color:var(--c-text-secondary)">{s.label}</div>
-					</div>
+					</Card.Root>
 				{/each}
 			</div>
 		{/if}
@@ -178,20 +183,17 @@
 		<!-- ── PILLARS ── -->
 		{#if land?.pillars?.length}
 			<section class="mt-11">
-				<div class="mb-4">
-					<div class="font-mono text-[11px] font-semibold uppercase tracking-[1.5px] mb-1" style="color:{accent}">Por qué con nosotros</div>
-					<h2 class="font-display text-[22px] font-extrabold tracking-[-0.3px]">Lo que nos define</h2>
-				</div>
+				{@render sectionHeader('Por qué con nosotros', 'Lo que nos define')}
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 					{#each land.pillars as pillar}
-						<div class="p-4 rounded-[14px] border border-[var(--c-border-soft)]" style="background:var(--c-bg-card)">
-							<div class="w-9 h-9 rounded-[10px] flex items-center justify-center mb-3"
+						<Card.Root class="p-4 gap-0 rounded-lg ring-1 ring-[var(--c-border-soft)] bg-[var(--c-bg-card)]">
+							<div class="w-9 h-9 rounded-md flex items-center justify-center mb-3"
 								style="background:{accent}18;color:{accent}">
 								<Icon name={pillar.icon} size={18}/>
 							</div>
 							<h4 class="font-display text-[14px] font-bold mb-1 leading-snug">{pillar.titulo}</h4>
 							<p class="text-[12.5px] leading-relaxed" style="color:var(--c-text-secondary)">{pillar.desc}</p>
-						</div>
+						</Card.Root>
 					{/each}
 				</div>
 			</section>
@@ -200,10 +202,7 @@
 		<!-- ── CATÁLOGO DE SERVICIOS ── -->
 		{#if servicios.length > 0}
 			<section class="mt-11">
-				<div class="mb-4">
-					<div class="font-mono text-[11px] font-semibold uppercase tracking-[1.5px] mb-1" style="color:{accent}">Catálogo</div>
-					<h2 class="font-display text-[22px] font-extrabold tracking-[-0.3px]">Nuestros servicios</h2>
-				</div>
+				{@render sectionHeader('Catálogo', 'Nuestros servicios')}
 
 				{#each serviciosPorCat().entries() as [cat, items]}
 					<div class="mb-6">
@@ -214,8 +213,7 @@
 						</div>
 						<div class="flex flex-col gap-2.5">
 							{#each items as s}
-								<div class="rounded-[14px] border border-[var(--c-border-soft)] overflow-hidden"
-									style="background:var(--c-bg-card)">
+								<Card.Root class="p-0 gap-0 rounded-lg ring-1 ring-[var(--c-border-soft)] bg-[var(--c-bg-card)]">
 									<div class="p-4 flex gap-4 items-start">
 										<!-- Icon -->
 										<div class="w-11 h-11 rounded-xl flex items-center justify-center text-2xl shrink-0"
@@ -258,7 +256,7 @@
 												{/if}
 											</div>
 											<button onclick={() => openBooking(s)}
-												class="px-3.5 py-2 rounded-[10px] text-white text-[12px] font-bold whitespace-nowrap"
+												class="px-3.5 py-2 rounded-md text-white text-[12px] font-bold whitespace-nowrap"
 												style="background:{accent};box-shadow:0 3px 12px {accent}44">
 												{ctaLabel[s.cta] ?? 'Ir'}
 											</button>
@@ -277,7 +275,7 @@
 											</div>
 										</div>
 									{/if}
-								</div>
+								</Card.Root>
 							{/each}
 						</div>
 					</div>
@@ -288,20 +286,17 @@
 		<!-- ── PROCESO ── -->
 		{#if land?.proceso?.length}
 			<section class="mt-11">
-				<div class="mb-4">
-					<div class="font-mono text-[11px] font-semibold uppercase tracking-[1.5px] mb-1" style="color:{accent}">Cómo funciona</div>
-					<h2 class="font-display text-[22px] font-extrabold tracking-[-0.3px]">Paso a paso</h2>
-				</div>
+				{@render sectionHeader('Cómo funciona', 'Paso a paso')}
 				<div class="flex flex-col gap-3">
 					{#each land.proceso as p, i}
-						<div class="flex gap-4 p-4 rounded-[14px] border border-[var(--c-border-soft)]" style="background:var(--c-bg-card)">
-							<div class="w-10 h-10 rounded-[12px] flex items-center justify-center font-display font-extrabold text-white text-[16px] shrink-0"
+						<Card.Root class="flex-row gap-4 p-4 rounded-lg ring-1 ring-[var(--c-border-soft)] bg-[var(--c-bg-card)]">
+							<div class="w-10 h-10 rounded-md flex items-center justify-center font-display font-extrabold text-white text-[16px] shrink-0"
 								style="background:{accent}">{p.paso}</div>
 							<div>
 								<h4 class="font-display text-[14px] font-bold leading-snug mb-1">{p.titulo}</h4>
 								<p class="text-[13px] leading-relaxed" style="color:var(--c-text-secondary)">{p.desc}</p>
 							</div>
-						</div>
+						</Card.Root>
 					{/each}
 				</div>
 			</section>
@@ -310,13 +305,10 @@
 		<!-- ── PAQUETES (mudanzas) ── -->
 		{#if land?.paquetes?.length}
 			<section class="mt-11">
-				<div class="mb-4">
-					<div class="font-mono text-[11px] font-semibold uppercase tracking-[1.5px] mb-1" style="color:{accent}">Opciones</div>
-					<h2 class="font-display text-[22px] font-extrabold tracking-[-0.3px]">¿Qué paquete necesitas?</h2>
-				</div>
+				{@render sectionHeader('Opciones', '¿Qué paquete necesitas?')}
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 					{#each land.paquetes as pk}
-						<div class="p-4 rounded-[14px] border-2 flex flex-col gap-3"
+						<div class="p-4 rounded-lg border-2 flex flex-col gap-3"
 							style="background:var(--c-bg-card);border-color:{pk.color}40">
 							<div class="font-display text-base font-extrabold" style="color:{pk.color}">{pk.nombre}</div>
 							<ul class="flex flex-col gap-1.5 flex-1">
@@ -327,7 +319,7 @@
 								{/each}
 							</ul>
 							<button onclick={() => { const s = servicios.find(s => s.nombre.toLowerCase().includes(pk.nombre.toLowerCase())); if (s) openBooking(s); }}
-								class="w-full py-2.5 rounded-[10px] font-bold text-sm text-white"
+								class="w-full py-2.5 rounded-md font-bold text-sm text-white"
 								style="background:{pk.color}">
 								Cotizar {pk.nombre}
 							</button>
@@ -345,16 +337,15 @@
 				</div>
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-2.5">
 					{#each land.flota as v}
-						<div class="p-3.5 rounded-[14px] border border-[var(--c-border-soft)] flex gap-3 items-start"
-							style="background:var(--c-bg-card)">
-							<div class="w-9 h-9 rounded-[10px] flex items-center justify-center text-xl shrink-0"
+						<Card.Root class="flex-row p-3.5 gap-3 items-start rounded-lg ring-1 ring-[var(--c-border-soft)] bg-[var(--c-bg-card)]">
+							<div class="w-9 h-9 rounded-md flex items-center justify-center text-xl shrink-0"
 								style="background:{accent}18">🚛</div>
 							<div>
 								<div class="font-bold text-[13px] mb-0.5">{v.tipo}</div>
 								<div class="text-[12px] font-mono" style="color:{accent}">{v.capacidad}</div>
 								<div class="text-[11.5px] mt-0.5" style="color:var(--c-text-muted)">{v.uso}</div>
 							</div>
-						</div>
+						</Card.Root>
 					{/each}
 				</div>
 			</section>
@@ -380,21 +371,17 @@
 		<!-- ── RAMOS (seguros) ── -->
 		{#if land?.ramos?.length}
 			<section class="mt-11">
-				<div class="mb-4">
-					<div class="font-mono text-[11px] font-semibold uppercase tracking-[1.5px] mb-1" style="color:{accent}">Qué aseguramos</div>
-					<h2 class="font-display text-[22px] font-extrabold tracking-[-0.3px]">Ramos disponibles</h2>
-				</div>
+				{@render sectionHeader('Qué aseguramos', 'Ramos disponibles')}
 				<div class="grid grid-cols-2 md:grid-cols-3 gap-3">
 					{#each land.ramos as r}
-						<div class="p-4 rounded-[14px] border border-[var(--c-border-soft)] flex flex-col gap-2"
-							style="background:var(--c-bg-card)">
+						<Card.Root class="p-4 gap-2 rounded-lg ring-1 ring-[var(--c-border-soft)] bg-[var(--c-bg-card)]">
 							<div class="text-2xl">{r.icon}</div>
 							<h4 class="font-display text-[13.5px] font-bold leading-snug">{r.titulo}</h4>
 							<p class="text-[12px] leading-snug flex-1" style="color:var(--c-text-secondary)">{r.desc}</p>
 							<div class="font-mono text-[12px] font-bold mt-1" style="color:{accent}">
 								Desde {fmtCOP(r.desde)}/año
 							</div>
-						</div>
+						</Card.Root>
 					{/each}
 				</div>
 			</section>
@@ -403,14 +390,10 @@
 		<!-- ── EQUIPO ── -->
 		{#if land?.equipo?.length}
 			<section class="mt-11">
-				<div class="mb-4">
-					<div class="font-mono text-[11px] font-semibold uppercase tracking-[1.5px] mb-1" style="color:{accent}">Quiénes somos</div>
-					<h2 class="font-display text-[22px] font-extrabold tracking-[-0.3px]">El equipo</h2>
-				</div>
+				{@render sectionHeader('Quiénes somos', 'El equipo')}
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
 					{#each land.equipo as m}
-						<div class="flex gap-3.5 p-3.5 rounded-[14px] border border-[var(--c-border-soft)]"
-							style="background:var(--c-bg-card)">
+						<Card.Root class="flex-row gap-3.5 p-3.5 rounded-lg ring-1 ring-[var(--c-border-soft)] bg-[var(--c-bg-card)]">
 							<div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-[14px] shrink-0"
 								style="background:{m.avatar}">{m.iniciales}</div>
 							<div>
@@ -419,7 +402,7 @@
 								<span class="inline-block mt-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold"
 									style="background:{accent}18;color:{accent}">{m.exp}</span>
 							</div>
-						</div>
+						</Card.Root>
 					{/each}
 				</div>
 			</section>
@@ -428,10 +411,7 @@
 		<!-- ── CONVENIOS ── -->
 		{#if land?.convenios?.length}
 			<section class="mt-11">
-				<div class="mb-4">
-					<div class="font-mono text-[11px] font-semibold uppercase tracking-[1.5px] mb-1" style="color:{accent}">Convenios</div>
-					<h2 class="font-display text-[22px] font-extrabold tracking-[-0.3px]">Aceptamos tu seguro</h2>
-				</div>
+				{@render sectionHeader('Convenios', 'Aceptamos tu seguro')}
 				<div class="flex flex-wrap gap-2">
 					{#each land.convenios as c}
 						<div class="px-4 py-2.5 rounded-xl border border-[var(--c-border-soft)] font-bold text-[13px]"
@@ -463,13 +443,10 @@
 		<!-- ── GALERÍA ── -->
 		{#if land?.galeria?.length}
 			<section class="mt-11">
-				<div class="mb-4">
-					<div class="font-mono text-[11px] font-semibold uppercase tracking-[1.5px] mb-1" style="color:{accent}">Nuestras instalaciones</div>
-					<h2 class="font-display text-[22px] font-extrabold tracking-[-0.3px]">Conoce el espacio</h2>
-				</div>
+				{@render sectionHeader('Nuestras instalaciones', 'Conoce el espacio')}
 				<div class="grid grid-cols-2 md:grid-cols-3 gap-2.5">
 					{#each land.galeria as g}
-						<div class="rounded-[14px] flex items-end overflow-hidden relative border"
+						<div class="rounded-lg flex items-end overflow-hidden relative border"
 							style="height:140px;background:{g.tono};border-color:rgba(0,0,0,.08);background-image:repeating-linear-gradient(135deg,rgba(0,0,0,.04) 0,rgba(0,0,0,.04) 1px,transparent 1px,transparent 14px)">
 							<div class="m-2 px-2 py-1 rounded-lg text-[11px] font-mono font-semibold"
 								style="background:rgba(255,255,255,.92);color:{accent}">
@@ -484,38 +461,29 @@
 		<!-- ── FAQ ── -->
 		{#if land?.faqs?.length}
 			<section class="mt-11">
-				<div class="mb-4">
-					<div class="font-mono text-[11px] font-semibold uppercase tracking-[1.5px] mb-1" style="color:{accent}">Preguntas frecuentes</div>
-					<h2 class="font-display text-[22px] font-extrabold tracking-[-0.3px]">Lo que más nos preguntan</h2>
-				</div>
-				<div class="flex flex-col gap-2">
+				{@render sectionHeader('Preguntas frecuentes', 'Lo que más nos preguntan')}
+				<Accordion.Root type="single" class="flex flex-col gap-2">
 					{#each land.faqs as faq, i}
-						<div class="rounded-[14px] border border-[var(--c-border-soft)] overflow-hidden" style="background:var(--c-bg-card)">
-							<button onclick={() => faqOpen = faqOpen === i ? null : i}
-								class="w-full text-left p-4 flex items-center gap-3">
-								<span class="flex-1 text-[14px] font-bold font-display leading-snug">{faq.q}</span>
-								<span class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-all"
-									style="background:{faqOpen === i ? accent : 'var(--c-bg-secondary)'};color:{faqOpen === i ? '#fff' : accent};transform:{faqOpen === i ? 'rotate(180deg)' : 'none'}">
-									<Icon name="chevronDown" size={14}/>
-								</span>
-							</button>
-							{#if faqOpen === i}
-								<div class="px-4 pb-4 text-[13.5px] leading-relaxed" style="color:var(--c-text-secondary)">{faq.a}</div>
-							{/if}
-						</div>
+						<Card.Root class="p-0 gap-0 rounded-lg ring-1 ring-[var(--c-border-soft)] bg-[var(--c-bg-card)]">
+							<Accordion.Item value={String(i)} class="border-b-0">
+								<Accordion.Trigger class="px-4 py-4 rounded-none hover:no-underline">
+									<span class="flex-1 text-[14px] font-bold font-display leading-snug">{faq.q}</span>
+								</Accordion.Trigger>
+								<Accordion.Content class="px-4 pb-4">
+									<p class="text-[13.5px] leading-relaxed" style="color:var(--c-text-secondary)">{faq.a}</p>
+								</Accordion.Content>
+							</Accordion.Item>
+						</Card.Root>
 					{/each}
-				</div>
+				</Accordion.Root>
 			</section>
 		{/if}
 
 		<!-- ── UBICACIÓN / HORARIO / PAGOS ── -->
 		<section class="mt-11">
-			<div class="mb-4">
-				<div class="font-mono text-[11px] font-semibold uppercase tracking-[1.5px] mb-1" style="color:{accent}">Encuéntranos</div>
-				<h2 class="font-display text-[22px] font-extrabold tracking-[-0.3px]">Ubicación, horario y pagos</h2>
-			</div>
+			{@render sectionHeader('Encuéntranos', 'Ubicación, horario y pagos')}
 			<div class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-3">
-				<div class="rounded-[14px] border border-[var(--c-border-soft)] relative overflow-hidden"
+				<div class="rounded-lg border border-[var(--c-border-soft)] relative overflow-hidden"
 					style="min-height:180px;background:var(--c-bg-card);background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.025) 0,rgba(0,0,0,.025) 1px,transparent 1px,transparent 24px),repeating-linear-gradient(0deg,rgba(0,0,0,.025) 0,rgba(0,0,0,.025) 1px,transparent 1px,transparent 24px)">
 					<div class="absolute top-3 left-3 px-3 py-1.5 rounded-lg border border-[var(--c-border-soft)] font-mono text-[11px] font-semibold"
 						style="background:var(--c-bg-card);color:var(--c-text-muted)">
@@ -534,8 +502,8 @@
 						{ icon: 'clock',    label: 'Horario',   value: tienda.hours },
 						{ icon: 'credit',   label: 'Pagos',     value: tienda.paymentMethods.join(' · ') },
 					] as row}
-						<div class="flex gap-3 p-3.5 rounded-[14px] border border-[var(--c-border-soft)]" style="background:var(--c-bg-card)">
-							<div class="w-9 h-9 rounded-[10px] flex items-center justify-center shrink-0"
+						<Card.Root class="flex-row gap-3 p-3.5 rounded-lg ring-1 ring-[var(--c-border-soft)] bg-[var(--c-bg-card)]">
+							<div class="w-9 h-9 rounded-md flex items-center justify-center shrink-0"
 								style="background:{accent}18;color:{accent}">
 								<Icon name={row.icon} size={16}/>
 							</div>
@@ -543,7 +511,7 @@
 								<div class="text-[11px] font-bold uppercase tracking-[1px] mb-0.5" style="color:var(--c-text-muted)">{row.label}</div>
 								<div class="text-[13px] font-medium leading-snug">{row.value}</div>
 							</div>
-						</div>
+						</Card.Root>
 					{/each}
 				</div>
 			</div>
@@ -551,7 +519,7 @@
 
 		<!-- ── CTA FINAL ── -->
 		<section class="mt-11">
-			<div class="rounded-[22px] text-white overflow-hidden"
+			<div class="rounded-xl text-white overflow-hidden"
 				style="padding:clamp(24px,4vw,40px);background:linear-gradient(135deg,{accent} 0%,{accent}cc 100%)">
 				<div class="md:flex md:items-center md:justify-between md:gap-6">
 					<div class="flex-1">

@@ -3,6 +3,8 @@
 	import { cart, toast } from '$lib/stores/app.svelte';
 	import { fmtCOP } from '$lib/utils';
 	import Icon from '$lib/components/ui/Icon.svelte';
+	import * as Dialog from '$lib/components/ui/dialog';
+	import { Input } from '$lib/components/ui/input';
 
 	type Tab = 'productos' | 'listas';
 	let tab = $state<Tab>('productos');
@@ -170,14 +172,8 @@
 </div>
 
 <!-- ── CREAR LISTA MODAL ── -->
-{#if crearListaOpen}
-	<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
-	<div class="fixed inset-0 z-[100] flex items-end md:items-center justify-center"
-		style="background:rgba(0,0,0,.5);backdrop-filter:blur(3px)"
-		onclick={(e) => { if ((e.target as HTMLElement).dataset.backdrop) crearListaOpen = false; }}
-		data-backdrop="1">
-		<div class="w-full md:max-w-sm rounded-t-[24px] md:rounded-[24px] p-6 flex flex-col gap-4"
-			style="background:var(--c-bg-card)">
+<Dialog.Root bind:open={crearListaOpen}>
+	<Dialog.Content class="flex flex-col gap-4">
 			<h3 class="font-display text-[18px] font-extrabold">Nueva lista</h3>
 
 			<!-- Emoji picker -->
@@ -197,8 +193,8 @@
 			<!-- Nombre -->
 			<div>
 				<div class="text-[12px] font-bold uppercase tracking-[0.8px] mb-2" style="color:var(--c-text-muted)">Nombre *</div>
-				<input bind:value={nuevoNombre} type="text" placeholder="Ej: Lista del mercado"
-					class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+				<Input bind:value={nuevoNombre} type="text" placeholder="Ej: Lista del mercado"
+					class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
 					style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
 			</div>
 
@@ -214,6 +210,5 @@
 					Crear lista
 				</button>
 			</div>
-		</div>
-	</div>
-{/if}
+	</Dialog.Content>
+</Dialog.Root>

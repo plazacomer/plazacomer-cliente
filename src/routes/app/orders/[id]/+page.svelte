@@ -8,6 +8,7 @@
 	import Badge from '$lib/components/ui/Badge.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Icon from '$lib/components/ui/Icon.svelte';
+	import * as Dialog from '$lib/components/ui/dialog';
 	import type { PedidoEstado } from '$lib/stores/app.svelte';
 
 	const id = $derived($page.params.id);
@@ -312,19 +313,13 @@
 	</div>
 
 	<!-- ── BUZÓN SUGERENCIAS ── -->
-	{#if buzonOpen}
-		<div
-			class="fixed inset-0 z-50 flex items-end justify-center"
-			style="background:rgba(0,0,0,0.55);backdrop-filter:blur(4px)"
-			onclick={() => !buzonSubmitted && (buzonOpen = false)}
-			role="dialog"
-			aria-modal="true"
+	<Dialog.Root bind:open={buzonOpen}>
+		<Dialog.Content
+			showCloseButton={false}
+			onInteractOutside={(e) => { if (buzonSubmitted) e.preventDefault(); }}
+			class="max-w-lg"
+			style="padding-bottom:max(24px,env(safe-area-inset-bottom))"
 		>
-			<div
-				class="w-full max-w-lg rounded-t-[24px] p-6 animate-slide-up overflow-y-auto max-h-[90vh]"
-				style="background:var(--c-bg-card);padding-bottom:max(24px,env(safe-area-inset-bottom))"
-				onclick={(e) => e.stopPropagation()}
-			>
 				{#if buzonSubmitted}
 					<div class="text-center py-6">
 						<div class="text-6xl mb-4">🙏</div>
@@ -401,24 +396,12 @@
 						Cancelar
 					</button>
 				{/if}
-			</div>
-		</div>
-	{/if}
+		</Dialog.Content>
+	</Dialog.Root>
 
 	<!-- ── CANCEL MODAL ── -->
-	{#if cancelOpen}
-		<div
-			class="fixed inset-0 z-50 flex items-center justify-center px-4"
-			style="background:rgba(0,0,0,0.55);backdrop-filter:blur(4px)"
-			onclick={() => (cancelOpen = false)}
-			role="dialog"
-			aria-modal="true"
-		>
-			<div
-				class="w-full max-w-sm rounded-[20px] p-6 animate-scale-in"
-				style="background:var(--c-bg-card)"
-				onclick={(e) => e.stopPropagation()}
-			>
+	<Dialog.Root bind:open={cancelOpen}>
+		<Dialog.Content showCloseButton={false} class="max-w-sm">
 				<h2 class="font-display text-xl font-bold mb-1">Cancelar pedido</h2>
 				<div
 					class="text-sm rounded-xl p-3 mb-4"
@@ -473,7 +456,6 @@
 						Sí, cancelar
 					</Button>
 				</div>
-			</div>
-		</div>
-	{/if}
+		</Dialog.Content>
+	</Dialog.Root>
 {/if}

@@ -6,6 +6,8 @@
 	import { favoritos } from '$lib/stores/favoritos.svelte';
 	import Icon from '$lib/components/ui/Icon.svelte';
 	import Badge from '$lib/components/ui/Badge.svelte';
+	import * as Dialog from '$lib/components/ui/dialog';
+	import { Input } from '$lib/components/ui/input';
 
 	// ── Club levels ──
 	const NIVELES = [
@@ -279,14 +281,8 @@
 </div>
 
 <!-- ── Dirección modal ── -->
-{#if dirModalOpen}
-	<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
-	<div class="fixed inset-0 z-[100] flex items-end md:items-center justify-center"
-		style="background:rgba(0,0,0,.5);backdrop-filter:blur(3px)"
-		onclick={(e) => { if ((e.target as HTMLElement).dataset.backdrop) dirModalOpen = false; }}
-		data-backdrop="1">
-		<div class="w-full md:max-w-sm rounded-t-[24px] md:rounded-[24px] p-6 flex flex-col gap-4"
-			style="background:var(--c-bg-card)">
+<Dialog.Root bind:open={dirModalOpen}>
+	<Dialog.Content showCloseButton={false} class="flex flex-col gap-4">
 			<div class="flex items-center justify-between">
 				<h3 class="font-display text-[18px] font-extrabold">
 					{dirEditando ? 'Editar dirección' : 'Nueva dirección'}
@@ -309,20 +305,20 @@
 						{field.label}
 					</div>
 					{#if field.key === 'label'}
-						<input bind:value={dirLabel} type="text" placeholder={field.placeholder}
-							class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+						<Input bind:value={dirLabel} type="text" placeholder={field.placeholder}
+							class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
 							style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
 					{:else if field.key === 'direccion'}
-						<input bind:value={dirDireccion} type="text" placeholder={field.placeholder}
-							class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+						<Input bind:value={dirDireccion} type="text" placeholder={field.placeholder}
+							class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
 							style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
 					{:else if field.key === 'barrio'}
-						<input bind:value={dirBarrio} type="text" placeholder={field.placeholder}
-							class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+						<Input bind:value={dirBarrio} type="text" placeholder={field.placeholder}
+							class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
 							style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
 					{:else}
-						<input bind:value={dirCiudad} type="text" placeholder={field.placeholder}
-							class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+						<Input bind:value={dirCiudad} type="text" placeholder={field.placeholder}
+							class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
 							style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
 					{/if}
 				</div>
@@ -341,6 +337,5 @@
 					{dirEditando ? 'Guardar cambios' : 'Agregar'}
 				</button>
 			</div>
-		</div>
-	</div>
-{/if}
+	</Dialog.Content>
+</Dialog.Root>

@@ -4,6 +4,7 @@
 	import Icon from '$lib/components/ui/Icon.svelte';
 	import CategoryBadge from '$lib/components/CategoryBadge.svelte';
 	import FiltrosAvanzados, { type Filtros } from '$lib/components/FiltrosAvanzados.svelte';
+	import * as Card from '$lib/components/ui/card';
 
 	let query = $state('');
 	let filterCat = $state<string | null>(null);
@@ -104,9 +105,12 @@
 	{:else}
 		<div class="grid gap-4" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">
 			{#each filtered as t}
-				<button
+				<Card.Root
+					role="button"
+					tabindex={0}
 					onclick={() => goTienda(t)}
-					class="text-left rounded-[18px] overflow-hidden border border-[var(--c-border-soft)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[var(--shadow-md)]"
+					onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goTienda(t); } }}
+					class="cursor-pointer text-left p-0 gap-0 rounded-[18px] ring-1 ring-[var(--c-border-soft)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[var(--shadow-md)] focus-visible:outline-2 focus-visible:outline-[var(--c-brand)] focus-visible:outline-offset-2"
 					style="background:var(--c-bg-card)"
 				>
 					<!-- Banner -->
@@ -158,7 +162,7 @@
 							<div class="mt-2 text-[11px] font-semibold" style="color:var(--c-error)">● Cerrado ahora</div>
 						{/if}
 					</div>
-				</button>
+				</Card.Root>
 			{/each}
 		</div>
 	{/if}

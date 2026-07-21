@@ -2,6 +2,8 @@
 	import { vendedor } from '$lib/stores/vendedor.svelte';
 	import { fmtCOP } from '$lib/utils';
 	import Icon from '$lib/components/ui/Icon.svelte';
+	import * as Dialog from '$lib/components/ui/dialog';
+	import { Input } from '$lib/components/ui/input';
 
 	let modalOpen = $state(false);
 
@@ -115,14 +117,8 @@
 </div>
 
 <!-- Modal nueva oferta -->
-{#if modalOpen}
-	<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
-	<div class="fixed inset-0 z-[100] flex items-end md:items-center justify-center"
-		style="background:rgba(0,0,0,.5);backdrop-filter:blur(3px)"
-		onclick={(e) => { if ((e.target as HTMLElement).dataset.backdrop) modalOpen = false; }}
-		data-backdrop="1">
-		<div class="w-full md:max-w-sm rounded-t-[24px] md:rounded-[24px] p-6 flex flex-col gap-4"
-			style="background:var(--c-bg-card)">
+<Dialog.Root bind:open={modalOpen}>
+	<Dialog.Content showCloseButton={false} class="flex flex-col gap-4">
 			<div class="flex items-center justify-between">
 				<h3 class="font-display text-[18px] font-extrabold">Nueva oferta</h3>
 				<button onclick={() => modalOpen = false}
@@ -166,8 +162,8 @@
 				<div class="text-[11px] font-bold uppercase tracking-widest mb-1.5" style="color:var(--c-text-muted)">
 					{tipo === 'porcentaje' ? 'Porcentaje (%)' : 'Monto a descontar ($)'}
 				</div>
-				<input bind:value={descuento} type="number" placeholder={tipo === 'porcentaje' ? '20' : '5000'}
-					class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+				<Input bind:value={descuento} type="number" placeholder={tipo === 'porcentaje' ? '20' : '5000'}
+					class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
 					style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
 			</div>
 
@@ -188,14 +184,14 @@
 			<div class="flex gap-3">
 				<div class="flex-1">
 					<div class="text-[11px] font-bold uppercase tracking-widest mb-1.5" style="color:var(--c-text-muted)">Etiqueta</div>
-					<input bind:value={etiqueta} type="text" placeholder="Ej: -20%"
-						class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+					<Input bind:value={etiqueta} type="text" placeholder="Ej: -20%"
+						class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
 						style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
 				</div>
 				<div class="flex-1">
 					<div class="text-[11px] font-bold uppercase tracking-widest mb-1.5" style="color:var(--c-text-muted)">Válida hasta</div>
-					<input bind:value={hasta} type="text" placeholder="31 dic. 2026"
-						class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
+					<Input bind:value={hasta} type="text" placeholder="31 dic. 2026"
+						class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
 						style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
 				</div>
 			</div>
@@ -212,6 +208,5 @@
 					Crear oferta
 				</button>
 			</div>
-		</div>
-	</div>
-{/if}
+	</Dialog.Content>
+</Dialog.Root>
