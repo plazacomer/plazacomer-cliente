@@ -117,12 +117,12 @@
 	<!-- ── BACK / SHARE ── -->
 	<div class="flex items-center justify-between mb-4">
 		<Button onclick={onBack} aria-label="Volver" variant="ghost" size="icon"
-			class="w-10 h-10 rounded-xl"
+			class="w-10 h-10 rounded-xl hover:opacity-80 active:opacity-70"
 			style="background:var(--c-bg-card);color:var(--c-text-primary);box-shadow:var(--shadow-sm)">
 			<Icon name="arrowLeft" size={18}/>
 		</Button>
 		<Button aria-label="Compartir" variant="ghost" size="icon"
-			class="w-10 h-10 rounded-xl"
+			class="w-10 h-10 rounded-xl hover:opacity-80 active:opacity-70"
 			style="background:var(--c-bg-card);color:var(--c-text-primary);box-shadow:var(--shadow-sm)">
 			<Icon name="share" size={18}/>
 		</Button>
@@ -188,7 +188,7 @@
 						if (s0) openBooking({ ...s0, cta: land?.ctaPrincipal?.tipo as Servicio['cta'] ?? s0.cta });
 					}}
 						size="lg"
-						class="h-auto px-5 py-3 rounded-xl font-bold text-sm text-white"
+						class="h-auto px-5 py-3 rounded-xl font-bold text-sm text-white hover:opacity-90 active:opacity-80"
 						style="background:{accent};box-shadow:0 4px 18px {accent}55">
 						<Icon name={land.ctaPrincipal.tipo === 'llamar' ? 'phone' : 'calendar'} size={16}/>
 						{land.ctaPrincipal.texto}
@@ -201,7 +201,7 @@
 						}
 					}}
 						variant="outline" size="lg"
-						class="h-auto px-4 py-3 rounded-xl font-semibold text-sm"
+						class="h-auto px-4 py-3 rounded-xl font-semibold text-sm hover:opacity-80 active:opacity-70"
 						style="background:var(--c-bg-card);border-color:var(--c-border);color:var(--c-text-primary)">
 						<Icon name={land.ctaSecundaria.tipo === 'llamar' ? 'phone' : 'chat'} size={16}/>
 						{land.ctaSecundaria.texto}
@@ -331,7 +331,7 @@
 												</div>
 												<Button onclick={() => openBooking(s)}
 													size="sm"
-													class="h-auto px-3.5 py-2 rounded-md text-white text-[12px] font-bold whitespace-nowrap"
+													class="h-auto px-3.5 py-2 rounded-md text-white text-[12px] font-bold whitespace-nowrap hover:opacity-90 active:opacity-80"
 													style="background:{accent};box-shadow:0 3px 12px {accent}44">
 													{ctaLabel[s.cta] ?? 'Ir'}
 												</Button>
@@ -419,7 +419,7 @@
 											{/each}
 										</ul>
 										<Button onclick={() => { const s = servicios.find(s => s.nombre.toLowerCase().includes(pk.nombre.toLowerCase())); if (s) openBooking(s); }}
-											class="h-auto w-full py-2.5 rounded-md font-bold text-sm text-white"
+											class="h-auto w-full py-2.5 rounded-md font-bold text-sm text-white hover:opacity-90 active:opacity-80"
 											style="background:{pk.color}">
 											Cotizar {pk.nombre}
 										</Button>
@@ -605,7 +605,7 @@
 							{#if land?.ctaPrincipal}
 								<Button onclick={() => { const s = servicios[0]; if (s) openBooking(s); }}
 									size="lg"
-									class="h-auto font-bold text-[15px] px-6 py-3.5 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,.18)]"
+									class="h-auto font-bold text-[15px] px-6 py-3.5 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,.18)] hover:opacity-90 active:opacity-80"
 									style="background:#fff;color:{accent}">
 									{land.ctaPrincipal.texto} <Icon name="arrowRight" size={18}/>
 								</Button>
@@ -626,14 +626,14 @@
 		style="bottom:70px;background:var(--c-bg-card);box-shadow:0 -4px 20px rgba(0,0,0,.06)">
 		{#if land?.ctaSecundaria?.tipo === 'llamar' && land?.ctaSecundaria?.telefono}
 			<Button href="tel:{land.ctaSecundaria.telefono}" aria-label="Llamar" variant="secondary" size="icon"
-				class="w-12 h-12 rounded-xl shrink-0"
+				class="w-12 h-12 rounded-xl shrink-0 hover:opacity-80 active:opacity-70"
 				style="background:var(--c-bg-secondary)">
 				<Icon name="phone" size={20}/>
 			</Button>
 		{/if}
 		{#if land?.ctaPrincipal}
 			<Button onclick={() => { const s = servicios[0]; if (s) openBooking(s); }}
-				class="flex-1 h-12 rounded-xl font-bold text-[14px] text-white"
+				class="flex-1 h-12 rounded-xl font-bold text-[14px] text-white hover:opacity-90 active:opacity-80"
 				style="background:{accent};box-shadow:0 4px 18px {accent}55">
 				<Icon name="calendar" size={16}/>
 				{land.ctaPrincipal.texto}

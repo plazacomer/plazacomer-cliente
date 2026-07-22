@@ -6,6 +6,7 @@
 	import Icon from '$lib/components/ui/Icon.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Input } from '$lib/components/ui/input';
+	import { Button } from '$lib/components/ui/button';
 
 	type Props = {
 		open: boolean;
@@ -101,7 +102,7 @@
 </script>
 
 <Dialog.Root open={open && !!servicio} onOpenChange={(v) => { if (!v) handleClose(); }}>
-	<Dialog.Content showCloseButton={false} class="relative md:max-w-[480px] p-0 gap-0 flex flex-col max-h-[90vh] overflow-hidden">
+	<Dialog.Content showCloseButton={false} class="md:max-w-[480px] p-0 gap-0 flex flex-col max-h-[90vh] overflow-hidden">
 		{#if servicio}
 			<!-- Header -->
 			<div class="flex items-center gap-3 px-5 py-4 border-b border-[var(--c-border-soft)] shrink-0">
@@ -111,10 +112,11 @@
 					<div class="font-display text-[15px] font-bold leading-snug truncate">{servicio.nombre}</div>
 					<div class="text-[12px] truncate" style="color:var(--c-text-muted)">{tienda.name}</div>
 				</div>
-				<button onclick={handleClose} class="w-9 h-9 rounded-xl flex items-center justify-center"
+				<Button onclick={handleClose} aria-label="Cerrar" variant="ghost" size="icon"
+					class="w-9 h-9 rounded-xl hover:opacity-80 active:opacity-70"
 					style="background:var(--c-bg-secondary)">
 					<Icon name="close" size={16}/>
-				</button>
+				</Button>
 			</div>
 
 			<!-- Body -->
@@ -154,11 +156,11 @@
 									style="color:var(--c-text-muted)">Modalidad</label>
 								<div class="flex gap-2">
 									{#each servicio.modalidad.split(' o ') as opt}
-										<button onclick={() => modalidad = opt}
-											class="flex-1 py-2.5 rounded-xl border text-[13px] font-semibold transition-all"
+										<Button onclick={() => modalidad = opt}
+											class="h-auto flex-1 py-2.5 rounded-xl border text-[13px] font-semibold hover:opacity-90 active:opacity-80"
 											style="background:{modalidad === opt ? accent : 'var(--c-bg-secondary)'};color:{modalidad === opt ? '#fff' : 'var(--c-text-primary)'};border-color:{modalidad === opt ? accent : 'var(--c-border)'}">
 											{opt}
-										</button>
+										</Button>
 									{/each}
 								</div>
 							</div>
@@ -235,11 +237,11 @@
 						</div>
 
 						<!-- Submit -->
-						<button onclick={handleSubmit} disabled={!formValid()}
-							class="w-full h-12 rounded-xl font-bold text-[15px] text-white mt-1 disabled:opacity-40"
+						<Button onclick={handleSubmit} disabled={!formValid()}
+							class="w-full h-12 rounded-xl font-bold text-[15px] text-white mt-1 hover:opacity-90 active:opacity-80 disabled:opacity-40"
 							style="background:{accent};box-shadow:0 4px 18px {accent}55">
 							{submitLabel[servicio.cta] ?? 'Enviar'}
-						</button>
+						</Button>
 
 						<p class="text-center text-[11.5px]" style="color:var(--c-text-muted)">
 							Sin cargos adicionales por solicitar · Confirmamos en &lt;24 horas
@@ -269,16 +271,17 @@
 						</div>
 
 						<div class="flex gap-2.5">
-							<button onclick={() => (step = 'form')}
-								class="flex-1 h-12 rounded-xl font-bold text-[14px] border"
+							<Button onclick={() => (step = 'form')}
+								variant="outline"
+								class="flex-1 h-12 rounded-xl font-bold text-[14px] hover:opacity-80 active:opacity-70"
 								style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)">
 								Editar
-							</button>
-							<button onclick={handleConfirm}
-								class="flex-1 h-12 rounded-xl font-bold text-[14px] text-white"
+							</Button>
+							<Button onclick={handleConfirm}
+								class="flex-1 h-12 rounded-xl font-bold text-[14px] text-white hover:opacity-90 active:opacity-80"
 								style="background:{accent};box-shadow:0 4px 18px {accent}55">
 								Confirmar
-							</button>
+							</Button>
 						</div>
 					</div>
 
@@ -293,11 +296,11 @@
 							{successMsg[servicio.cta] ?? 'Te contactaremos pronto.'}
 						</p>
 						<div class="w-full flex gap-2.5 mt-2">
-							<button onclick={handleClose}
-								class="flex-1 h-12 rounded-xl font-bold text-[14px] text-white"
+							<Button onclick={handleClose}
+								class="flex-1 h-12 rounded-xl font-bold text-[14px] text-white hover:opacity-90 active:opacity-80"
 								style="background:{accent}">
 								Cerrar
-							</button>
+							</Button>
 						</div>
 					</div>
 				{/if}
