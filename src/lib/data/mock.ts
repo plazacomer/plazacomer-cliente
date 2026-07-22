@@ -232,7 +232,7 @@ export const STORES: Store[] = [
 				{ valor: '3', label: 'psicólogas con maestría' },
 				{ valor: '24 h', label: 'tiempo máximo de respuesta' },
 			],
-			ctaPrincipal: { tipo: 'agendar', texto: 'Reservar primera sesión gratis' },
+			ctaPrincipal: { tipo: 'agendar', texto: 'Reservar gratis' },
 			ctaSecundaria: { tipo: 'mensaje', texto: 'Hacer una pregunta antes' },
 			pillars: [
 				{ icon: 'shield', titulo: 'Confidencialidad total', desc: 'Todo lo que se habla en sesión se queda en sesión. Profesionales colegiadas.' },
