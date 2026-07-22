@@ -6,6 +6,7 @@
 	import ServicioBooking from '$lib/components/ServicioBooking.svelte';
 	import * as Card from '$lib/components/ui/card';
 	import * as Accordion from '$lib/components/ui/accordion';
+	import { Button } from '$lib/components/ui/button';
 
 	type Props = {
 		tienda: Store;
@@ -115,16 +116,16 @@
 
 	<!-- ── BACK / SHARE ── -->
 	<div class="flex items-center justify-between mb-4">
-		<button onclick={onBack} aria-label="Volver"
-			class="w-10 h-10 rounded-xl flex items-center justify-center"
+		<Button onclick={onBack} aria-label="Volver" variant="ghost" size="icon"
+			class="w-10 h-10 rounded-xl"
 			style="background:var(--c-bg-card);color:var(--c-text-primary);box-shadow:var(--shadow-sm)">
 			<Icon name="arrowLeft" size={18}/>
-		</button>
-		<button aria-label="Compartir"
-			class="w-10 h-10 rounded-xl flex items-center justify-center"
+		</Button>
+		<Button aria-label="Compartir" variant="ghost" size="icon"
+			class="w-10 h-10 rounded-xl"
 			style="background:var(--c-bg-card);color:var(--c-text-primary);box-shadow:var(--shadow-sm)">
 			<Icon name="share" size={18}/>
-		</button>
+		</Button>
 	</div>
 
 	<div class="flex flex-col gap-8 md:grid md:grid-cols-[280px_1fr] md:items-start md:gap-6">
@@ -182,27 +183,29 @@
 			<!-- CTAs -->
 			<div class="flex flex-col gap-2 mt-5" bind:this={headerCtaEl}>
 				{#if land?.ctaPrincipal}
-					<button onclick={() => {
+					<Button onclick={() => {
 						const s0 = servicios[0];
 						if (s0) openBooking({ ...s0, cta: land?.ctaPrincipal?.tipo as Servicio['cta'] ?? s0.cta });
 					}}
-						class="px-5 py-3 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2"
+						size="lg"
+						class="h-auto px-5 py-3 rounded-xl font-bold text-sm text-white"
 						style="background:{accent};box-shadow:0 4px 18px {accent}55">
 						<Icon name={land.ctaPrincipal.tipo === 'llamar' ? 'phone' : 'calendar'} size={16}/>
 						{land.ctaPrincipal.texto}
-					</button>
+					</Button>
 				{/if}
 				{#if land?.ctaSecundaria}
-					<button onclick={() => {
+					<Button onclick={() => {
 						if (land?.ctaSecundaria?.tipo === 'llamar' && land?.ctaSecundaria?.telefono) {
 							window.open('tel:' + land.ctaSecundaria.telefono, '_self');
 						}
 					}}
-						class="px-4 py-3 rounded-xl font-semibold text-sm border flex items-center justify-center gap-2"
+						variant="outline" size="lg"
+						class="h-auto px-4 py-3 rounded-xl font-semibold text-sm"
 						style="background:var(--c-bg-card);border-color:var(--c-border);color:var(--c-text-primary)">
 						<Icon name={land.ctaSecundaria.tipo === 'llamar' ? 'phone' : 'chat'} size={16}/>
 						{land.ctaSecundaria.texto}
-					</button>
+					</Button>
 				{/if}
 			</div>
 		</Card.Root>
@@ -326,11 +329,12 @@
 														<div class="font-mono text-[13px] font-bold">A cotizar</div>
 													{/if}
 												</div>
-												<button onclick={() => openBooking(s)}
-													class="px-3.5 py-2 rounded-md text-white text-[12px] font-bold whitespace-nowrap"
+												<Button onclick={() => openBooking(s)}
+													size="sm"
+													class="h-auto px-3.5 py-2 rounded-md text-white text-[12px] font-bold whitespace-nowrap"
 													style="background:{accent};box-shadow:0 3px 12px {accent}44">
 													{ctaLabel[s.cta] ?? 'Ir'}
-												</button>
+												</Button>
 											</div>
 										</div>
 										<!-- Incluye (collapsed detail) -->
@@ -414,11 +418,11 @@
 												</li>
 											{/each}
 										</ul>
-										<button onclick={() => { const s = servicios.find(s => s.nombre.toLowerCase().includes(pk.nombre.toLowerCase())); if (s) openBooking(s); }}
-											class="w-full py-2.5 rounded-md font-bold text-sm text-white"
+										<Button onclick={() => { const s = servicios.find(s => s.nombre.toLowerCase().includes(pk.nombre.toLowerCase())); if (s) openBooking(s); }}
+											class="h-auto w-full py-2.5 rounded-md font-bold text-sm text-white"
 											style="background:{pk.color}">
 											Cotizar {pk.nombre}
-										</button>
+										</Button>
 									</div>
 								{/each}
 							</div>
@@ -599,11 +603,12 @@
 						</div>
 						<div class="flex gap-2.5 flex-wrap mt-4 md:mt-0">
 							{#if land?.ctaPrincipal}
-								<button onclick={() => { const s = servicios[0]; if (s) openBooking(s); }}
-									class="flex items-center gap-2 font-bold text-[15px] px-6 py-3.5 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,.18)]"
+								<Button onclick={() => { const s = servicios[0]; if (s) openBooking(s); }}
+									size="lg"
+									class="h-auto font-bold text-[15px] px-6 py-3.5 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,.18)]"
 									style="background:#fff;color:{accent}">
 									{land.ctaPrincipal.texto} <Icon name="arrowRight" size={18}/>
-								</button>
+								</Button>
 							{/if}
 						</div>
 					</div>
@@ -620,19 +625,19 @@
 	<div class="fixed left-0 right-0 flex gap-2 px-4 py-2.5 border-t border-[var(--c-border-soft)] z-modal md:hidden"
 		style="bottom:70px;background:var(--c-bg-card);box-shadow:0 -4px 20px rgba(0,0,0,.06)">
 		{#if land?.ctaSecundaria?.tipo === 'llamar' && land?.ctaSecundaria?.telefono}
-			<a href="tel:{land.ctaSecundaria.telefono}" aria-label="Llamar"
-				class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+			<Button href="tel:{land.ctaSecundaria.telefono}" aria-label="Llamar" variant="secondary" size="icon"
+				class="w-12 h-12 rounded-xl shrink-0"
 				style="background:var(--c-bg-secondary)">
 				<Icon name="phone" size={20}/>
-			</a>
+			</Button>
 		{/if}
 		{#if land?.ctaPrincipal}
-			<button onclick={() => { const s = servicios[0]; if (s) openBooking(s); }}
-				class="flex-1 h-12 rounded-xl font-bold text-[14px] text-white flex items-center justify-center gap-2"
+			<Button onclick={() => { const s = servicios[0]; if (s) openBooking(s); }}
+				class="flex-1 h-12 rounded-xl font-bold text-[14px] text-white"
 				style="background:{accent};box-shadow:0 4px 18px {accent}55">
 				<Icon name="calendar" size={16}/>
 				{land.ctaPrincipal.texto}
-			</button>
+			</Button>
 		{/if}
 	</div>
 {/if}
