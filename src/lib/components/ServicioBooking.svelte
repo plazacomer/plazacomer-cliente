@@ -216,7 +216,7 @@
 										style="color:var(--c-text-muted)">Hora preferida</label>
 									<Select.Root type="single" bind:value={hora}>
 										<Select.Trigger
-											class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
+											class="w-full data-[size=default]:h-11 px-3.5 rounded-xl border text-[14px]"
 											style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)">
 											{hora || 'Cualquiera'}
 										</Select.Trigger>
