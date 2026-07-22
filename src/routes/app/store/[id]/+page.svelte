@@ -7,7 +7,7 @@
 	} from '$lib/data/mock';
 	import { cart, toast } from '$lib/stores/app.svelte';
 	import CustomizeModal, { type CartLineItem } from '$lib/components/CustomizeModal.svelte';
-	import ServicioPerfil from '$lib/components/ServicioPerfil.svelte';
+	import ServicioLanding from '$lib/components/ServicioLanding.svelte';
 	import RestaurantLanding from '$lib/components/RestaurantLanding.svelte';
 	import TiendaLanding from '$lib/components/TiendaLanding.svelte';
 
@@ -46,7 +46,7 @@
 </script>
 
 {#if esServicio}
-	<ServicioPerfil {tienda} {servicios} onBack={goBack}/>
+	<ServicioLanding {tienda} {servicios} {isOpen} onBack={goBack}/>
 {:else if esRestaurante}
 	<RestaurantLanding {tienda} {productos} {ofertas} {accent} {isOpen} onOpenProduct={openProducto}/>
 {:else}
