@@ -7,6 +7,7 @@
 	import * as Card from '$lib/components/ui/card';
 	import * as Accordion from '$lib/components/ui/accordion';
 	import { Button } from '$lib/components/ui/button';
+	import { Badge } from '$lib/components/ui/badge';
 
 	type Props = {
 		tienda: Store;
@@ -142,13 +143,13 @@
 
 			<div class="flex items-center gap-2 flex-wrap mt-4">
 				{#if isOpen}
-					<span class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold"
+					<Badge class="gap-1.5 px-2.5 py-1 text-[11px] font-bold"
 						style="background:var(--c-success-light);color:var(--c-success)">
 						<span class="w-[5px] h-[5px] rounded-full bg-current animate-breathe"/>Abierto ahora
-					</span>
+					</Badge>
 				{:else}
-					<span class="px-2.5 py-1 rounded-full text-[11px] font-bold"
-						style="background:var(--c-error-light);color:var(--c-error)">Cerrado</span>
+					<Badge class="px-2.5 py-1 text-[11px] font-bold"
+						style="background:var(--c-error-light);color:var(--c-error)">Cerrado</Badge>
 				{/if}
 			</div>
 
@@ -301,18 +302,18 @@
 												<!-- Meta pills -->
 												<div class="flex gap-1.5 flex-wrap">
 													{#if s.duracion}
-														<span class="flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium"
+														<Badge class="gap-1 px-2 py-0.5 text-[11px] font-medium"
 															style="background:var(--c-bg-secondary);color:var(--c-text-muted)">
 															<Icon name="timer" size={10}/>
 															{s.duracion}
-														</span>
+														</Badge>
 													{/if}
 													{#if s.modalidad}
-														<span class="flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium"
+														<Badge class="gap-1 px-2 py-0.5 text-[11px] font-medium"
 															style="background:var(--c-bg-secondary);color:var(--c-text-muted)">
 															<Icon name="location" size={10}/>
 															{s.modalidad}
-														</span>
+														</Badge>
 													{/if}
 												</div>
 											</div>
@@ -389,8 +390,8 @@
 								<div>
 									<h4 class="font-display text-[14px] font-bold leading-snug">{m.nombre}</h4>
 									<p class="text-[12px] leading-snug mt-0.5" style="color:var(--c-text-secondary)">{m.rol}</p>
-									<span class="inline-block mt-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold"
-										style="background:{accent}18;color:{accent}">{m.exp}</span>
+									<Badge class="mt-1.5 px-2 py-0.5 text-[11px] font-semibold"
+										style="background:{accent}18;color:{accent}">{m.exp}</Badge>
 								</div>
 							</Card.Root>
 						{/each}
@@ -453,10 +454,10 @@
 							{@render subHeader('Cobertura')}
 							<div class="flex flex-wrap gap-2">
 								{#each land.cobertura as zona}
-									<div class="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-[var(--c-border-soft)] text-[12.5px] font-medium"
+									<Badge variant="outline" class="gap-1.5 px-3 py-2 rounded-xl border-[var(--c-border-soft)] text-[12.5px] font-medium"
 										style="background:var(--c-bg-card)">
 										<Icon name="location" size={12} color={accent}/>{zona}
-									</div>
+									</Badge>
 								{/each}
 							</div>
 						</div>
@@ -485,10 +486,10 @@
 							{@render subHeader('Aceptamos tu seguro')}
 							<div class="flex flex-wrap gap-2">
 								{#each land.convenios as c}
-									<div class="px-4 py-2.5 rounded-xl border border-[var(--c-border-soft)] font-bold text-[13px]"
+									<Badge variant="outline" class="px-4 py-2.5 rounded-xl border-[var(--c-border-soft)] font-bold text-[13px]"
 										style="background:var(--c-bg-card);color:{c.color}">
 										{c.nombre}
-									</div>
+									</Badge>
 								{/each}
 							</div>
 						</div>
@@ -499,10 +500,10 @@
 							{@render subHeader('Aliados estratégicos')}
 							<div class="flex flex-wrap gap-2">
 								{#each land.aliados as a}
-									<div class="px-4 py-2.5 rounded-xl border border-[var(--c-border-soft)] font-semibold text-[13px]"
+									<Badge variant="outline" class="px-4 py-2.5 rounded-xl border-[var(--c-border-soft)] font-semibold text-[13px]"
 										style="background:var(--c-bg-card);color:{a.color}">
 										{a.nombre}
-									</div>
+									</Badge>
 								{/each}
 							</div>
 						</div>
