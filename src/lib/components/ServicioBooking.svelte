@@ -6,6 +6,8 @@
 	import Icon from '$lib/components/ui/Icon.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Input } from '$lib/components/ui/input';
+	import { Textarea } from '$lib/components/ui/textarea';
+	import * as Select from '$lib/components/ui/select';
 	import { Button } from '$lib/components/ui/button';
 
 	type Props = {
@@ -212,14 +214,19 @@
 								<div>
 									<label class="block text-[12px] font-bold mb-1.5 uppercase tracking-[0.8px]"
 										style="color:var(--c-text-muted)">Hora preferida</label>
-									<select bind:value={hora}
-										class="w-full h-11 px-3.5 rounded-xl border text-[14px] outline-none"
-										style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)">
-										<option value="">Cualquiera</option>
-										{#each HORAS as h}
-											<option value={h}>{h}</option>
-										{/each}
-									</select>
+									<Select.Root type="single" bind:value={hora}>
+										<Select.Trigger
+											class="w-full h-11 px-3.5 rounded-xl border text-[14px]"
+											style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)">
+											{hora || 'Cualquiera'}
+										</Select.Trigger>
+										<Select.Content>
+											<Select.Item value="" label="Cualquiera">Cualquiera</Select.Item>
+											{#each HORAS as h}
+												<Select.Item value={h} label={h}>{h}</Select.Item>
+											{/each}
+										</Select.Content>
+									</Select.Root>
 								</div>
 							</div>
 						{/if}
@@ -230,9 +237,9 @@
 								style="color:var(--c-text-muted)">
 								{servicio.cta === 'cotizar' ? 'Cuéntanos qué necesitas' : servicio.cta === 'mensaje' ? 'Tu pregunta o mensaje' : 'Notas adicionales (opcional)'}
 							</label>
-							<textarea bind:value={notas} rows={3}
+							<Textarea bind:value={notas} rows={3}
 								placeholder={servicio.cta === 'cotizar' ? 'Ej: Mudanza de apartamento 2 hab en El Poblado a Envigado...' : servicio.cta === 'mensaje' ? '¿En qué te podemos ayudar?' : 'Ej: tengo sensibilidad, alergias, preferencias...'}
-								class="w-full p-3.5 rounded-xl border text-[14px] outline-none resize-none leading-relaxed"
+								class="w-full p-3.5 rounded-xl border text-[14px] resize-none leading-relaxed"
 								style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"/>
 						</div>
 
