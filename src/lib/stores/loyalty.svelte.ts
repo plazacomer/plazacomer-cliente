@@ -1,6 +1,6 @@
 import { browser } from '$app/environment';
 import { LOYALTY_CARDS, type LoyaltyCardConfig, getProduct } from '$lib/data/mock';
-import { cart, pedidos, toast, type Pedido } from '$lib/stores/app.svelte';
+import { cart, orders, toast, type Order } from '$lib/stores/app.svelte';
 import { fmtCOP } from '$lib/utils';
 
 const CLAIMS_KEY = 'pc_loyalty_claims_v1';
@@ -21,11 +21,11 @@ export type LoyaltyProgress = {
 	rewardLabel: string;
 };
 
-function qualifies(pedido: Pedido, cfg: LoyaltyCardConfig): boolean {
-	if (pedido.estado === 'cancelled') return false;
+function qualifies(pedido: Order, cfg: LoyaltyCardConfig): boolean {
+	if (pedido.status === 'cancelled') return false;
 	if (cfg.countingMode === 'minimum_amount') return pedido.total >= (cfg.minimumAmount ?? 0);
 	if (cfg.countingMode === 'selected_products') {
-		return pedido.items.some((i) => cfg.eligibleProductIds?.includes(i.productoId));
+		return pedido.items.some((i) => cfg.eligibleProductIds?.includes(i.productId));
 	}
 	return true;
 }
@@ -62,7 +62,7 @@ function createLoyalty() {
 	function progress(storeId: string): LoyaltyProgress | null {
 		const cfg = config(storeId);
 		if (!cfg) return null;
-		const qualifyingCount = pedidos.items.filter((p) => p.tiendaId === storeId && qualifies(p, cfg)).length;
+		const qualifyingCount = orders.items.filter((p) => p.storeId === storeId && qualifies(p, cfg)).length;
 		const claimedCount = claimed[storeId] ?? 0;
 		const sinceLastClaim = qualifyingCount - claimedCount * cfg.threshold;
 		return {
@@ -100,7 +100,7 @@ function createLoyalty() {
 			claimed = { ...claimed, [storeId]: (claimed[storeId] ?? 0) + 1 };
 			if (p.config.rewardType === 'product' && p.config.rewardProductId) {
 				const prod = getProduct(p.config.rewardProductId);
-				cart.add({ productoId: prod.id, tiendaId: storeId, precio: 0 });
+				cart.add({ productId: prod.id, storeId: storeId, price: 0 });
 				toast.show(`🎁 ${prod.name} gratis agregado a tu carrito`);
 			} else {
 				toast.show(`🎁 Premio reclamado · ${p.rewardLabel} se aplicará en tu próxima compra`);

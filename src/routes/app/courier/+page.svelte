@@ -4,7 +4,7 @@
 	import { fmtCOP } from '$lib/utils';
 	import { getStore } from '$lib/data/mock';
 	import Icon from '$lib/components/ui/Icon.svelte';
-	import Badge from '$lib/components/ui/Badge.svelte';
+	import { Badge } from '$lib/components/ui/badge';
 
 	// Tiempo transcurrido desde que salió
 	let ahora = $state(Date.now());
@@ -78,7 +78,7 @@
 	<!-- ── ENTREGA ACTIVA ── -->
 	{#if repartidor.pedidoActivo}
 		{@const pedido = repartidor.pedidoActivo}
-		{@const tienda = getStore(pedido.tiendaId)}
+		{@const tienda = getStore(pedido.storeId)}
 		{@const ea     = repartidor.entregaActiva!}
 
 		<div class="mb-5">
@@ -123,7 +123,7 @@
 						</div>
 						<div class="flex-1 min-w-0 pt-1">
 							<div class="text-[11px] font-bold uppercase tracking-wider mb-0.5" style="color:var(--c-text-muted)">Entrega en</div>
-							<div class="font-display text-[14px] font-bold leading-snug">{pedido.direccion}</div>
+							<div class="font-display text-[14px] font-bold leading-snug">{pedido.address}</div>
 							{#if ea.salidaAt}
 								<div class="text-[11.5px] mt-0.5" style="color:var(--c-text-muted)">{minTranscurridos(ea.salidaAt)}</div>
 							{/if}
@@ -140,7 +140,7 @@
 				<div class="px-4 pb-3 flex items-center justify-between border-t border-[var(--c-border-soft)]"
 					style="background:var(--c-bg-secondary)">
 					<div class="flex items-center gap-2 pt-3">
-						<span class="font-mono text-[11.5px] font-bold">{pedido.numero}</span>
+						<span class="font-mono text-[11.5px] font-bold">{pedido.number}</span>
 						<span class="text-[11px]" style="color:var(--c-text-muted)">
 							{pedido.items.length} producto{pedido.items.length !== 1 ? 's' : ''}
 						</span>
@@ -182,7 +182,7 @@
 
 			<div class="flex flex-col gap-3 mb-5">
 				{#each repartidor.disponibles as pedido}
-					{@const tienda = getStore(pedido.tiendaId)}
+					{@const tienda = getStore(pedido.storeId)}
 					<div class="rounded-2xl border border-[var(--c-border-soft)] overflow-hidden"
 						style="background:var(--c-bg-card)">
 						<div class="p-4">
@@ -192,7 +192,7 @@
 								<div class="flex-1 min-w-0">
 									<div class="font-display text-[13.5px] font-bold">{tienda.name}</div>
 									<div class="text-[11.5px]" style="color:var(--c-text-muted)">
-										{pedido.items.length} producto{pedido.items.length !== 1 ? 's' : ''} · {pedido.fecha}
+										{pedido.items.length} producto{pedido.items.length !== 1 ? 's' : ''} · {pedido.date}
 									</div>
 								</div>
 								<div class="font-mono text-[14px] font-bold shrink-0">{fmtCOP(pedido.total)}</div>
@@ -200,7 +200,7 @@
 
 							<div class="flex items-center gap-2 text-[12px] mb-3" style="color:var(--c-text-muted)">
 								<Icon name="location" size={12}/>
-								<span class="truncate">{pedido.direccion}</span>
+								<span class="truncate">{pedido.address}</span>
 							</div>
 
 							<!-- Ganancia estimada -->
@@ -256,13 +256,13 @@
 			<h2 class="font-display text-[15px] font-bold mb-3">Historial reciente</h2>
 			<div class="flex flex-col gap-2">
 				{#each repartidor.historial.slice(0, 5) as pedido}
-					{@const tienda = getStore(pedido.tiendaId)}
+					{@const tienda = getStore(pedido.storeId)}
 					<div class="flex items-center gap-3 p-3.5 rounded-xl border border-[var(--c-border-soft)]"
 						style="background:var(--c-bg-card)">
 						<div class="text-lg shrink-0">{tienda.emoji}</div>
 						<div class="flex-1 min-w-0">
 							<div class="font-display text-[13px] font-bold truncate">{tienda.name}</div>
-							<div class="text-[11px]" style="color:var(--c-text-muted)">{pedido.fecha}</div>
+							<div class="text-[11px]" style="color:var(--c-text-muted)">{pedido.date}</div>
 						</div>
 						<div class="text-right shrink-0">
 							<div class="font-mono text-[12.5px] font-bold" style="color:var(--c-success)">

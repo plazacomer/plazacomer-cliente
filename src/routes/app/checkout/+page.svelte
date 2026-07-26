@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { cart, pedidos, toast } from '$lib/stores/app.svelte';
+	import { cart, orders, toast } from '$lib/stores/app.svelte';
 	import type { CartItem } from '$lib/stores/app.svelte';
-	import { getStore, getProduct, DIRECCIONES, CUPONES } from '$lib/data/mock';
+	import { getStore, getProduct, ADDRESSES, COUPONS } from '$lib/data/mock';
 	import { fmtCOP } from '$lib/utils';
 	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
-	import Button from '$lib/components/ui/Button.svelte';
+	import { Button } from '$lib/components/ui/button';
 	import Icon from '$lib/components/ui/Icon.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
 
@@ -14,22 +14,22 @@
 	let snapshot = $state<CartItem[]>([]);
 	let mounted = $state(false);
 
-	const grupos = $derived.by(() => {
+	const groups = $derived.by(() => {
 		const g: Record<string, CartItem[]> = {};
 		snapshot.forEach((item) => {
-			if (!g[item.tiendaId]) g[item.tiendaId] = [];
-			g[item.tiendaId].push(item);
+			if (!g[item.storeId]) g[item.storeId] = [];
+			g[item.storeId].push(item);
 		});
 		return g;
 	});
 
-	const tiendaIds = $derived(Object.keys(grupos));
+	const storeIds = $derived(Object.keys(groups));
 
 	let step = $state(0);
 	let processed = $state<string[]>([]);
 
 	let form = $state({
-		direccion: 'Cra 10 #45-23, El Poblado, Medellín',
+		address: 'Cra 10 #45-23, El Poblado, Medellín',
 		telefono: '+57 320 456 7890',
 		notas: '',
 	});
@@ -48,23 +48,23 @@
 	let paymentPhase = $state<'methods' | 'processing' | 'approved' | 'rejected'>('methods');
 	let paymentMethod = $state('tarjeta');
 	let paymentAttempt = $state(0);
-	let comprobantes = $state<Array<{ tiendaId: string; metodo: string; total: number; ref: string }>>([]);
+	let comprobantes = $state<Array<{ storeId: string; metodo: string; total: number; ref: string }>>([]);
 
-	const currentTiendaId = $derived(tiendaIds[step] ?? null);
-	const currentTienda = $derived(currentTiendaId ? getStore(currentTiendaId) : null);
-	const currentItems = $derived(currentTiendaId ? (grupos[currentTiendaId] ?? []) : []);
-	const currentSubtotal = $derived(currentItems.reduce((s, i) => s + i.precio * i.cantidad, 0));
-	const cuponActivoId = $derived(currentTiendaId ? (cuponPorTienda[currentTiendaId] ?? null) : null);
-	const cuponActivo = $derived(cuponActivoId ? (CUPONES.find(c => c.id === cuponActivoId) ?? null) : null);
+	const currentStoreId = $derived(storeIds[step] ?? null);
+	const currentTienda = $derived(currentStoreId ? getStore(currentStoreId) : null);
+	const currentItems = $derived(currentStoreId ? (groups[currentStoreId] ?? []) : []);
+	const currentSubtotal = $derived(currentItems.reduce((s, i) => s + i.price * i.quantity, 0));
+	const cuponActivoId = $derived(currentStoreId ? (cuponPorTienda[currentStoreId] ?? null) : null);
+	const cuponActivo = $derived(cuponActivoId ? (COUPONS.find(c => c.id === cuponActivoId) ?? null) : null);
 	const descuento = $derived(
 		!cuponActivo ? 0
-		: cuponActivo.tipo === 'porcentaje' ? Math.round(currentSubtotal * cuponActivo.valor / 100)
-		: cuponActivo.tipo === 'fijo' ? cuponActivo.valor
+		: cuponActivo.type === 'percentage' ? Math.round(currentSubtotal * cuponActivo.value / 100)
+		: cuponActivo.type === 'fixed' ? cuponActivo.value
 		: 0
 	);
-	const envio = $derived(cuponActivo?.tipo === 'envio' ? 0 : 4000);
+	const envio = $derived(cuponActivo?.type === 'shipping' ? 0 : 4000);
 	const currentTotal = $derived(Math.max(0, currentSubtotal + envio - descuento));
-	const allDone = $derived(mounted && tiendaIds.length > 0 && step >= tiendaIds.length);
+	const allDone = $derived(mounted && storeIds.length > 0 && step >= storeIds.length);
 
 	const PAYMENT_METHODS = [
 		{ id: 'nequi',     label: 'Nequi',         emoji: '💜', bg: '#7C3AED' },
@@ -98,14 +98,14 @@
 
 	$effect(() => {
 		if (selectedDireccionId) {
-			const dir = DIRECCIONES.find(d => d.id === selectedDireccionId);
-			if (dir) form.direccion = `${dir.direccion}, ${dir.barrio}, ${dir.ciudad}`;
+			const dir = ADDRESSES.find(d => d.id === selectedDireccionId);
+			if (dir) form.address = `${dir.address}, ${dir.neighborhood}, ${dir.city}`;
 		}
 	});
 
 	function validate(): boolean {
 		const e: Record<string, string> = {};
-		if (!selectedDireccionId && !form.direccion.trim()) e.direccion = 'Selecciona o ingresa una dirección de entrega';
+		if (!selectedDireccionId && !form.address.trim()) e.direccion = 'Selecciona o ingresa una dirección de entrega';
 		if (!form.telefono.trim()) e.telefono = 'Teléfono requerido';
 		else if (!/^[+\d\s()-]{7,}$/.test(form.telefono)) e.telefono = 'Teléfono inválido';
 		if (!selectedPago) e.pago = 'Selecciona un método de pago';
@@ -120,20 +120,20 @@
 		cuponError = '';
 		const code = cuponInput.trim().toUpperCase();
 		if (!code) { cuponError = 'Ingresa un código de cupón'; return; }
-		const cupon = CUPONES.find(c => c.codigo === code && c.activo);
+		const cupon = COUPONS.find(c => c.code === code && c.active);
 		if (!cupon) { cuponError = 'Cupón inválido o expirado'; return; }
-		if (cupon.tiendaId && cupon.tiendaId !== currentTiendaId) {
+		if (cupon.storeId && cupon.storeId !== currentStoreId) {
 			cuponError = 'Este cupón no aplica para esta tienda'; return;
 		}
-		if (currentSubtotal < cupon.minimo) {
-			cuponError = `Monto mínimo: ${fmtCOP(cupon.minimo)}`; return;
+		if (currentSubtotal < cupon.minimum) {
+			cuponError = `Monto mínimo: ${fmtCOP(cupon.minimum)}`; return;
 		}
-		if (currentTiendaId) cuponPorTienda[currentTiendaId] = cupon.id;
+		if (currentStoreId) cuponPorTienda[currentStoreId] = cupon.id;
 		cuponInput = '';
 	}
 
 	function quitarCupon() {
-		if (currentTiendaId) delete cuponPorTienda[currentTiendaId];
+		if (currentStoreId) delete cuponPorTienda[currentStoreId];
 		cuponError = '';
 	}
 
@@ -156,17 +156,17 @@
 	function handlePaymentSuccess() {
 		const ref = 'PC-' + Math.random().toString(36).slice(2, 8).toUpperCase();
 		comprobantes.push({
-			tiendaId: currentTiendaId!,
+			storeId: currentStoreId!,
 			metodo: currentMethodInfo.label,
 			total: currentTotal,
 			ref,
 		});
-		processed.push(currentTiendaId!);
+		processed.push(currentStoreId!);
 		paymentOpen = false;
 		paymentPhase = 'methods';
-		if (step + 1 >= tiendaIds.length) {
+		if (step + 1 >= storeIds.length) {
 			createOrders();
-			step = tiendaIds.length;
+			step = storeIds.length;
 		} else {
 			step++;
 		}
@@ -181,28 +181,28 @@
 		const timeStr = now.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
 
 		comprobantes.forEach((comp) => {
-			const tiendaItems = grupos[comp.tiendaId] ?? [];
-			pedidos.add({
-				numero: comp.ref,
-				tiendaId: comp.tiendaId,
-				items: tiendaItems.map((i) => ({
-					productoId: i.productoId,
-					cantidad: i.cantidad,
-					precio: i.precio,
+			const storeItems = groups[comp.storeId] ?? [];
+			orders.add({
+				number: comp.ref,
+				storeId: comp.storeId,
+				items: storeItems.map((i) => ({
+					productId: i.productId,
+					quantity: i.quantity,
+					price: i.price,
 				})),
-				estado: 'confirmed',
-				fecha: dateStr,
+				status: 'confirmed',
+				date: dateStr,
 				total: comp.total,
-				pasarela: comp.metodo,
-				direccion: form.direccion,
-				notas: form.notas || undefined,
+				paymentGateway: comp.metodo,
+				address: form.address,
+				notes: form.notas || undefined,
 				timeline: [
 					{ label: 'Pedido confirmado', time: timeStr, done: true, active: true },
 					{ label: 'Tienda preparando', time: '', done: false, active: false },
 					{ label: 'Repartidor en camino', time: '', done: false, active: false },
 					{ label: 'Entregado', time: '', done: false, active: false },
 				],
-				sugerenciaPendiente: false,
+				reviewPromptPending: false,
 			});
 		});
 		cart.clear();
@@ -215,7 +215,7 @@
 		}
 		snapshot = [...cart.items];
 		mounted = true;
-		selectedDireccionId = DIRECCIONES.find(d => d.principal)?.id ?? DIRECCIONES[0]?.id ?? null;
+		selectedDireccionId = ADDRESSES.find(d => d.isPrimary)?.id ?? ADDRESSES[0]?.id ?? null;
 	});
 </script>
 
@@ -259,7 +259,7 @@
 				Comprobantes
 			</div>
 			{#each comprobantes as comp, i}
-				{@const t = getStore(comp.tiendaId)}
+				{@const t = getStore(comp.storeId)}
 				<div
 					class="flex items-center gap-3 py-3"
 					style="border-top:{i > 0 ? '1px solid var(--c-border-soft)' : 'none'}"
@@ -307,7 +307,7 @@
 		</div>
 
 		<!-- Multi-store progress -->
-		{#if tiendaIds.length > 1}
+		{#if storeIds.length > 1}
 			<div
 				class="rounded-2xl border p-3.5 mb-5"
 				style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
@@ -316,10 +316,10 @@
 					class="text-[11px] font-bold uppercase tracking-wider mb-2.5"
 					style="color:var(--c-text-muted)"
 				>
-					Paso {step + 1} de {tiendaIds.length} — Paga cada tienda por separado
+					Paso {step + 1} de {storeIds.length} — Paga cada tienda por separado
 				</div>
 				<div class="flex gap-2">
-					{#each tiendaIds as tid, i}
+					{#each storeIds as tid, i}
 						{@const t = getStore(tid)}
 						{@const isDone = processed.includes(tid)}
 						{@const isCurrent = i === step}
@@ -375,7 +375,7 @@
 								Dirección de entrega
 							</div>
 							<div class="flex flex-col gap-1.5 mb-2">
-								{#each DIRECCIONES as dir}
+								{#each ADDRESSES as dir}
 									{@const isSelected = selectedDireccionId === dir.id}
 									<button
 										type="button"
@@ -391,9 +391,9 @@
 										</div>
 										<div class="flex-1 min-w-0">
 											<div class="text-xs font-bold">{dir.label}</div>
-											<div class="text-[11px] truncate" style="color:var(--c-text-muted)">{dir.direccion}, {dir.barrio}</div>
+											<div class="text-[11px] truncate" style="color:var(--c-text-muted)">{dir.address}, {dir.neighborhood}</div>
 										</div>
-										{#if dir.principal}
+										{#if dir.isPrimary}
 											<span class="text-[10px] px-1.5 py-0.5 rounded-full font-semibold" style="background:var(--c-brand-light);color:var(--c-brand)">Principal</span>
 										{/if}
 										{#if isSelected}
@@ -413,7 +413,7 @@
 							</div>
 							{#if !selectedDireccionId}
 								<input
-									bind:value={form.direccion}
+									bind:value={form.address}
 									placeholder="Calle, número, barrio, ciudad"
 									class="w-full px-3.5 py-2.5 rounded-[10px] text-sm border transition-colors outline-none"
 									style="background:var(--c-bg-primary);border-color:{errors.direccion ? 'var(--c-error)' : 'var(--c-border)'};"
@@ -469,8 +469,8 @@
 						>
 							<Icon name="tag" size={16} color="var(--c-success)" />
 							<div class="flex-1 min-w-0">
-								<div class="text-xs font-bold" style="color:var(--c-success)">{cuponActivo.codigo}</div>
-								<div class="text-[11px]" style="color:var(--c-success)">{cuponActivo.descripcion}</div>
+								<div class="text-xs font-bold" style="color:var(--c-success)">{cuponActivo.code}</div>
+								<div class="text-[11px]" style="color:var(--c-success)">{cuponActivo.description}</div>
 							</div>
 							<button
 								type="button"
@@ -643,7 +643,7 @@
 				<h3 class="font-display text-base font-bold mb-3.5">Tu pedido</h3>
 				<div class="flex flex-col gap-2.5 mb-3.5">
 					{#each currentItems as item}
-						{@const p = getProduct(item.productoId)}
+						{@const p = getProduct(item.productId)}
 						<div class="flex items-center gap-2.5">
 							<div
 								class="w-9 h-9 rounded-lg flex items-center justify-center text-xl shrink-0"
@@ -653,10 +653,10 @@
 							</div>
 							<div class="flex-1 min-w-0">
 								<div class="text-xs font-semibold truncate">{p.name}</div>
-								<div class="text-[11px]" style="color:var(--c-text-muted)">x{item.cantidad}</div>
+								<div class="text-[11px]" style="color:var(--c-text-muted)">x{item.quantity}</div>
 							</div>
 							<span class="font-mono text-xs font-medium">
-								{fmtCOP(item.precio * item.cantidad)}
+								{fmtCOP(item.price * item.quantity)}
 							</span>
 						</div>
 					{/each}
@@ -675,7 +675,7 @@
 				</div>
 				{#if descuento > 0 && cuponActivo}
 					<div class="flex justify-between text-sm mb-2" style="color:var(--c-success)">
-						<span>🎟️ {cuponActivo.codigo}</span>
+						<span>🎟️ {cuponActivo.code}</span>
 						<span class="font-mono">−{fmtCOP(descuento)}</span>
 					</div>
 				{/if}
@@ -693,9 +693,9 @@
 					Pagar {fmtCOP(currentTotal)}
 				</Button>
 
-				{#if tiendaIds.length > 1}
+				{#if storeIds.length > 1}
 					<p class="text-[11px] text-center mt-2.5" style="color:var(--c-text-muted)">
-						{tiendaIds.length - step - 1} tienda{tiendaIds.length - step - 1 !== 1 ? 's' : ''} más por pagar
+						{storeIds.length - step - 1} tienda{storeIds.length - step - 1 !== 1 ? 's' : ''} más por pagar
 					</p>
 				{/if}
 			</div>
@@ -799,7 +799,7 @@
 						</div>
 					</div>
 					<Button variant="brand" size="lg" fullWidth onclick={handlePaymentSuccess}>
-						{step + 1 < tiendaIds.length ? 'Siguiente tienda' : 'Ver resumen'}
+						{step + 1 < storeIds.length ? 'Siguiente tienda' : 'Ver resumen'}
 					</Button>
 				</div>
 

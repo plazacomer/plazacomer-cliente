@@ -1,4 +1,4 @@
-import { pedidos, type Pedido } from '$lib/stores/app.svelte';
+import { orders } from '$lib/stores/app.svelte';
 import { STORES, getStore } from '$lib/data/mock';
 
 export type EntregaEstado = 'disponible' | 'recogiendo' | 'en_camino' | 'entregado';
@@ -31,18 +31,18 @@ function createRepartidor() {
 
 	// Pedidos que el repartidor puede recoger (preparing → shipping disponibles)
 	const disponibles = $derived(
-		pedidos.items.filter(p => p.estado === 'preparing')
+		orders.items.filter(p => p.status === 'preparing')
 	);
 
 	// Pedido en entrega activa
 	const pedidoActivo = $derived.by(() => {
 		if (!entregaActiva) return null;
-		return pedidos.items.find(p => p.id === entregaActiva!.pedidoId) ?? null;
+		return orders.items.find(p => p.id === entregaActiva!.pedidoId) ?? null;
 	});
 
 	// Historial del repartidor (delivered)
 	const historial = $derived(
-		pedidos.items.filter(p => p.estado === 'delivered')
+		orders.items.filter(p => p.status === 'delivered')
 	);
 
 	return {
@@ -58,9 +58,9 @@ function createRepartidor() {
 
 		// Tomar un pedido disponible
 		tomarPedido(pedidoId: string) {
-			const p = pedidos.items.find(p => p.id === pedidoId);
+			const p = orders.items.find(p => p.id === pedidoId);
 			if (!p) return;
-			p.estado = 'shipping';
+			p.status = 'shipping';
 			entregaActiva = { pedidoId, estado: 'recogiendo', recogidoAt: null, salidaAt: null };
 		},
 
@@ -74,9 +74,9 @@ function createRepartidor() {
 		// Marcar entregado al cliente
 		marcarEntregado() {
 			if (!entregaActiva) return;
-			const p = pedidos.items.find(p => p.id === entregaActiva!.pedidoId);
+			const p = orders.items.find(p => p.id === entregaActiva!.pedidoId);
 			if (p) {
-				p.estado = 'delivered';
+				p.status = 'delivered';
 				gananciasHoy += Math.round(p.total * 0.1); // 10% comisión demo
 				entregasHoy++;
 			}

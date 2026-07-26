@@ -1,6 +1,6 @@
 import { browser } from '$app/environment';
 import { STORES, PRODUCTS, DEALS, SERVICIOS, type Product } from '$lib/data/mock';
-import { pedidos, type PedidoEstado } from '$lib/stores/app.svelte';
+import { orders, type OrderStatus } from '$lib/stores/app.svelte';
 import { citas, type EstadoCita } from '$lib/stores/citas.svelte';
 
 const VENDEDOR_TIENDA_ID = 't1';          // tienda de productos (demo)
@@ -52,17 +52,17 @@ function createVendedor() {
 	let abierto = $state(true);
 
 	// ── Pedidos (tienda productos) ────────────────────────────────────────────
-	const pedidosTienda = $derived(pedidos.items.filter(p => p.tiendaId === VENDEDOR_TIENDA_ID));
+	const pedidosTienda = $derived(orders.items.filter(p => p.storeId === VENDEDOR_TIENDA_ID));
 	const pedidosActivos = $derived(
-		pedidosTienda.filter(p => ['confirmed', 'preparing', 'shipping'].includes(p.estado))
+		pedidosTienda.filter(p => ['confirmed', 'preparing', 'shipping'].includes(p.status))
 	);
 	const ingresosHoy = $derived(
-		pedidosTienda.filter(p => p.estado === 'delivered').reduce((s, p) => s + p.total, 0)
+		pedidosTienda.filter(p => p.status === 'delivered').reduce((s, p) => s + p.total, 0)
 	);
-	const totalVentasMes = $derived(pedidosTienda.filter(p => p.estado === 'delivered').length);
+	const totalVentasMes = $derived(pedidosTienda.filter(p => p.status === 'delivered').length);
 	const ticketPromedio = $derived(
 		totalVentasMes > 0
-			? Math.round(pedidosTienda.filter(p => p.estado === 'delivered').reduce((s, p) => s + p.total, 0) / totalVentasMes)
+			? Math.round(pedidosTienda.filter(p => p.status === 'delivered').reduce((s, p) => s + p.total, 0) / totalVentasMes)
 			: 0
 	);
 
@@ -131,9 +131,9 @@ function createVendedor() {
 		},
 
 		// Pedidos
-		cambiarEstado(pedidoId: string, estado: PedidoEstado) {
-			const p = pedidos.items.find(p => p.id === pedidoId);
-			if (p) p.estado = estado;
+		cambiarEstado(pedidoId: string, estado: OrderStatus) {
+			const p = orders.items.find(p => p.id === pedidoId);
+			if (p) p.status = estado;
 		},
 
 		// Ofertas CRUD

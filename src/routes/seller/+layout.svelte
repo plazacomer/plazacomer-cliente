@@ -44,7 +44,7 @@
 			style="background:var(--c-bg-secondary)">
 			<div class="text-xl">{vendedor.tienda?.emoji}</div>
 			<div class="flex-1 min-w-0">
-				<div class="text-[12.5px] font-bold truncate">{vendedor.tienda?.nombre}</div>
+				<div class="text-[12.5px] font-bold truncate">{vendedor.tienda?.name}</div>
 				<div class="text-[10px] flex items-center gap-1 mt-0.5"
 					style="color:{vendedor.abierto ? 'var(--c-success)' : 'var(--c-error)'}">
 					<div class="w-1.5 h-1.5 rounded-full" style="background:currentColor"></div>

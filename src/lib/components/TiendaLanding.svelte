@@ -5,8 +5,8 @@
 	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
 	import CategoryBadge from '$lib/components/CategoryBadge.svelte';
 	import CountdownPill from '$lib/components/CountdownPill.svelte';
-	import Button from '$lib/components/ui/Button.svelte';
-	import Badge from '$lib/components/ui/Badge.svelte';
+	import { Button } from '$lib/components/ui/button';
+	import { Badge } from '$lib/components/ui/badge';
 	import Icon from '$lib/components/ui/Icon.svelte';
 
 	type Props = {

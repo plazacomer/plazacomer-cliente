@@ -24,12 +24,12 @@
 		if (!prod || !descuento) return;
 		const desc = parseFloat(descuento);
 		const precioOferta = tipo === 'porcentaje'
-			? Math.round(prod.precio * (1 - desc / 100))
-			: prod.precio - desc;
+			? Math.round(prod.price * (1 - desc / 100))
+			: prod.price - desc;
 		vendedor.addOferta({
-			tiendaId: prod.tiendaId,
+			tiendaId: prod.storeId,
 			productoId,
-			precioOriginal: prod.precio,
+			precioOriginal: prod.price,
 			precioOferta,
 			etiqueta: etiqueta || (tipo === 'porcentaje' ? `-${desc}%` : `-${fmtCOP(desc)}`),
 			hasta: hasta || '31 dic. 2026',
@@ -44,8 +44,8 @@
 		if (!prod || !descuento) return null;
 		const d = parseFloat(descuento);
 		return tipo === 'porcentaje'
-			? Math.round(prod.precio * (1 - d / 100))
-			: prod.precio - d;
+			? Math.round(prod.price * (1 - d / 100))
+			: prod.price - d;
 	});
 </script>
 
@@ -87,7 +87,7 @@
 						<div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
 							style="background:var(--c-bg-secondary)">{prod?.emoji ?? '🏷️'}</div>
 						<div class="flex-1 min-w-0">
-							<div class="font-display text-[14px] font-bold truncate mb-0.5">{prod?.nombre ?? 'Producto'}</div>
+							<div class="font-display text-[14px] font-bold truncate mb-0.5">{prod?.name ?? 'Producto'}</div>
 							<div class="flex items-center gap-2 flex-wrap">
 								<span class="font-mono text-[13px] font-bold" style="color:var(--c-error)">{fmtCOP(oferta.precioOferta)}</span>
 								<span class="line-through text-[12px]" style="color:var(--c-text-muted)">{fmtCOP(oferta.precioOriginal)}</span>
@@ -136,7 +136,7 @@
 					style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)">
 					<option value="">Selecciona un producto</option>
 					{#each vendedor.catalogo as p}
-						<option value={p.id}>{p.emoji} {p.nombre} — {fmtCOP(p.precio)}</option>
+						<option value={p.id}>{p.emoji} {p.name} — {fmtCOP(p.price)}</option>
 					{/each}
 				</select>
 			</div>
@@ -174,7 +174,7 @@
 					style="background:rgba(220,38,38,.06)">
 					<span class="text-[13px] font-semibold" style="color:var(--c-text-secondary)">Precio con oferta</span>
 					<div class="flex items-center gap-2">
-						<span class="line-through text-[12px]" style="color:var(--c-text-muted)">{fmtCOP(prod?.precio ?? 0)}</span>
+						<span class="line-through text-[12px]" style="color:var(--c-text-muted)">{fmtCOP(prod?.price ?? 0)}</span>
 						<span class="font-mono font-extrabold text-[16px]" style="color:var(--c-error)">{fmtCOP(precioPreview)}</span>
 					</div>
 				</div>

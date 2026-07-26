@@ -118,11 +118,11 @@
 				<!-- Info -->
 				<div class="flex-1 min-w-0">
 					<div class="flex items-center gap-2">
-						<span class="font-display text-[14px] font-bold truncate">{prod.nombre}</span>
+						<span class="font-display text-[14px] font-bold truncate">{prod.name}</span>
 					</div>
-					<div class="text-[11.5px] truncate mb-1.5" style="color:var(--c-text-muted)">{prod.descripcion}</div>
+					<div class="text-[11.5px] truncate mb-1.5" style="color:var(--c-text-muted)">{prod.description}</div>
 					<div class="flex items-center gap-2 flex-wrap">
-						<span class="font-mono text-[13px] font-bold">{fmtCOP(prod.precio)}</span>
+						<span class="font-mono text-[13px] font-bold">{fmtCOP(prod.price)}</span>
 						<span class="text-[11px] px-2 py-0.5 rounded-full font-semibold"
 							style="background:{prod.stock === 0 ? 'rgba(220,38,38,.08)' : 'rgba(22,163,74,.08)'};
 								color:{prod.stock === 0 ? 'var(--c-error)' : 'var(--c-success)'}">

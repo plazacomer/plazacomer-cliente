@@ -4,10 +4,10 @@
 	import Icon from './ui/Icon.svelte';
 	import Logo from './Logo.svelte';
 	import GlobalSearch from './GlobalSearch.svelte';
-	import { darkMode, cart, pedidos, mensajes } from '$lib/stores/app.svelte';
+	import { darkMode, cart, orders, messages } from '$lib/stores/app.svelte';
 	import { citas } from '$lib/stores/citas.svelte';
 	import { storeUi } from '$lib/stores/storeUi.svelte';
-	import { USUARIO } from '$lib/data/mock';
+	import { CURRENT_USER } from '$lib/data/mock';
 	import type { Snippet } from 'svelte';
 
 	type Props = { children: Snippet };
@@ -51,8 +51,8 @@
 
 	function badge(id: string) {
 		if (id === 'carrito') return cart.count;
-		if (id === 'pedidos') return pedidos.activeCount;
-		if (id === 'mensajes') return mensajes.totalNoLeidos;
+		if (id === 'pedidos') return orders.activeCount;
+		if (id === 'mensajes') return messages.totalUnread;
 		return 0;
 	}
 </script>
@@ -96,9 +96,9 @@
 		>
 			<Icon name="package" size={20} strokeWidth={currentId() === 'pedidos' ? 2.2 : 1.8}/>
 			<span class={currentId() === 'pedidos' ? 'font-semibold' : ''}>Pedidos</span>
-			{#if pedidos.activeCount > 0}
+			{#if orders.activeCount > 0}
 				<span class="ml-auto text-[10px] font-bold text-white bg-[var(--c-brand)] min-w-5 h-5 px-1.5 rounded-full flex items-center justify-center">
-					{pedidos.activeCount}
+					{orders.activeCount}
 				</span>
 			{/if}
 		</button>
@@ -148,12 +148,12 @@
 			</button>
 			<div class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl mt-1" style="background:var(--c-bg-secondary)">
 				<div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold font-display shrink-0"
-					style="background:{USUARIO.color}">
-					{USUARIO.iniciales}
+					style="background:{CURRENT_USER.color}">
+					{CURRENT_USER.initials}
 				</div>
 				<div class="flex-1 min-w-0">
-					<div class="text-sm font-semibold truncate">{USUARIO.nombre}</div>
-					<div class="text-[11px] text-[var(--c-text-muted)]">{USUARIO.recompensas} recompensas</div>
+					<div class="text-sm font-semibold truncate">{CURRENT_USER.name}</div>
+					<div class="text-[11px] text-[var(--c-text-muted)]">{CURRENT_USER.rewards} recompensas</div>
 				</div>
 			</div>
 		</div>

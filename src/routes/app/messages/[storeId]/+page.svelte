@@ -2,15 +2,15 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { mensajes } from '$lib/stores/app.svelte';
+	import { messages } from '$lib/stores/app.svelte';
 	import { getStore } from '$lib/data/mock';
 	import Icon from '$lib/components/ui/Icon.svelte';
 	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
 
 	const tiendaId = $derived($page.params.storeId);
 	const tienda = $derived(getStore(tiendaId));
-	const conv = $derived(mensajes.getConv(tiendaId));
-	const msgs = $derived(conv?.mensajes ?? []);
+	const conv = $derived(messages.getConversation(tiendaId));
+	const msgs = $derived(conv?.messages ?? []);
 
 	let input = $state('');
 	let sending = $state(false);
@@ -28,7 +28,7 @@
 	});
 
 	onMount(() => {
-		mensajes.markRead(tiendaId);
+		messages.markRead(tiendaId);
 	});
 
 	function send() {
@@ -36,9 +36,9 @@
 		if (!txt || sending) return;
 		input = '';
 		sending = true;
-		mensajes.send(tiendaId, txt);
+		messages.send(tiendaId, txt);
 		setTimeout(() => {
-			mensajes.fakeReply(tiendaId);
+			messages.fakeReply(tiendaId);
 			sending = false;
 		}, 1400);
 	}
@@ -101,8 +101,8 @@
 				</div>
 			{:else}
 				{#each msgs as msg, i}
-					{@const isCliente = msg.autor === 'cliente'}
-					{@const isFirst = i === 0 || msgs[i - 1].autor !== msg.autor}
+					{@const isCliente = msg.author === 'customer'}
+					{@const isFirst = i === 0 || msgs[i - 1].author !== msg.author}
 					<div
 						class="flex animate-fade-in"
 						style="justify-content:{isCliente ? 'flex-end' : 'flex-start'}"
@@ -118,13 +118,13 @@
 									box-shadow:0 1px 3px rgba(0,0,0,0.06)
 								"
 							>
-								{msg.texto}
+								{msg.text}
 							</div>
 							<div
 								class="text-[10px] mt-1 px-1"
 								style="color:var(--c-text-muted);text-align:{isCliente ? 'right' : 'left'}"
 							>
-								{msg.hora}
+								{msg.time}
 							</div>
 						</div>
 					</div>

@@ -5,12 +5,12 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 
 	export type CartLineItem = {
-		productoId: string;
-		tiendaId: string;
-		cantidad: number;
-		precio: number;
-		selecciones: Record<string, string | string[]>;
-		notas: string;
+		productId: string;
+		storeId: string;
+		quantity: number;
+		price: number;
+		selections: Record<string, string | string[]>;
+		notes: string;
 		lineId?: string;
 	};
 
@@ -24,24 +24,24 @@
 	};
 	let { open, producto, oferta = null, initial = null, onclose, onconfirm }: Props = $props();
 
-	let selecciones = $state<Record<string, string | string[]>>({});
-	let cantidad = $state(1);
-	let notas = $state('');
+	let selections = $state<Record<string, string | string[]>>({});
+	let quantity = $state(1);
+	let notes = $state('');
 
 	$effect(() => {
 		if (open && producto) {
 			if (initial) {
-				selecciones = { ...initial.selecciones };
-				cantidad = initial.cantidad;
-				notas = initial.notas;
+				selections = { ...initial.selections };
+				quantity = initial.quantity;
+				notes = initial.notes;
 			} else {
 				const init: Record<string, string | string[]> = {};
 				(producto.modifiers ?? []).forEach((m) => {
 					init[m.id] = m.tipo === 'single' ? '' : [];
 				});
-				selecciones = init;
-				cantidad = 1;
-				notas = '';
+				selections = init;
+				quantity = 1;
+				notes = '';
 			}
 		}
 	});
@@ -49,7 +49,7 @@
 	function calcExtras(): number {
 		if (!producto?.modifiers) return 0;
 		return producto.modifiers.reduce((sum, m) => {
-			const sel = selecciones[m.id];
+			const sel = selections[m.id];
 			if (!sel) return sum;
 			if (typeof sel === 'string') {
 				const op = m.opciones.find((o) => o.id === sel);
@@ -62,15 +62,15 @@
 		}, 0);
 	}
 
-	const precioBase = $derived(oferta ? oferta.dealPrice : (producto?.price ?? 0));
+	const basePrice = $derived(oferta ? oferta.dealPrice : (producto?.price ?? 0));
 	const extras = $derived(calcExtras());
-	const total = $derived((precioBase + extras) * cantidad);
+	const total = $derived((basePrice + extras) * quantity);
 
 	const errores = $derived.by(() => {
 		const errs: string[] = [];
 		if (!producto?.modifiers) return errs;
 		for (const m of producto.modifiers) {
-			const sel = selecciones[m.id];
+			const sel = selections[m.id];
 			if (m.requerido) {
 				if (m.tipo === 'single' && !sel) errs.push(m.nombre);
 				else if (Array.isArray(sel) && sel.length < (m.min ?? 0)) errs.push(m.nombre);
@@ -84,22 +84,22 @@
 	const isValid = $derived(errores.length === 0);
 
 	function toggle(mod: Modificador, optId: string) {
-		const cur = selecciones[mod.id];
+		const cur = selections[mod.id];
 		if (mod.tipo === 'single') {
-			selecciones = { ...selecciones, [mod.id]: optId };
+			selections = { ...selections, [mod.id]: optId };
 		} else {
 			const arr = Array.isArray(cur) ? cur : [];
 			if (arr.includes(optId)) {
-				selecciones = { ...selecciones, [mod.id]: arr.filter((x) => x !== optId) };
+				selections = { ...selections, [mod.id]: arr.filter((x) => x !== optId) };
 			} else {
 				if (mod.max && arr.length >= mod.max) return;
-				selecciones = { ...selecciones, [mod.id]: [...arr, optId] };
+				selections = { ...selections, [mod.id]: [...arr, optId] };
 			}
 		}
 	}
 
 	function isSelected(mod: Modificador, optId: string): boolean {
-		const sel = selecciones[mod.id];
+		const sel = selections[mod.id];
 		if (!sel) return false;
 		if (typeof sel === 'string') return sel === optId;
 		return (sel as string[]).includes(optId);
@@ -108,12 +108,12 @@
 	function confirm() {
 		if (!isValid || !producto) return;
 		onconfirm({
-			productoId: producto.id,
-			tiendaId: producto.storeId,
-			cantidad,
-			precio: precioBase + extras,
-			selecciones: { ...selecciones },
-			notas: notas.trim(),
+			productId: producto.id,
+			storeId: producto.storeId,
+			quantity,
+			price: basePrice + extras,
+			selections: { ...selections },
+			notes: notes.trim(),
 			lineId: initial?.lineId,
 		});
 		onclose();
@@ -142,7 +142,7 @@
 					<div class="font-display text-[15px] font-bold leading-tight">{producto.name}</div>
 					<div class="text-[12px] leading-snug mt-0.5" style="color:var(--c-text-muted)">{producto.description}</div>
 					<div class="font-mono text-[13px] font-bold mt-1" style="color:var(--c-brand)">
-						{fmtCOP(precioBase)}
+						{fmtCOP(basePrice)}
 						{#if oferta}
 							<span class="font-normal line-through ml-2 text-[11px]" style="color:var(--c-text-muted)">{fmtCOP(oferta.originalPrice)}</span>
 						{/if}
@@ -200,7 +200,7 @@
 				<div class="text-[12px] font-bold mb-1.5" style="color:var(--c-text-muted)">Notas para la cocina (opcional)</div>
 				<textarea
 					aria-label="Notas para la cocina"
-					bind:value={notas}
+					bind:value={notes}
 					placeholder="Ej: bien picante, sin sal, etc."
 					rows="2"
 					class="w-full px-3 py-2.5 rounded-xl text-sm resize-none outline-none border border-[var(--c-border-soft)] focus:border-[var(--c-brand)]"
@@ -213,12 +213,12 @@
 				<span class="text-[13px] font-bold">Cantidad</span>
 				<div class="flex items-center gap-2">
 					<button
-						onclick={() => (cantidad = Math.max(1, cantidad - 1))}
+						onclick={() => (quantity = Math.max(1, quantity - 1))}
 						class="w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold"
 						style="background:var(--c-bg-card)">−</button>
-					<span class="font-mono text-[17px] font-bold min-w-6 text-center">{cantidad}</span>
+					<span class="font-mono text-[17px] font-bold min-w-6 text-center">{quantity}</span>
 					<button
-						onclick={() => (cantidad += 1)}
+						onclick={() => (quantity += 1)}
 						class="w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold text-white"
 						style="background:var(--c-brand)">+</button>
 				</div>

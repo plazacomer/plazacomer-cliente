@@ -4,7 +4,7 @@
 	import { ESTADOS_CITA, fmtFechaCita } from '$lib/stores/citas.svelte';
 	import { fmtCOP } from '$lib/utils';
 	import Icon from '$lib/components/ui/Icon.svelte';
-	import Badge from '$lib/components/ui/Badge.svelte';
+	import { Badge } from '$lib/components/ui/badge';
 
 	const ESTADO_STEPS: Record<string, string> = {
 		confirmed: 'preparing',
@@ -40,7 +40,7 @@
 				Panel Vendedor
 			</div>
 			<h1 class="font-display text-[26px] font-extrabold tracking-tight">
-				{vendedor.tienda?.emoji} {vendedor.tienda?.nombre}
+				{vendedor.tienda?.emoji} {vendedor.tienda?.name}
 			</h1>
 		</div>
 		<button
@@ -102,7 +102,7 @@
 				<div>
 					<h2 class="font-display text-[16px] font-bold">Citas pendientes</h2>
 					<div class="text-[11.5px] mt-0.5" style="color:var(--c-text-muted)">
-						{vendedor.tiendaServicio?.emoji} {vendedor.tiendaServicio?.nombre}
+						{vendedor.tiendaServicio?.emoji} {vendedor.tiendaServicio?.name}
 					</div>
 				</div>
 				<button onclick={() => goto('/seller/appointments')}
@@ -152,24 +152,24 @@
 					<div class="flex items-center gap-3 p-4">
 						<div class="flex-1 min-w-0">
 							<div class="flex items-center gap-2 mb-1 flex-wrap">
-								<span class="font-mono text-[12px] font-bold">{pedido.numero}</span>
-								<Badge variant={ESTADO_VARIANT[pedido.estado]}>{ESTADO_LABEL[pedido.estado]}</Badge>
+								<span class="font-mono text-[12px] font-bold">{pedido.number}</span>
+								<Badge variant={ESTADO_VARIANT[pedido.status]}>{ESTADO_LABEL[pedido.status]}</Badge>
 							</div>
 							<div class="text-xs" style="color:var(--c-text-muted)">
-								{pedido.items.length} producto{pedido.items.length !== 1 ? 's' : ''} · {pedido.fecha}
+								{pedido.items.length} producto{pedido.items.length !== 1 ? 's' : ''} · {pedido.date}
 							</div>
 						</div>
 						<div class="font-mono text-base font-bold shrink-0">{fmtCOP(pedido.total)}</div>
 					</div>
 
-					{#if ESTADO_STEPS[pedido.estado]}
+					{#if ESTADO_STEPS[pedido.status]}
 						<div class="px-4 pb-3.5 border-t border-[var(--c-border-soft)]"
 							style="background:var(--c-bg-secondary)">
 							<button
-								onclick={() => vendedor.cambiarEstado(pedido.id, ESTADO_STEPS[pedido.estado] as any)}
+								onclick={() => vendedor.cambiarEstado(pedido.id, ESTADO_STEPS[pedido.status] as any)}
 								class="w-full mt-3 py-2.5 rounded-xl font-bold text-sm text-white"
 								style="background:var(--c-brand)">
-								{NEXT_ACTION[pedido.estado]}
+								{NEXT_ACTION[pedido.status]}
 							</button>
 						</div>
 					{/if}

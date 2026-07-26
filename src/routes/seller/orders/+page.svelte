@@ -2,19 +2,19 @@
 	import { vendedor } from '$lib/stores/vendedor.svelte';
 	import { fmtCOP } from '$lib/utils';
 	import Icon from '$lib/components/ui/Icon.svelte';
-	import Badge from '$lib/components/ui/Badge.svelte';
-	import type { PedidoEstado } from '$lib/stores/app.svelte';
+	import { Badge } from '$lib/components/ui/badge';
+	import type { OrderStatus } from '$lib/stores/app.svelte';
 
 	type Tab = 'activos' | 'historial';
 	let tab = $state<Tab>('activos');
 
 	const lista = $derived(
 		tab === 'activos'
-			? vendedor.pedidosTienda.filter(p => ['confirmed', 'preparing', 'shipping'].includes(p.estado))
-			: vendedor.pedidosTienda.filter(p => ['delivered', 'cancelled'].includes(p.estado))
+			? vendedor.pedidosTienda.filter(p => ['confirmed', 'preparing', 'shipping'].includes(p.status))
+			: vendedor.pedidosTienda.filter(p => ['delivered', 'cancelled'].includes(p.status))
 	);
 
-	const ESTADO_LABEL: Record<PedidoEstado, string> = {
+	const ESTADO_LABEL: Record<OrderStatus, string> = {
 		confirmed: '✓ Confirmado',
 		preparing: '⏳ Preparando',
 		shipping: '🚚 En camino',
@@ -22,12 +22,12 @@
 		cancelled: '✕ Cancelado',
 	};
 
-	const ESTADO_VARIANT: Record<PedidoEstado, 'brand' | 'accent' | 'success' | 'error' | 'default'> = {
+	const ESTADO_VARIANT: Record<OrderStatus, 'brand' | 'accent' | 'success' | 'error' | 'default'> = {
 		confirmed: 'brand', preparing: 'accent', shipping: 'brand',
 		delivered: 'success', cancelled: 'error',
 	};
 
-	const TRANSITIONS: Partial<Record<PedidoEstado, { next: PedidoEstado; label: string }>> = {
+	const TRANSITIONS: Partial<Record<OrderStatus, { next: OrderStatus; label: string }>> = {
 		confirmed: { next: 'preparing', label: 'Empezar preparación' },
 		preparing: { next: 'shipping',  label: 'Enviar a domicilio' },
 		shipping:  { next: 'delivered', label: 'Marcar entregado' },
@@ -70,7 +70,7 @@
 	{:else}
 		<div class="flex flex-col gap-3">
 			{#each lista as pedido}
-				{@const trans = TRANSITIONS[pedido.estado]}
+				{@const trans = TRANSITIONS[pedido.status]}
 				<div class="rounded-2xl border border-[var(--c-border-soft)] overflow-hidden"
 					style="background:var(--c-bg-card)">
 					<!-- Header clickable -->
@@ -79,11 +79,11 @@
 						class="flex items-center gap-3 p-4 w-full text-left hover:bg-[var(--c-bg-secondary)] transition-colors">
 						<div class="flex-1 min-w-0">
 							<div class="flex items-center gap-2 mb-1 flex-wrap">
-								<span class="font-mono text-[12px] font-bold">{pedido.numero}</span>
-								<Badge variant={ESTADO_VARIANT[pedido.estado]}>{ESTADO_LABEL[pedido.estado]}</Badge>
+								<span class="font-mono text-[12px] font-bold">{pedido.number}</span>
+								<Badge variant={ESTADO_VARIANT[pedido.status]}>{ESTADO_LABEL[pedido.status]}</Badge>
 							</div>
 							<div class="text-xs" style="color:var(--c-text-muted)">
-								{pedido.items.length} producto{pedido.items.length !== 1 ? 's' : ''} · {pedido.fecha}
+								{pedido.items.length} producto{pedido.items.length !== 1 ? 's' : ''} · {pedido.date}
 							</div>
 						</div>
 						<div class="text-right shrink-0">
@@ -100,14 +100,14 @@
 								{#each pedido.items as item}
 									<div class="flex items-center justify-between text-[13px]">
 										<span class="text-[var(--c-text-secondary)]">
-											{item.cantidad}× Producto #{item.productoId}
+											{item.quantity}× Producto #{item.productId}
 										</span>
-										<span class="font-mono font-semibold">{fmtCOP(item.precio * item.cantidad)}</span>
+										<span class="font-mono font-semibold">{fmtCOP(item.price * item.quantity)}</span>
 									</div>
 								{/each}
 							</div>
 							<div class="flex items-center justify-between text-[12px] mb-3 pb-3 border-b border-[var(--c-border-soft)]">
-								<span style="color:var(--c-text-muted)">📍 {pedido.direccion}</span>
+								<span style="color:var(--c-text-muted)">📍 {pedido.address}</span>
 							</div>
 
 							{#if trans}
@@ -118,7 +118,7 @@
 										style="background:var(--c-brand)">
 										{trans.label}
 									</button>
-									{#if pedido.estado === 'confirmed'}
+									{#if pedido.status === 'confirmed'}
 										<button
 											onclick={() => { if (confirm('¿Cancelar este pedido?')) vendedor.cambiarEstado(pedido.id, 'cancelled'); expandido = null; }}
 											class="px-4 py-2.5 rounded-xl font-bold text-sm border"

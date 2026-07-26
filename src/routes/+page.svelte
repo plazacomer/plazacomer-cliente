@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Logo from '$lib/components/Logo.svelte';
-	import Button from '$lib/components/ui/Button.svelte';
+	import { Button } from '$lib/components/ui/button';
 	import Icon from '$lib/components/ui/Icon.svelte';
+	import { m } from '$lib/paraglide/messages.js';
 </script>
 
 <div
@@ -31,20 +32,20 @@
 			PLAZACOMER
 		</h1>
 		<p class="text-[13px] text-[#A0A0B8] tracking-[4px] uppercase mb-12">
-			Tiendas · Servicios · Comunidad
+			{m.landing_tagline()}
 		</p>
 
 		<div class="max-w-sm mx-auto">
 			<p class="text-base text-[#E0E0E8] leading-relaxed mb-8">
-				Todas las tiendas de tu plaza, en un solo lugar. Sigue a tus favoritas, recibe sus ofertas y paga seguro.
+				{m.landing_description()}
 			</p>
 			<Button variant="brand" size="lg" fullWidth onclick={() => goto('/login')}>
-				Iniciar sesión
+				{m.landing_login_cta()}
 				<Icon name="arrowRight" size={18}/>
 			</Button>
 			<button onclick={() => goto('/onboarding')}
 				class="mt-4 w-full py-3.5 rounded-2xl font-display font-bold text-[15px] border-2 border-white/20 text-white/80 hover:border-white/40 hover:text-white transition-all">
-				Crear cuenta nueva
+				{m.landing_signup_cta()}
 			</button>
 		</div>
 	</div>

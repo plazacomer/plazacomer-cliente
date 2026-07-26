@@ -4,21 +4,21 @@
 	import { getStore, getProduct, getCategory, type Product } from '$lib/data/mock';
 	import { fmtCOP } from '$lib/utils';
 	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
-	import Badge from '$lib/components/ui/Badge.svelte';
-	import Button from '$lib/components/ui/Button.svelte';
+	import { Badge } from '$lib/components/ui/badge';
+	import { Button } from '$lib/components/ui/button';
 	import Icon from '$lib/components/ui/Icon.svelte';
 	import CustomizeModal, { type CartLineItem } from '$lib/components/CustomizeModal.svelte';
 
-	const grupos = $derived.by(() => {
+	const groups = $derived.by(() => {
 		const g: Record<string, typeof cart.items> = {};
 		cart.items.forEach((item) => {
-			if (!g[item.tiendaId]) g[item.tiendaId] = [];
-			g[item.tiendaId].push(item);
+			if (!g[item.storeId]) g[item.storeId] = [];
+			g[item.storeId].push(item);
 		});
 		return g;
 	});
 
-	const tiendaIds = $derived(Object.keys(grupos));
+	const storeIds = $derived(Object.keys(groups));
 
 	// Edit modal state
 	let editOpen = $state(false);
@@ -27,16 +27,16 @@
 	let editInitial = $state<CartLineItem | null>(null);
 
 	function openEdit(item: (typeof cart.items)[number]) {
-		const p = getProduct(item.productoId);
+		const p = getProduct(item.productId);
 		editProduct = p;
 		editLineId = item.lineId ?? null;
 		editInitial = {
-			productoId: item.productoId,
-			tiendaId: item.tiendaId,
-			cantidad: item.cantidad,
-			precio: item.precio,
-			selecciones: item.selecciones ?? {},
-			notas: item.notas ?? '',
+			productId: item.productId,
+			storeId: item.storeId,
+			quantity: item.quantity,
+			price: item.price,
+			selections: item.selections ?? {},
+			notes: item.notes ?? '',
 			lineId: item.lineId,
 		};
 		editOpen = true;
@@ -45,25 +45,25 @@
 	function onEditConfirm(updated: CartLineItem) {
 		if (editLineId) {
 			cart.updateItem(editLineId, {
-				precio: updated.precio,
-				cantidad: updated.cantidad,
-				selecciones: updated.selecciones,
-				notas: updated.notas,
+				price: updated.price,
+				quantity: updated.quantity,
+				selections: updated.selections,
+				notes: updated.notes,
 			});
 		}
 		editOpen = false;
 	}
 
-	function resumenSel(item: (typeof cart.items)[number]): string[] {
-		if (!item.selecciones) return [];
-		const p = getProduct(item.productoId);
+	function selectionSummary(item: (typeof cart.items)[number]): string[] {
+		if (!item.selections) return [];
+		const p = getProduct(item.productId);
 		const lines: string[] = [];
-		for (const [grupoId, val] of Object.entries(item.selecciones)) {
-			const grupo = p.modifiers?.find((m) => m.id === grupoId);
-			if (!grupo) continue;
+		for (const [groupId, val] of Object.entries(item.selections)) {
+			const group = p.modifiers?.find((m) => m.id === groupId);
+			if (!group) continue;
 			const vals = Array.isArray(val) ? val : [val];
-			const nombres = vals.map((v) => grupo.opciones.find((o) => o.id === v)?.nombre ?? v);
-			lines.push(nombres.join(', '));
+			const names = vals.map((v) => group.opciones.find((o) => o.id === v)?.nombre ?? v);
+			lines.push(names.join(', '));
 		}
 		return lines;
 	}
@@ -85,14 +85,14 @@
 	<div class="max-w-4xl mx-auto px-4 pt-5 pb-10">
 		<h1 class="font-display text-[26px] lg:text-3xl font-extrabold mb-1">Tu carrito</h1>
 		<p class="text-sm mb-5" style="color:var(--c-text-secondary)">
-			{cart.count} producto{cart.count !== 1 ? 's' : ''} · {tiendaIds.length} tienda{tiendaIds.length !== 1 ? 's' : ''}
+			{cart.count} producto{cart.count !== 1 ? 's' : ''} · {storeIds.length} tienda{storeIds.length !== 1 ? 's' : ''}
 		</p>
 
 		<div class="grid gap-5 lg:grid-cols-[1fr_340px] lg:items-start">
 			<!-- Items -->
 			<div class="flex flex-col gap-4">
 				<!-- Multi-store notice -->
-				{#if tiendaIds.length > 1}
+				{#if storeIds.length > 1}
 					<div
 						class="flex items-start gap-2.5 p-3.5 rounded-2xl border"
 						style="background:var(--c-brand-light);border-color:var(--c-brand)"
@@ -100,16 +100,16 @@
 						<div class="text-lg shrink-0">ℹ️</div>
 						<div class="text-sm leading-relaxed" style="color:var(--c-brand)">
 							<strong>Multi-tienda:</strong> Cada tienda procesa su pago por separado.
-							Verás {tiendaIds.length} pagos distintos en tu estado de cuenta.
+							Verás {storeIds.length} pagos distintos en tu estado de cuenta.
 						</div>
 					</div>
 				{/if}
 
-				{#each tiendaIds as tiendaId}
-					{@const tienda = getStore(tiendaId)}
-					{@const items = grupos[tiendaId]}
-					{@const subtotal = items.reduce((s, i) => s + i.precio * i.cantidad, 0)}
-					{@const cat = getCategory(tienda.category)}
+				{#each storeIds as storeId}
+					{@const store = getStore(storeId)}
+					{@const items = groups[storeId]}
+					{@const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)}
+					{@const cat = getCategory(store.category)}
 					<div
 						class="rounded-[18px] overflow-hidden border"
 						style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
@@ -119,19 +119,19 @@
 							class="flex items-center gap-3 p-3.5 border-b"
 							style="border-color:var(--c-border-soft)"
 						>
-							<TiendaLogo tienda={tienda} size={40} />
+							<TiendaLogo tienda={store} size={40} />
 							<div class="flex-1 min-w-0">
-								<div class="font-bold text-sm">{tienda.name}</div>
+								<div class="font-bold text-sm">{store.name}</div>
 								<div class="text-[11px]" style="color:var(--c-text-muted)">
-									{cat.label} · Paga con {tienda.paymentMethods[0]}
+									{cat.label} · Paga con {store.paymentMethods[0]}
 								</div>
 							</div>
 						</div>
 
 						<!-- Items list -->
 						{#each items as item, i}
-							{@const p = getProduct(item.productoId)}
-							{@const key = item.lineId ?? item.productoId}
+							{@const p = getProduct(item.productId)}
+							{@const key = item.lineId ?? item.productId}
 							<div
 								class="flex gap-3 items-start p-3.5"
 								style="border-top:{i > 0 ? '1px solid var(--c-border-soft)' : 'none'}"
@@ -139,7 +139,7 @@
 								<!-- Product image -->
 								<div
 									class="w-14 h-14 rounded-xl flex items-center justify-center text-[28px] shrink-0"
-									style="background:{tienda.bannerGradient}"
+									style="background:{store.bannerGradient}"
 								>
 									{p.emoji}
 								</div>
@@ -147,19 +147,19 @@
 								<!-- Info -->
 								<div class="flex-1 min-w-0">
 									<div class="font-semibold text-sm mb-0.5 leading-snug">{p.name}</div>
-									{#if item.esOferta}
+									{#if item.isDeal}
 										<Badge variant="error" class="mb-1">🔥 Oferta</Badge>
 									{/if}
-									{#each resumenSel(item) as linea}
-										<div class="text-[11px] mt-0.5" style="color:var(--c-text-muted)">· {linea}</div>
+									{#each selectionSummary(item) as line}
+										<div class="text-[11px] mt-0.5" style="color:var(--c-text-muted)">· {line}</div>
 									{/each}
-									{#if item.notas}
+									{#if item.notes}
 										<div class="text-[11px] italic mt-1" style="color:var(--c-warning)">
-											📝 {item.notas}
+											📝 {item.notes}
 										</div>
 									{/if}
 									<div class="font-mono text-xs mt-1" style="color:var(--c-text-secondary)">
-										{fmtCOP(item.precio)} c/u
+										{fmtCOP(item.price)} c/u
 									</div>
 								</div>
 
@@ -172,24 +172,24 @@
 									>
 										<button
 											onclick={() => {
-												if (item.cantidad === 1) {
+												if (item.quantity === 1) {
 													cart.remove(key);
 												} else {
 													cart.updateQty(key, -1);
 												}
 											}}
 											class="w-7 h-7 rounded-lg flex items-center justify-center transition-colors"
-											style="color:{item.cantidad === 1 ? 'var(--c-error)' : 'var(--c-text-secondary)'}"
-											title={item.cantidad === 1 ? 'Eliminar' : 'Disminuir'}
+											style="color:{item.quantity === 1 ? 'var(--c-error)' : 'var(--c-text-secondary)'}"
+											title={item.quantity === 1 ? 'Eliminar' : 'Disminuir'}
 										>
-											{#if item.cantidad === 1}
+											{#if item.quantity === 1}
 												<Icon name="trash" size={14} strokeWidth={2} />
 											{:else}
 												<Icon name="minus" size={14} strokeWidth={2.5} />
 											{/if}
 										</button>
 										<span class="font-mono text-[13px] font-semibold min-w-5 text-center">
-											{item.cantidad}
+											{item.quantity}
 										</span>
 										<button
 											onclick={() => cart.updateQty(key, 1)}
@@ -245,11 +245,11 @@
 				<h3 class="font-display text-base font-bold mb-3.5">Resumen</h3>
 
 				<div class="flex flex-col gap-2.5 mb-3.5">
-					{#each tiendaIds as tiendaId}
-						{@const tienda = getStore(tiendaId)}
-						{@const sub = grupos[tiendaId].reduce((s, i) => s + i.precio * i.cantidad, 0)}
+					{#each storeIds as storeId}
+						{@const store = getStore(storeId)}
+						{@const sub = groups[storeId].reduce((s, i) => s + i.price * i.quantity, 0)}
 						<div class="flex justify-between text-sm">
-							<span style="color:var(--c-text-secondary)">{tienda.name}</span>
+							<span style="color:var(--c-text-secondary)">{store.name}</span>
 							<span class="font-mono font-medium">{fmtCOP(sub)}</span>
 						</div>
 					{/each}

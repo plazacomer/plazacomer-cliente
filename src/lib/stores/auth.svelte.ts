@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
 import { getFirebaseAuth, signInWithGoogle, signInWithFacebook, signInWithApple, signOut as firebaseSignOut, trackEvent, type User } from '$lib/firebase';
 import { onAuthStateChanged, getAdditionalUserInfo, type UserCredential } from 'firebase/auth';
+import { m } from '$lib/paraglide/messages.js';
 
 function createAuth() {
 	let user = $state<User | null>(null);
@@ -23,7 +24,7 @@ function createAuth() {
 
 	async function runSignIn(method: string, fn: () => Promise<UserCredential>) {
 		if (!configured) {
-			error = 'Firebase no está configurado. Agrega tus credenciales en el archivo .env';
+			error = m.login_error_firebase_not_configured();
 			return;
 		}
 		error = null;
@@ -35,8 +36,8 @@ function createAuth() {
 			const code = (e as { code?: string }).code ?? '';
 			if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') return;
 			error = code === 'auth/account-exists-with-different-credential'
-				? 'Ya existe una cuenta con ese correo. Intenta con otro método.'
-				: 'Error al iniciar sesión. Intenta de nuevo.';
+				? m.login_error_account_exists()
+				: m.login_error_generic();
 		}
 	}
 

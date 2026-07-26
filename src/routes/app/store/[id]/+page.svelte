@@ -32,13 +32,13 @@
 			customizeProduct = p;
 			customizeOpen = true;
 		} else {
-			cart.add({ productoId: p.id, tiendaId: tienda.id, precio: p.price });
+			cart.add({ productId: p.id, storeId: tienda.id, price: p.price });
 			toast.show(`✓ ${p.name} agregado al carrito`);
 		}
 	}
 
 	function onCustomizeConfirm(item: CartLineItem) {
-		cart.add({ productoId: item.productoId, tiendaId: item.tiendaId, precio: item.precio, cantidad: item.cantidad, selecciones: item.selecciones, notas: item.notas });
+		cart.add({ productId: item.productId, storeId: item.storeId, price: item.price, quantity: item.quantity, selections: item.selections, notes: item.notes });
 		toast.show(`✓ ${customizeProduct?.name} agregado al carrito`);
 	}
 

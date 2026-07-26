@@ -577,49 +577,49 @@ export const FEED: FeedItem[] = [
 	{ kind: 'product', productId: 'p16', extra: '🍕 Abiertos este fin de semana', timeAgo: 'hace 1h' },
 ];
 
-export const USUARIO = {
-	nombre: 'Camila Torres',
-	iniciales: 'CT',
+export const CURRENT_USER = {
+	name: 'Camila Torres',
+	initials: 'CT',
 	color: '#7C3AED',
 	email: 'camila.torres@email.com',
-	telefono: '+57 320 456 7890',
-	miembroDesde: 'enero 2025',
-	pedidosTotal: 24,
-	recompensas: 340,
-	nivel: 'Oro',
+	phone: '+57 320 456 7890',
+	memberSince: 'enero 2025',
+	totalOrders: 24,
+	rewards: 340,
+	tier: 'Oro',
 };
 
-export type Direccion = {
+export type Address = {
 	id: string;
 	label: string;
-	direccion: string;
-	barrio: string;
-	ciudad: string;
-	principal: boolean;
+	address: string;
+	neighborhood: string;
+	city: string;
+	isPrimary: boolean;
 };
 
-export const DIRECCIONES: Direccion[] = [
-	{ id: 'd1', label: 'Casa 🏠', direccion: 'Cra 10 #45-23', barrio: 'El Poblado', ciudad: 'Medellín', principal: true },
-	{ id: 'd2', label: 'Trabajo 💼', direccion: 'Cll 50 #9-20, Piso 4', barrio: 'Centro', ciudad: 'Medellín', principal: false },
-	{ id: 'd3', label: 'Mamá 💙', direccion: 'Cra 43A #18-14', barrio: 'Laureles', ciudad: 'Medellín', principal: false },
+export const ADDRESSES: Address[] = [
+	{ id: 'd1', label: 'Casa 🏠', address: 'Cra 10 #45-23', neighborhood: 'El Poblado', city: 'Medellín', isPrimary: true },
+	{ id: 'd2', label: 'Trabajo 💼', address: 'Cll 50 #9-20, Piso 4', neighborhood: 'Centro', city: 'Medellín', isPrimary: false },
+	{ id: 'd3', label: 'Mamá 💙', address: 'Cra 43A #18-14', neighborhood: 'Laureles', city: 'Medellín', isPrimary: false },
 ];
 
-export type Cupon = {
+export type Coupon = {
 	id: string;
-	codigo: string;
-	descripcion: string;
-	tipo: 'porcentaje' | 'fijo' | 'envio';
-	valor: number;
-	tiendaId: string | null;
-	minimo: number;
-	activo: boolean;
+	code: string;
+	description: string;
+	type: 'percentage' | 'fixed' | 'shipping';
+	value: number;
+	storeId: string | null;
+	minimum: number;
+	active: boolean;
 };
 
-export const CUPONES: Cupon[] = [
-	{ id: 'cu1', codigo: 'BIENVENIDO10', descripcion: '10% de descuento en tu pedido', tipo: 'porcentaje', valor: 10, tiendaId: null, minimo: 20000, activo: true },
-	{ id: 'cu2', codigo: 'DESCUENTO5', descripcion: '$5.000 de descuento', tipo: 'fijo', valor: 5000, tiendaId: null, minimo: 30000, activo: true },
-	{ id: 'cu3', codigo: 'ENVIOGRATIS', descripcion: 'Envío gratis en tu pedido', tipo: 'envio', valor: 0, tiendaId: null, minimo: 15000, activo: true },
-	{ id: 'cu4', codigo: 'CASERO20', descripcion: '20% en El Sabor Casero', tipo: 'porcentaje', valor: 20, tiendaId: 't1', minimo: 25000, activo: true },
+export const COUPONS: Coupon[] = [
+	{ id: 'cu1', code: 'BIENVENIDO10', description: '10% de descuento en tu pedido', type: 'percentage', value: 10, storeId: null, minimum: 20000, active: true },
+	{ id: 'cu2', code: 'DESCUENTO5', description: '$5.000 de descuento', type: 'fixed', value: 5000, storeId: null, minimum: 30000, active: true },
+	{ id: 'cu3', code: 'ENVIOGRATIS', description: 'Envío gratis en tu pedido', type: 'shipping', value: 0, storeId: null, minimum: 15000, active: true },
+	{ id: 'cu4', code: 'CASERO20', description: '20% en El Sabor Casero', type: 'percentage', value: 20, storeId: 't1', minimum: 25000, active: true },
 ];
 
 export const REVIEWS: Review[] = [

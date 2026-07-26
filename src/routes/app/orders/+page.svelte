@@ -1,34 +1,34 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { pedidos, cart, toast, type Pedido } from '$lib/stores/app.svelte';
+	import { orders, cart, toast, type Order } from '$lib/stores/app.svelte';
 	import { getStore } from '$lib/data/mock';
 	import { favoritos } from '$lib/stores/favoritos.svelte';
 	import { fmtCOP } from '$lib/utils';
 	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
-	import Badge from '$lib/components/ui/Badge.svelte';
+	import { Badge } from '$lib/components/ui/badge';
 	import Icon from '$lib/components/ui/Icon.svelte';
-	import Button from '$lib/components/ui/Button.svelte';
-	import type { PedidoEstado } from '$lib/stores/app.svelte';
+	import { Button } from '$lib/components/ui/button';
+	import type { OrderStatus } from '$lib/stores/app.svelte';
 
-	function pedirDeNuevo(pedido: Pedido) {
+	function pedirDeNuevo(pedido: Order) {
 		pedido.items.forEach(item => {
-			cart.add({ productoId: item.productoId, tiendaId: pedido.tiendaId, precio: item.precio, cantidad: item.cantidad });
+			cart.add({ productId: item.productId, storeId: pedido.storeId, price: item.price, quantity: item.quantity });
 		});
 		toast.show(`✓ ${pedido.items.length} producto${pedido.items.length !== 1 ? 's' : ''} agregado${pedido.items.length !== 1 ? 's' : ''} al carrito`);
 		goto('/app/cart');
 	}
 
-	function guardarComoLista(pedido: Pedido) {
-		const tienda = getStore(pedido.tiendaId);
+	function guardarComoLista(pedido: Order) {
+		const tienda = getStore(pedido.storeId);
 		favoritos.createLista({
-			nombre: `Pedido ${tienda.name} · ${pedido.fecha}`,
+			nombre: `Pedido ${tienda.name} · ${pedido.date}`,
 			emoji: tienda.emoji,
-			items: pedido.items.map(i => ({ productoId: i.productoId, cantidad: i.cantidad })),
+			items: pedido.items.map(i => ({ productoId: i.productId, cantidad: i.quantity })),
 		});
 		toast.show('✓ Lista guardada en Guardados');
 	}
 
-	const estadoMap: Record<PedidoEstado, { variant: 'brand' | 'accent' | 'success' | 'error' | 'default'; label: string }> = {
+	const estadoMap: Record<OrderStatus, { variant: 'brand' | 'accent' | 'success' | 'error' | 'default'; label: string }> = {
 		confirmed: { variant: 'brand', label: '✓ Confirmado' },
 		preparing: { variant: 'accent', label: '⏳ Preparando' },
 		shipping:  { variant: 'brand', label: '🚚 En camino' },
@@ -40,10 +40,10 @@
 <div class="max-w-[900px] mx-auto px-4 pt-5 pb-12">
 	<h1 class="font-display text-[26px] font-extrabold mb-1">Mis pedidos</h1>
 	<p class="text-sm mb-5" style="color:var(--c-text-secondary)">
-		{pedidos.count} pedido{pedidos.count !== 1 ? 's' : ''} en total
+		{orders.count} pedido{orders.count !== 1 ? 's' : ''} en total
 	</p>
 
-	{#if pedidos.items.length === 0}
+	{#if orders.items.length === 0}
 		<div class="text-center pt-12">
 			<div class="text-6xl mb-4">📦</div>
 			<h2 class="font-display text-xl font-bold mb-2">Sin pedidos aún</h2>
@@ -57,9 +57,9 @@
 		</div>
 	{:else}
 		<div class="flex flex-col gap-3.5">
-			{#each pedidos.items as pedido}
-				{@const tienda = getStore(pedido.tiendaId)}
-				{@const estado = estadoMap[pedido.estado]}
+			{#each orders.items as pedido}
+				{@const tienda = getStore(pedido.storeId)}
+				{@const estado = estadoMap[pedido.status]}
 				<div class="rounded-2xl border overflow-hidden"
 					style="background:var(--c-bg-card);border-color:var(--c-border-soft)">
 					<button
@@ -71,18 +71,18 @@
 						<div class="flex items-center gap-2 mb-1 flex-wrap">
 							<span class="font-display text-sm font-bold">{tienda.name}</span>
 							<span class="font-mono text-[11px]" style="color:var(--c-text-muted)">
-								{pedido.numero}
+								{pedido.number}
 							</span>
 						</div>
 						<div class="text-xs mb-1.5" style="color:var(--c-text-secondary)">
-							{pedido.items.length} producto{pedido.items.length !== 1 ? 's' : ''} · {pedido.fecha}
+							{pedido.items.length} producto{pedido.items.length !== 1 ? 's' : ''} · {pedido.date}
 						</div>
 						<div class="flex gap-1.5 items-center flex-wrap">
 							<Badge variant={estado.variant}>{estado.label}</Badge>
-							{#if pedido.sugerenciaPendiente}
+							{#if pedido.reviewPromptPending}
 								<Badge variant="promo">💬 Deja tu sugerencia</Badge>
 							{/if}
-							{#if pedido.recompensa}
+							{#if pedido.reward}
 								<Badge variant="accent">🎁 Recompensa</Badge>
 							{/if}
 						</div>
@@ -94,7 +94,7 @@
 				</button>
 
 				<!-- Acciones para pedidos entregados -->
-				{#if pedido.estado === 'delivered'}
+				{#if pedido.status === 'delivered'}
 					<div class="flex gap-2 px-4 pb-3.5 pt-0 border-t border-[var(--c-border-soft)]"
 						style="background:var(--c-bg-secondary)">
 						<button onclick={() => pedirDeNuevo(pedido)}

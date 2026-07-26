@@ -11,6 +11,13 @@
 				secondary: "border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
 				destructive: "border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90",
 				outline: "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+				brand: "border-transparent bg-[var(--c-brand-light)] text-[var(--c-brand)]",
+				accent: "border-transparent bg-[var(--c-accent-light)] text-[var(--c-accent)]",
+				success: "border-transparent bg-[var(--c-success-light)] text-[var(--c-success)]",
+				warning: "border-transparent bg-[var(--c-warning-light)] text-[var(--c-warning)]",
+				error: "border-transparent bg-[var(--c-error-light)] text-[var(--c-error)]",
+				promo: "border-transparent bg-[var(--c-promo-light)] text-[var(--c-promo)]",
+				beauty: "border-transparent bg-[var(--c-beauty-light)] text-[var(--c-beauty)]",
 			},
 		},
 		defaultVariants: {

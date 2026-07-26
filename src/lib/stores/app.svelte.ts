@@ -7,80 +7,80 @@ export type TimelineStep = {
 	active: boolean;
 };
 
-export type PedidoItem = {
-	productoId: string;
-	cantidad: number;
-	precio: number;
+export type OrderItem = {
+	productId: string;
+	quantity: number;
+	price: number;
 };
 
-export type PedidoEstado = 'confirmed' | 'preparing' | 'shipping' | 'delivered' | 'cancelled';
+export type OrderStatus = 'confirmed' | 'preparing' | 'shipping' | 'delivered' | 'cancelled';
 
-export type Pedido = {
+export type Order = {
 	id: string;
-	numero: string;
-	tiendaId: string;
-	items: PedidoItem[];
-	estado: PedidoEstado;
-	fecha: string;
+	number: string;
+	storeId: string;
+	items: OrderItem[];
+	status: OrderStatus;
+	date: string;
 	total: number;
-	pasarela: string;
-	direccion: string;
-	notas?: string;
+	paymentGateway: string;
+	address: string;
+	notes?: string;
 	timeline: TimelineStep[];
-	sugerenciaPendiente: boolean;
-	recompensa?: string;
+	reviewPromptPending: boolean;
+	reward?: string;
 };
 
 export type CartItem = {
-	productoId: string;
-	tiendaId: string;
-	cantidad: number;
-	precio: number;
-	esOferta?: boolean;
-	notas?: string;
+	productId: string;
+	storeId: string;
+	quantity: number;
+	price: number;
+	isDeal?: boolean;
+	notes?: string;
 	lineId?: string;
-	selecciones?: Record<string, string | string[]>;
+	selections?: Record<string, string | string[]>;
 };
 
 function createCart() {
 	let items = $state<CartItem[]>(
-		browser ? JSON.parse(localStorage.getItem('pc_cart') ?? '[]') : []
+		browser ? JSON.parse(localStorage.getItem('pc_cart_v2') ?? '[]') : []
 	);
 
 	$effect.root(() => {
 		$effect(() => {
-			if (browser) localStorage.setItem('pc_cart', JSON.stringify(items));
+			if (browser) localStorage.setItem('pc_cart_v2', JSON.stringify(items));
 		});
 	});
 
 	return {
 		get items() { return items; },
-		get count() { return items.reduce((s, i) => s + i.cantidad, 0); },
-		get total() { return items.reduce((s, i) => s + i.precio * i.cantidad, 0); },
-		add(item: Omit<CartItem, 'cantidad'> & { cantidad?: number }) {
-			const qty = item.cantidad ?? 1;
-			const hasSelecciones = item.selecciones && Object.keys(item.selecciones).length > 0;
-			if (hasSelecciones) {
+		get count() { return items.reduce((s, i) => s + i.quantity, 0); },
+		get total() { return items.reduce((s, i) => s + i.price * i.quantity, 0); },
+		add(item: Omit<CartItem, 'quantity'> & { quantity?: number }) {
+			const qty = item.quantity ?? 1;
+			const hasSelections = item.selections && Object.keys(item.selections).length > 0;
+			if (hasSelections) {
 				const lineId = 'li-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6);
-				items.push({ ...item, cantidad: qty, lineId });
+				items.push({ ...item, quantity: qty, lineId });
 			} else {
 				const existing = items.find(
-					(i) => i.productoId === item.productoId && i.tiendaId === item.tiendaId && !i.lineId
+					(i) => i.productId === item.productId && i.storeId === item.storeId && !i.lineId
 				);
 				if (existing) {
-					existing.cantidad += qty;
+					existing.quantity += qty;
 				} else {
-					items.push({ productoId: item.productoId, tiendaId: item.tiendaId, precio: item.precio, esOferta: item.esOferta, notas: item.notas, cantidad: qty });
+					items.push({ productId: item.productId, storeId: item.storeId, price: item.price, isDeal: item.isDeal, notes: item.notes, quantity: qty });
 				}
 			}
 		},
 		updateQty(key: string, delta: number) {
-			const item = items.find((i) => (i.lineId ?? i.productoId) === key);
+			const item = items.find((i) => (i.lineId ?? i.productId) === key);
 			if (!item) return;
-			item.cantidad = Math.max(1, item.cantidad + delta);
+			item.quantity = Math.max(1, item.quantity + delta);
 		},
 		remove(key: string) {
-			const idx = items.findIndex((i) => (i.lineId ?? i.productoId) === key);
+			const idx = items.findIndex((i) => (i.lineId ?? i.productId) === key);
 			if (idx !== -1) items.splice(idx, 1);
 		},
 		updateItem(lineId: string, updates: Partial<CartItem>) {
@@ -115,74 +115,74 @@ function createDarkMode() {
 export const cart = createCart();
 export const darkMode = createDarkMode();
 
-const MOCK_PEDIDOS: Pedido[] = [
+const MOCK_ORDERS: Order[] = [
 	{
 		id: 'pm1',
-		numero: 'PC-2026-D5A1',
-		tiendaId: 't1',
+		number: 'PC-2026-D5A1',
+		storeId: 't1',
 		items: [
-			{ productoId: 'p1', cantidad: 1, precio: 28000 },
-			{ productoId: 'p3', cantidad: 2, precio: 12000 },
+			{ productId: 'p1', quantity: 1, price: 28000 },
+			{ productId: 'p3', quantity: 2, price: 12000 },
 		],
-		estado: 'shipping',
-		fecha: '18 may. 2026, 12:34',
+		status: 'shipping',
+		date: '18 may. 2026, 12:34',
 		total: 56000,
-		pasarela: 'ePayco',
-		direccion: 'Cra 10 #45-23, El Poblado, Medellín',
+		paymentGateway: 'ePayco',
+		address: 'Cra 10 #45-23, El Poblado, Medellín',
 		timeline: [
 			{ label: 'Pedido confirmado', time: '12:34', done: true, active: false },
 			{ label: 'Tienda preparando', time: '12:38', done: true, active: false },
 			{ label: 'Repartidor en camino', time: '12:55', done: true, active: true },
 			{ label: 'Entregado', time: '', done: false, active: false },
 		],
-		sugerenciaPendiente: false,
+		reviewPromptPending: false,
 	},
 	{
 		id: 'pm2',
-		numero: 'PC-2026-B7C2',
-		tiendaId: 't2',
-		items: [{ productoId: 'p5', cantidad: 3, precio: 4500 }],
-		estado: 'delivered',
-		fecha: '16 may. 2026, 10:15',
+		number: 'PC-2026-B7C2',
+		storeId: 't2',
+		items: [{ productId: 'p5', quantity: 3, price: 4500 }],
+		status: 'delivered',
+		date: '16 may. 2026, 10:15',
 		total: 17500,
-		pasarela: 'PayU',
-		direccion: 'Cra 10 #45-23, El Poblado, Medellín',
+		paymentGateway: 'PayU',
+		address: 'Cra 10 #45-23, El Poblado, Medellín',
 		timeline: [
 			{ label: 'Pedido confirmado', time: '10:15', done: true, active: false },
 			{ label: 'Tienda preparando', time: '10:20', done: true, active: false },
 			{ label: 'Repartidor en camino', time: '10:42', done: true, active: false },
 			{ label: 'Entregado', time: '11:05', done: true, active: false },
 		],
-		sugerenciaPendiente: true,
+		reviewPromptPending: true,
 	},
 	{
 		id: 'pm3',
-		numero: 'PC-2026-F2E8',
-		tiendaId: 't3',
-		items: [{ productoId: 'p8', cantidad: 1, precio: 89000 }],
-		estado: 'confirmed',
-		fecha: '18 may. 2026, 13:05',
+		number: 'PC-2026-F2E8',
+		storeId: 't3',
+		items: [{ productId: 'p8', quantity: 1, price: 89000 }],
+		status: 'confirmed',
+		date: '18 may. 2026, 13:05',
 		total: 93000,
-		pasarela: 'Wompi',
-		direccion: 'Cra 10 #45-23, El Poblado, Medellín',
+		paymentGateway: 'Wompi',
+		address: 'Cra 10 #45-23, El Poblado, Medellín',
 		timeline: [
 			{ label: 'Pedido confirmado', time: '13:05', done: true, active: true },
 			{ label: 'Tienda preparando', time: '', done: false, active: false },
 			{ label: 'Repartidor en camino', time: '', done: false, active: false },
 			{ label: 'Entregado', time: '', done: false, active: false },
 		],
-		sugerenciaPendiente: false,
+		reviewPromptPending: false,
 	},
 ];
 
-function createPedidos() {
-	let items = $state<Pedido[]>(
-		browser ? (JSON.parse(localStorage.getItem('pc_pedidos') ?? 'null') ?? MOCK_PEDIDOS) : MOCK_PEDIDOS
+function createOrders() {
+	let items = $state<Order[]>(
+		browser ? (JSON.parse(localStorage.getItem('pc_orders') ?? 'null') ?? MOCK_ORDERS) : MOCK_ORDERS
 	);
 
 	$effect.root(() => {
 		$effect(() => {
-			if (browser) localStorage.setItem('pc_pedidos', JSON.stringify(items));
+			if (browser) localStorage.setItem('pc_orders', JSON.stringify(items));
 		});
 	});
 
@@ -190,138 +190,138 @@ function createPedidos() {
 		get items() { return items; },
 		get count() { return items.length; },
 		get activeCount() {
-			return items.filter((p) => ['confirmed', 'preparing', 'shipping'].includes(p.estado)).length;
+			return items.filter((o) => ['confirmed', 'preparing', 'shipping'].includes(o.status)).length;
 		},
-		add(pedido: Omit<Pedido, 'id'>) {
-			items.push({ ...pedido, id: 'p-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6) });
+		add(order: Omit<Order, 'id'>) {
+			items.push({ ...order, id: 'p-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6) });
 		},
 		cancel(id: string) {
-			const p = items.find((p) => p.id === id);
-			if (p) p.estado = 'cancelled';
+			const o = items.find((o) => o.id === id);
+			if (o) o.status = 'cancelled';
 		},
-		markSugerenciaEnviada(id: string, recompensa?: string) {
-			const p = items.find((p) => p.id === id);
-			if (p) {
-				p.sugerenciaPendiente = false;
-				if (recompensa) p.recompensa = recompensa;
+		markReviewPromptSent(id: string, reward?: string) {
+			const o = items.find((o) => o.id === id);
+			if (o) {
+				o.reviewPromptPending = false;
+				if (reward) o.reward = reward;
 			}
 		},
 		get(id: string) {
-			return items.find((p) => p.id === id) ?? null;
+			return items.find((o) => o.id === id) ?? null;
 		},
 	};
 }
 
-export const pedidos = createPedidos();
+export const orders = createOrders();
 
-// ── Mensajes ──────────────────────────────────────────────────────────────────
+// ── Messages ──────────────────────────────────────────────────────────────────
 
-export type Mensaje = {
-	autor: 'cliente' | 'tienda';
-	texto: string;
-	hora: string;
+export type Message = {
+	author: 'customer' | 'store';
+	text: string;
+	time: string;
 };
 
-export type Conversacion = {
-	tiendaId: string;
-	noLeidos: number;
-	hace: string;
-	ultimo: string;
-	mensajes: Mensaje[];
+export type Conversation = {
+	storeId: string;
+	unreadCount: number;
+	timeAgo: string;
+	lastMessage: string;
+	messages: Message[];
 };
 
-const MOCK_CONVERSACIONES: Conversacion[] = [
+const MOCK_CONVERSATIONS: Conversation[] = [
 	{
-		tiendaId: 't1',
-		noLeidos: 2,
-		hace: '5 min',
-		ultimo: '¿Quieres agregar algo más a tu pedido? 😊',
-		mensajes: [
-			{ autor: 'cliente', texto: 'Hola, ¿tienen bandeja paisa disponible para hoy?', hora: '12:10' },
-			{ autor: 'tienda', texto: '¡Hola! Sí, tenemos disponibilidad hasta las 8 pm 🍲', hora: '12:12' },
-			{ autor: 'cliente', texto: 'Perfecto, acabo de hacer el pedido', hora: '12:15' },
-			{ autor: 'tienda', texto: '¡Lo recibimos! Tiempo estimado: 35 min 🛵', hora: '12:16' },
-			{ autor: 'tienda', texto: '¿Quieres agregar algo más a tu pedido? 😊', hora: '12:18' },
+		storeId: 't1',
+		unreadCount: 2,
+		timeAgo: '5 min',
+		lastMessage: '¿Quieres agregar algo más a tu pedido? 😊',
+		messages: [
+			{ author: 'customer', text: 'Hola, ¿tienen bandeja paisa disponible para hoy?', time: '12:10' },
+			{ author: 'store', text: '¡Hola! Sí, tenemos disponibilidad hasta las 8 pm 🍲', time: '12:12' },
+			{ author: 'customer', text: 'Perfecto, acabo de hacer el pedido', time: '12:15' },
+			{ author: 'store', text: '¡Lo recibimos! Tiempo estimado: 35 min 🛵', time: '12:16' },
+			{ author: 'store', text: '¿Quieres agregar algo más a tu pedido? 😊', time: '12:18' },
 		],
 	},
 	{
-		tiendaId: 't2',
-		noLeidos: 0,
-		hace: '2 h',
-		ultimo: 'Tu canasta está lista para entrega ✅',
-		mensajes: [
-			{ autor: 'cliente', texto: '¿Tienen aguacates Hass frescos hoy?', hora: '10:00' },
-			{ autor: 'tienda', texto: '¡Sí! Llegaron esta mañana del campo 🥑', hora: '10:03' },
-			{ autor: 'cliente', texto: 'Genial, voy a pedir 3 y la canasta semanal', hora: '10:05' },
-			{ autor: 'tienda', texto: 'Tu canasta está lista para entrega ✅', hora: '10:20' },
+		storeId: 't2',
+		unreadCount: 0,
+		timeAgo: '2 h',
+		lastMessage: 'Tu canasta está lista para entrega ✅',
+		messages: [
+			{ author: 'customer', text: '¿Tienen aguacates Hass frescos hoy?', time: '10:00' },
+			{ author: 'store', text: '¡Sí! Llegaron esta mañana del campo 🥑', time: '10:03' },
+			{ author: 'customer', text: 'Genial, voy a pedir 3 y la canasta semanal', time: '10:05' },
+			{ author: 'store', text: 'Tu canasta está lista para entrega ✅', time: '10:20' },
 		],
 	},
 	{
-		tiendaId: 't4',
-		noLeidos: 1,
-		hace: 'ayer',
-		ultimo: 'El Hub USB-C que pediste tiene garantía de 1 año 🔧',
-		mensajes: [
-			{ autor: 'cliente', texto: '¿El hub USB-C es compatible con MacBook Pro M3?', hora: 'ayer 15:30' },
-			{ autor: 'tienda', texto: '¡Sí! Funciona perfecto con todos los MacBook desde 2020 💻', hora: 'ayer 15:35' },
-			{ autor: 'tienda', texto: 'El Hub USB-C que pediste tiene garantía de 1 año 🔧', hora: 'ayer 15:36' },
+		storeId: 't4',
+		unreadCount: 1,
+		timeAgo: 'ayer',
+		lastMessage: 'El Hub USB-C que pediste tiene garantía de 1 año 🔧',
+		messages: [
+			{ author: 'customer', text: '¿El hub USB-C es compatible con MacBook Pro M3?', time: 'ayer 15:30' },
+			{ author: 'store', text: '¡Sí! Funciona perfecto con todos los MacBook desde 2020 💻', time: 'ayer 15:35' },
+			{ author: 'store', text: 'El Hub USB-C que pediste tiene garantía de 1 año 🔧', time: 'ayer 15:36' },
 		],
 	},
 ];
 
-function createMensajes() {
-	let convs = $state<Conversacion[]>(
-		browser ? (JSON.parse(localStorage.getItem('pc_mensajes') ?? 'null') ?? MOCK_CONVERSACIONES) : MOCK_CONVERSACIONES
+function createMessages() {
+	let convs = $state<Conversation[]>(
+		browser ? (JSON.parse(localStorage.getItem('pc_messages') ?? 'null') ?? MOCK_CONVERSATIONS) : MOCK_CONVERSATIONS
 	);
 
 	$effect.root(() => {
 		$effect(() => {
-			if (browser) localStorage.setItem('pc_mensajes', JSON.stringify(convs));
+			if (browser) localStorage.setItem('pc_messages', JSON.stringify(convs));
 		});
 	});
 
 	return {
-		get conversaciones() { return convs; },
-		get totalNoLeidos() { return convs.reduce((s, c) => s + c.noLeidos, 0); },
-		getConv(tiendaId: string) {
-			return convs.find((c) => c.tiendaId === tiendaId) ?? null;
+		get conversations() { return convs; },
+		get totalUnread() { return convs.reduce((s, c) => s + c.unreadCount, 0); },
+		getConversation(storeId: string) {
+			return convs.find((c) => c.storeId === storeId) ?? null;
 		},
-		markRead(tiendaId: string) {
-			const c = convs.find((c) => c.tiendaId === tiendaId);
-			if (c) c.noLeidos = 0;
+		markRead(storeId: string) {
+			const c = convs.find((c) => c.storeId === storeId);
+			if (c) c.unreadCount = 0;
 		},
-		send(tiendaId: string, texto: string) {
-			let c = convs.find((c) => c.tiendaId === tiendaId);
+		send(storeId: string, text: string) {
+			let c = convs.find((c) => c.storeId === storeId);
 			if (!c) {
-				const nuevo: Conversacion = {
-					tiendaId,
-					noLeidos: 0,
-					hace: 'ahora',
-					ultimo: texto,
-					mensajes: [],
+				const newConv: Conversation = {
+					storeId,
+					unreadCount: 0,
+					timeAgo: 'ahora',
+					lastMessage: text,
+					messages: [],
 				};
-				convs.unshift(nuevo);
+				convs.unshift(newConv);
 				c = convs[0];
 			}
-			const hora = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
-			c.mensajes.push({ autor: 'cliente', texto, hora });
-			c.ultimo = texto;
-			c.hace = 'ahora';
-			c.noLeidos = 0;
+			const time = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+			c.messages.push({ author: 'customer', text, time });
+			c.lastMessage = text;
+			c.timeAgo = 'ahora';
+			c.unreadCount = 0;
 		},
-		fakeReply(tiendaId: string) {
-			const c = convs.find((c) => c.tiendaId === tiendaId);
+		fakeReply(storeId: string) {
+			const c = convs.find((c) => c.storeId === storeId);
 			if (!c) return;
-			const hora = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
-			const respuesta = '¡Recibido! Te responderemos en un momento 🙌';
-			c.mensajes.push({ autor: 'tienda', texto: respuesta, hora });
-			c.ultimo = respuesta;
-			c.hace = 'ahora';
+			const time = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+			const reply = '¡Recibido! Te responderemos en un momento 🙌';
+			c.messages.push({ author: 'store', text: reply, time });
+			c.lastMessage = reply;
+			c.timeAgo = 'ahora';
 		},
 	};
 }
 
-export const mensajes = createMensajes();
+export const messages = createMessages();
 
 let toastMsg = $state<string | null>(null);
 let toastTimer: ReturnType<typeof setTimeout> | null = null;

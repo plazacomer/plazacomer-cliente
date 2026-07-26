@@ -27,7 +27,7 @@
 	}
 
 	function addToCart(productoId: string, tiendaId: string, precio: number) {
-		cart.add({ productoId, tiendaId, precio });
+		cart.add({ productId: productoId, storeId: tiendaId, price: precio });
 		toast.show('✓ Agregado al carrito');
 	}
 </script>

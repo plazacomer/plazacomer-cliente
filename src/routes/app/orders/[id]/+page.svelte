@@ -1,21 +1,21 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import { pedidos, toast } from '$lib/stores/app.svelte';
+	import { orders, toast } from '$lib/stores/app.svelte';
 	import { getStore, getProduct, getCategory } from '$lib/data/mock';
 	import { fmtCOP } from '$lib/utils';
 	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
-	import Badge from '$lib/components/ui/Badge.svelte';
-	import Button from '$lib/components/ui/Button.svelte';
+	import { Badge } from '$lib/components/ui/badge';
+	import { Button } from '$lib/components/ui/button';
 	import Icon from '$lib/components/ui/Icon.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
-	import type { PedidoEstado } from '$lib/stores/app.svelte';
+	import type { OrderStatus } from '$lib/stores/app.svelte';
 
 	const id = $derived($page.params.id);
-	const pedido = $derived(pedidos.get(id));
-	const tienda = $derived(pedido ? getStore(pedido.tiendaId) : null);
+	const pedido = $derived(orders.get(id));
+	const tienda = $derived(pedido ? getStore(pedido.storeId) : null);
 
-	const estadoMap: Record<PedidoEstado, { variant: 'brand' | 'accent' | 'success' | 'error' | 'default'; label: string }> = {
+	const estadoMap: Record<OrderStatus, { variant: 'brand' | 'accent' | 'success' | 'error' | 'default'; label: string }> = {
 		confirmed: { variant: 'brand', label: '✓ Confirmado' },
 		preparing: { variant: 'accent', label: '⏳ Preparando' },
 		shipping:  { variant: 'brand', label: '🚚 En camino' },
@@ -23,8 +23,8 @@
 		cancelled: { variant: 'error', label: '✕ Cancelado' },
 	};
 
-	const puedeCancelar = $derived(pedido && ['confirmed', 'preparing'].includes(pedido.estado));
-	const puedeCalificar = $derived(pedido?.estado === 'delivered');
+	const puedeCancelar = $derived(pedido && ['confirmed', 'preparing'].includes(pedido.status));
+	const puedeCalificar = $derived(pedido?.status === 'delivered');
 
 	// Buzón de sugerencias
 	let buzonOpen = $state(false);
@@ -39,7 +39,7 @@
 		buzonError = '';
 		buzonSubmitted = true;
 		setTimeout(() => {
-			pedidos.markSugerenciaEnviada(id, '🎁 +20 puntos de recompensa');
+			orders.markReviewPromptSent(id, '🎁 +20 puntos de recompensa');
 			buzonOpen = false;
 			buzonSubmitted = false;
 			buzonRating = 0;
@@ -61,9 +61,9 @@
 
 	function handleCancelConfirm() {
 		if (!motivoSeleccionado) return;
-		pedidos.cancel(id);
+		orders.cancel(id);
 		cancelOpen = false;
-		toast.show('Pedido ' + pedido?.numero + ' cancelado');
+		toast.show('Pedido ' + pedido?.number + ' cancelado');
 	}
 
 	function handleMapCTA() {
@@ -83,7 +83,7 @@
 		</Button>
 	</div>
 {:else}
-	{@const estado = estadoMap[pedido.estado]}
+	{@const estado = estadoMap[pedido.status]}
 
 	<div class="max-w-[800px] mx-auto px-4 pt-5 pb-12 animate-fade-in">
 		<!-- Header -->
@@ -96,8 +96,8 @@
 				<Icon name="arrowLeft" size={18} />
 			</button>
 			<div>
-				<h1 class="font-display text-xl font-extrabold">Pedido {pedido.numero}</h1>
-				<div class="text-xs" style="color:var(--c-text-muted)">{pedido.fecha}</div>
+				<h1 class="font-display text-xl font-extrabold">Pedido {pedido.number}</h1>
+				<div class="text-xs" style="color:var(--c-text-muted)">{pedido.date}</div>
 			</div>
 		</div>
 
@@ -120,7 +120,7 @@
 				</div>
 
 				<!-- Map CTA -->
-				{#if pedido.estado === 'shipping' || pedido.estado === 'preparing'}
+				{#if pedido.status === 'shipping' || pedido.status === 'preparing'}
 					<button
 						onclick={handleMapCTA}
 						class="relative overflow-hidden flex items-center gap-3.5 p-3.5 rounded-2xl border text-left w-full"
@@ -205,7 +205,7 @@
 				</div>
 
 				<!-- Buzón sugerencias (delivered) -->
-				{#if pedido.estado === 'delivered'}
+				{#if pedido.status === 'delivered'}
 					<div
 						class="rounded-2xl border p-5"
 						style="background:linear-gradient(135deg, var(--c-promo-light), var(--c-bg-card));border-color:var(--c-promo)"
@@ -224,7 +224,7 @@
 								</div>
 							</div>
 						</div>
-						{#if pedido.sugerenciaPendiente}
+						{#if pedido.reviewPromptPending}
 							<Button variant="promo" fullWidth onclick={() => (buzonOpen = true)}>
 								Escribir sugerencia
 							</Button>
@@ -234,9 +234,9 @@
 								style="color:var(--c-text-muted)"
 							>
 								✓ Ya enviaste tu sugerencia
-								{#if pedido.recompensa}
+								{#if pedido.reward}
 									<div class="mt-1.5 font-semibold" style="color:var(--c-accent)">
-										{pedido.recompensa}
+										{pedido.reward}
 									</div>
 								{/if}
 							</div>
@@ -253,7 +253,7 @@
 				<h3 class="font-display text-[15px] font-bold mb-3.5">Productos</h3>
 				<div class="flex flex-col gap-2.5 mb-3.5">
 					{#each pedido.items as item}
-						{@const p = getProduct(item.productoId)}
+						{@const p = getProduct(item.productId)}
 						<div class="flex items-center gap-2.5">
 							<div
 								class="w-10 h-10 rounded-[10px] flex items-center justify-center text-xl shrink-0"
@@ -263,9 +263,9 @@
 							</div>
 							<div class="flex-1 min-w-0">
 								<div class="text-sm font-semibold truncate">{p.name}</div>
-								<div class="text-xs" style="color:var(--c-text-muted)">x{item.cantidad}</div>
+								<div class="text-xs" style="color:var(--c-text-muted)">x{item.quantity}</div>
 							</div>
-							<span class="font-mono text-sm">{fmtCOP(item.precio * item.cantidad)}</span>
+							<span class="font-mono text-sm">{fmtCOP(item.price * item.quantity)}</span>
 						</div>
 					{/each}
 				</div>
@@ -274,13 +274,13 @@
 
 				<div class="flex justify-between text-sm mb-2">
 					<span style="color:var(--c-text-secondary)">Pagado con</span>
-					<span class="font-semibold">{pedido.pasarela}</span>
+					<span class="font-semibold">{pedido.paymentGateway}</span>
 				</div>
-				{#if pedido.direccion}
+				{#if pedido.address}
 					<div class="flex justify-between items-start text-sm mb-3">
 						<span style="color:var(--c-text-secondary)">Entrega</span>
 						<span class="text-right text-xs font-medium max-w-[160px]" style="color:var(--c-text-primary)">
-							{pedido.direccion}
+							{pedido.address}
 						</span>
 					</div>
 				{/if}
@@ -338,7 +338,7 @@
 						<div>
 							<h2 class="font-display text-lg font-extrabold">Buzón de sugerencia</h2>
 							<div class="text-xs" style="color:var(--c-text-muted)">
-								{pedido.numero} · {tienda.name}
+								{pedido.number} · {tienda.name}
 							</div>
 						</div>
 					</div>
@@ -408,7 +408,7 @@
 					style="background:var(--c-bg-secondary)"
 				>
 					<div class="text-xs mb-0.5" style="color:var(--c-text-muted)">Pedido</div>
-					<div class="font-semibold">{pedido.numero} · {tienda.name}</div>
+					<div class="font-semibold">{pedido.number} · {tienda.name}</div>
 					<div class="font-mono text-sm mt-0.5" style="color:var(--c-text-secondary)">
 						{fmtCOP(pedido.total)}
 					</div>

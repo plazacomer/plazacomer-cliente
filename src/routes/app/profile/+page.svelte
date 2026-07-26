@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { USUARIO, DIRECCIONES, type Direccion } from '$lib/data/mock';
-	import { darkMode, pedidos } from '$lib/stores/app.svelte';
+	import { CURRENT_USER, ADDRESSES, type Address } from '$lib/data/mock';
+	import { darkMode, orders } from '$lib/stores/app.svelte';
 	import { citas } from '$lib/stores/citas.svelte';
 	import { favoritos } from '$lib/stores/favoritos.svelte';
 	import Icon from '$lib/components/ui/Icon.svelte';
-	import Badge from '$lib/components/ui/Badge.svelte';
+	import { Badge } from '$lib/components/ui/badge';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Input } from '$lib/components/ui/input';
 
@@ -16,15 +16,15 @@
 		{ nombre: 'Oro',    min: 250, max: 500,  color: '#F59E0B', emoji: '🥇' },
 		{ nombre: 'Platino',min: 500, max: 1000, color: '#06B6D4', emoji: '💎' },
 	];
-	const nivelActual = NIVELES.find(n => n.nombre === USUARIO.nivel) ?? NIVELES[2];
-	const puntosParaSiguiente = nivelActual.max - USUARIO.recompensas;
-	const progresoBar = Math.min(100, Math.round(((USUARIO.recompensas - nivelActual.min) / (nivelActual.max - nivelActual.min)) * 100));
+	const nivelActual = NIVELES.find(n => n.nombre === CURRENT_USER.tier) ?? NIVELES[2];
+	const puntosParaSiguiente = nivelActual.max - CURRENT_USER.rewards;
+	const progresoBar = Math.min(100, Math.round(((CURRENT_USER.rewards - nivelActual.min) / (nivelActual.max - nivelActual.min)) * 100));
 	const nivelSig = NIVELES[NIVELES.indexOf(nivelActual) + 1];
 
 	// ── Direcciones ──
-	let direcciones = $state<Direccion[]>([...DIRECCIONES]);
+	let direcciones = $state<Address[]>([...ADDRESSES]);
 	let dirModalOpen = $state(false);
-	let dirEditando = $state<Direccion | null>(null);
+	let dirEditando = $state<Address | null>(null);
 
 	// form state
 	let dirLabel = $state('');
@@ -38,9 +38,9 @@
 		dirModalOpen = true;
 	}
 
-	function abrirEditarDireccion(d: Direccion) {
+	function abrirEditarDireccion(d: Address) {
 		dirEditando = d;
-		dirLabel = d.label; dirDireccion = d.direccion; dirBarrio = d.barrio; dirCiudad = d.ciudad;
+		dirLabel = d.label; dirDireccion = d.address; dirBarrio = d.neighborhood; dirCiudad = d.city;
 		dirModalOpen = true;
 	}
 
@@ -48,13 +48,13 @@
 		if (!dirLabel.trim() || !dirDireccion.trim()) return;
 		if (dirEditando) {
 			direcciones = direcciones.map(d => d.id === dirEditando!.id
-				? { ...d, label: dirLabel, direccion: dirDireccion, barrio: dirBarrio, ciudad: dirCiudad }
+				? { ...d, label: dirLabel, address: dirDireccion, neighborhood: dirBarrio, city: dirCiudad }
 				: d);
 		} else {
-			const nueva: Direccion = {
+			const nueva: Address = {
 				id: `d${Date.now()}`,
-				label: dirLabel, direccion: dirDireccion,
-				barrio: dirBarrio, ciudad: dirCiudad, principal: false,
+				label: dirLabel, address: dirDireccion,
+				neighborhood: dirBarrio, city: dirCiudad, isPrimary: false,
 			};
 			direcciones = [...direcciones, nueva];
 		}
@@ -68,7 +68,7 @@
 	}
 
 	function marcarPrincipal(id: string) {
-		direcciones = direcciones.map(d => ({ ...d, principal: d.id === id }));
+		direcciones = direcciones.map(d => ({ ...d, isPrimary: d.id === id }));
 	}
 </script>
 
@@ -78,15 +78,15 @@
 	<div class="flex items-center gap-4 p-5 rounded-2xl border border-[var(--c-border-soft)] mb-4"
 		style="background:var(--c-bg-card)">
 		<div class="w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold font-display text-white shrink-0"
-			style="background:{USUARIO.color}">
-			{USUARIO.iniciales}
+			style="background:{CURRENT_USER.color}">
+			{CURRENT_USER.initials}
 		</div>
 		<div class="flex-1 min-w-0">
-			<h2 class="font-display text-[17px] font-bold">{USUARIO.nombre}</h2>
-			<div class="text-xs mt-0.5 truncate" style="color:var(--c-text-muted)">{USUARIO.email}</div>
+			<h2 class="font-display text-[17px] font-bold">{CURRENT_USER.name}</h2>
+			<div class="text-xs mt-0.5 truncate" style="color:var(--c-text-muted)">{CURRENT_USER.email}</div>
 			<div class="flex items-center gap-2 mt-1.5">
 				<Badge variant="accent">{nivelActual.emoji} Club {nivelActual.nombre}</Badge>
-				<span class="text-xs font-semibold" style="color:var(--c-text-muted)">{USUARIO.recompensas} pts</span>
+				<span class="text-xs font-semibold" style="color:var(--c-text-muted)">{CURRENT_USER.rewards} pts</span>
 			</div>
 		</div>
 	</div>
@@ -103,7 +103,7 @@
 					<div class="font-display text-[18px] font-extrabold">{nivelActual.emoji} Nivel {nivelActual.nombre}</div>
 				</div>
 				<div class="text-right">
-					<div class="font-mono text-2xl font-black" style="color:{nivelActual.color}">{USUARIO.recompensas}</div>
+					<div class="font-mono text-2xl font-black" style="color:{nivelActual.color}">{CURRENT_USER.rewards}</div>
 					<div class="text-[11px]" style="color:var(--c-text-muted)">puntos</div>
 				</div>
 			</div>
@@ -124,9 +124,9 @@
 		<!-- Stats row -->
 		<div class="grid grid-cols-3 divide-x" style="divide-color:var(--c-border-soft)">
 			{#each [
-				{ label: 'Pedidos', value: USUARIO.pedidosTotal },
-				{ label: 'Puntos', value: USUARIO.recompensas },
-				{ label: 'Miembro desde', value: USUARIO.miembroDesde },
+				{ label: 'Pedidos', value: CURRENT_USER.totalOrders },
+				{ label: 'Puntos', value: CURRENT_USER.rewards },
+				{ label: 'Miembro desde', value: CURRENT_USER.memberSince },
 			] as s}
 				<div class="py-3 text-center">
 					<div class="font-display font-extrabold text-[15px]">{s.value}</div>
@@ -184,21 +184,21 @@
 				<div class="flex items-center gap-3 px-4 py-3">
 					<button onclick={() => marcarPrincipal(dir.id)}
 						class="w-4 h-4 rounded-full border-2 shrink-0 flex items-center justify-center transition-all"
-						style="border-color:{dir.principal ? 'var(--c-brand)' : 'var(--c-border)'};background:{dir.principal ? 'var(--c-brand)' : 'transparent'}">
-						{#if dir.principal}
+						style="border-color:{dir.isPrimary ? 'var(--c-brand)' : 'var(--c-border)'};background:{dir.isPrimary ? 'var(--c-brand)' : 'transparent'}">
+						{#if dir.isPrimary}
 							<div class="w-1.5 h-1.5 rounded-full bg-white"></div>
 						{/if}
 					</button>
 					<div class="flex-1 min-w-0">
 						<div class="text-[13.5px] font-semibold flex items-center gap-1.5">
 							{dir.label}
-							{#if dir.principal}
+							{#if dir.isPrimary}
 								<span class="text-[10px] font-bold px-1.5 py-0.5 rounded-full"
 									style="background:rgba(124,58,237,.1);color:var(--c-brand)">Principal</span>
 							{/if}
 						</div>
 						<div class="text-[12px] truncate" style="color:var(--c-text-muted)">
-							{dir.direccion}, {dir.barrio}, {dir.ciudad}
+							{dir.address}, {dir.neighborhood}, {dir.city}
 						</div>
 					</div>
 					<div class="flex items-center gap-1 shrink-0">
@@ -233,9 +233,9 @@
 			style="color:var(--c-text-primary)">
 			<Icon name="package" size={19} color="var(--c-text-secondary)"/>
 			<span class="text-sm font-medium flex-1">Mis pedidos</span>
-			{#if pedidos.activeCount > 0}
+			{#if orders.activeCount > 0}
 				<span class="text-[11px] font-bold text-white min-w-5 h-5 px-1 rounded-full flex items-center justify-center"
-					style="background:var(--c-brand)">{pedidos.activeCount}</span>
+					style="background:var(--c-brand)">{orders.activeCount}</span>
 			{/if}
 			<Icon name="arrowRight" size={16} color="var(--c-text-muted)"/>
 		</button>

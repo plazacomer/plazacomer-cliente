@@ -3,7 +3,7 @@
 	import { ESTADOS_CITA, fmtFechaCita, type EstadoCita, type Cita } from '$lib/stores/citas.svelte';
 	import { fmtCOP } from '$lib/utils';
 	import Icon from '$lib/components/ui/Icon.svelte';
-	import Badge from '$lib/components/ui/Badge.svelte';
+	import { Badge } from '$lib/components/ui/badge';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Input } from '$lib/components/ui/input';
 
@@ -38,12 +38,12 @@
 		],
 	};
 
-	function estadoVariant(estado: EstadoCita): 'brand' | 'accent' | 'success' | 'error' | 'default' {
+	function estadoVariant(estado: EstadoCita): 'brand' | 'accent' | 'success' | 'error' | 'secondary' {
 		if (['completada', 'atendida', 'aceptada'].includes(estado)) return 'success';
 		if (['cancelada', 'cerrada'].includes(estado))               return 'error';
 		if (estado === 'confirmada')                                  return 'brand';
 		if (estado === 'cotizada')                                    return 'accent';
-		return 'default';
+		return 'secondary';
 	}
 
 	let expandido = $state<string | null>(null);

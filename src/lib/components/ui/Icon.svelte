@@ -6,7 +6,7 @@
 		Send, Tag, CreditCard, Coins, AlertTriangle, Package, Truck, Map, Shield, Phone,
 		Timer, Box, Camera, Users, Receipt, Calendar, ArrowUp, ArrowDown,
 		type Icon as LucideIcon,
-	} from 'lucide-svelte';
+	} from '@lucide/svelte';
 
 	type Props = {
 		name: string;
