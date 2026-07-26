@@ -49,7 +49,7 @@
 </script>
 
 <Dialog.Root {open} onOpenChange={(v) => { if (!v) onclose(); }}>
-	<Dialog.Content showCloseButton={false} class="relative md:max-w-lg p-0 gap-0 flex flex-col max-h-[90vh] overflow-hidden">
+	<Dialog.Content showCloseButton={false} class="md:max-w-lg p-0 gap-0 flex flex-col max-h-[90vh] overflow-hidden">
 		<!-- Header -->
 		<div class="flex items-center justify-between px-5 pt-5 pb-3 shrink-0">
 			<div>
