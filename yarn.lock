@@ -1042,10 +1042,10 @@
   resolved "https://registry.npmjs.org/@lix-js/server-protocol-schema/-/server-protocol-schema-0.1.1.tgz"
   integrity sha512-jBeALB6prAbtr5q4vTuxnRZZv1M2rKe8iNqRQhFJ4Tv7150unEa0vKyz0hs8Gl3fUGsWaNJBh3J8++fpbrpRBQ==
 
-"@lucide/svelte@^1.25.0":
-  version "1.25.0"
-  resolved "https://registry.yarnpkg.com/@lucide/svelte/-/svelte-1.25.0.tgz#9dd22312cdf89456d980bcee2004ee0c0f687d9d"
-  integrity sha512-v9m+dD68jxVnqkU3K59mG/RSRFlPGzmKCGSyMfnXcaGv9jODDQMyQkcp1CGvk3Y/cUj9v7f8rw1n//K0B53xGQ==
+"@lucide/svelte@^1.27.0":
+  version "1.27.0"
+  resolved "https://registry.yarnpkg.com/@lucide/svelte/-/svelte-1.27.0.tgz#28b3ab61e5b828fa64f3c6d823b4060d6fe7ac5f"
+  integrity sha512-qzNBHdqy/MKp2qxuy/DcYELuep6h19fjo+4ech8fZsS4GtZeBtg5jgCTRQvLvwhppt0mhRN6qt8Nt8rPb/J4Ag==
 
 "@napi-rs/wasm-runtime@^1.1.4":
   version "1.1.6"
