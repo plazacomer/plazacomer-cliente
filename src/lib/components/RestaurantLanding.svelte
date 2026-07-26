@@ -138,13 +138,13 @@
 	</button>
 {/snippet}
 
-<div class="max-w-2xl mx-auto pb-28">
+<div class="max-w-5xl mx-auto pb-28 md:pb-16">
 
 	<!-- ── Banner compacto ── -->
-	<div class="relative overflow-hidden" style="height:150px;background:{tienda.bannerGradient}">
+	<div class="relative overflow-hidden h-[150px] md:h-[220px] md:rounded-b-[22px]" style="background:{tienda.bannerGradient}">
 		<div class="absolute inset-0"
 			style="background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 1px,transparent 1px,transparent 14px)"></div>
-		<div class="absolute right-4 bottom-2 text-[72px] leading-none drop-shadow-[0_8px_20px_rgba(0,0,0,.25)] select-none">
+		<div class="absolute right-4 md:right-10 bottom-2 md:bottom-4 text-[72px] md:text-[110px] leading-none drop-shadow-[0_8px_20px_rgba(0,0,0,.25)] select-none">
 			{tienda.emoji}
 		</div>
 		<button onclick={goBack} aria-label="Volver"
@@ -159,7 +159,7 @@
 		</button>
 	</div>
 
-	<div class="px-5">
+	<div class="px-5 md:px-6">
 
 		<!-- ── Identidad ── -->
 		<div class="flex items-end gap-3 -mt-7 relative">
@@ -167,7 +167,7 @@
 				<TiendaLogo {tienda} size={64}/>
 			</div>
 			<div class="flex-1 min-w-0 pb-1">
-				<h1 class="font-display text-xl font-extrabold leading-tight truncate">{tienda.name}</h1>
+				<h1 class="font-display text-xl md:text-2xl font-extrabold leading-tight truncate">{tienda.name}</h1>
 			</div>
 		</div>
 
@@ -188,13 +188,13 @@
 		<!-- ── Acciones ── -->
 		<div class="flex gap-2 mt-3.5">
 			<button onclick={() => (siguiendo = !siguiendo)}
-				class="flex-1 py-2.5 rounded-xl font-semibold text-[13px] border flex items-center justify-center gap-1.5"
+				class="flex-1 md:flex-none md:min-w-[160px] py-2.5 rounded-xl font-semibold text-[13px] border flex items-center justify-center gap-1.5"
 				style="background:{siguiendo ? 'var(--c-bg-secondary)' : 'var(--c-bg-card)'};border-color:var(--c-border);color:var(--c-text-primary)">
 				<Icon name={siguiendo ? 'check' : 'heart'} size={15}/>
 				{siguiendo ? 'Siguiendo' : 'Seguir'}
 			</button>
 			<button onclick={goChat}
-				class="flex-1 py-2.5 rounded-xl font-semibold text-[13px] border flex items-center justify-center gap-1.5"
+				class="flex-1 md:flex-none md:min-w-[160px] py-2.5 rounded-xl font-semibold text-[13px] border flex items-center justify-center gap-1.5"
 				style="background:var(--c-bg-card);border-color:var(--c-border);color:var(--c-text-primary)">
 				<Icon name="chat" size={15}/>
 				Mensaje
@@ -243,7 +243,7 @@
 						<p class="text-sm mt-1">Esta tienda está armando su menú.</p>
 					</div>
 				{:else}
-					<div class="flex flex-col gap-2.5">
+					<div class="flex flex-col gap-2.5 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-3">
 						{#each menu() as p}
 							{@render menuItem(p)}
 						{/each}
@@ -271,7 +271,7 @@
 					<p class="text-sm mt-1">Prueba con otro nombre.</p>
 				</div>
 			{:else}
-				<div class="flex flex-col gap-2.5">
+				<div class="flex flex-col gap-2.5 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-3">
 					{#each searchResults as p}
 						{@render menuItem(p)}
 					{/each}
@@ -288,7 +288,7 @@
 					<p class="text-sm mt-1">{tienda.name} no tiene promos por ahora, vuelve pronto.</p>
 				</div>
 			{:else}
-				<div class="grid grid-cols-2 gap-3">
+				<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
 					{#each ofertas as o}
 						{@const p = productos.find((pr) => pr.id === o.productId)}
 						{#if p}
@@ -325,7 +325,7 @@
 		{:else if storeUi.tab === 'info'}
 
 			{@render backToMenu()}
-			<div class="flex flex-col gap-2.5">
+			<div class="flex flex-col gap-2.5 md:grid md:grid-cols-2 md:gap-3">
 				<div class="flex gap-3 p-3.5 rounded-xl border" style="background:var(--c-bg-card);border-color:var(--c-border-soft)">
 					<div class="w-9 h-9 rounded-[10px] flex items-center justify-center shrink-0" style="background:{accent}18;color:{accent}">
 						<Icon name="location" size={16}/>
@@ -379,8 +379,8 @@
 
 {#if cart.count > 0}
 	<button onclick={() => goto('/app/cart')}
-		class="fixed left-4 right-4 z-50 flex items-center gap-3 px-4 py-3.5 rounded-2xl text-white font-semibold text-[14px]"
-		style="bottom:calc(70px + env(safe-area-inset-bottom));background:{accent};box-shadow:0 8px 24px {accent}66">
+		class="fixed left-4 right-4 md:left-1/2 md:right-auto md:w-full md:max-w-md md:-translate-x-1/2 bottom-[calc(70px+env(safe-area-inset-bottom))] lg:bottom-6 z-50 flex items-center gap-3 px-4 py-3.5 rounded-2xl text-white font-semibold text-[14px]"
+		style="background:{accent};box-shadow:0 8px 24px {accent}66">
 		<span class="w-6 h-6 rounded-full flex items-center justify-center text-[12px] font-bold shrink-0" style="background:rgba(255,255,255,.25)">{cart.count}</span>
 		<span class="flex-1 text-left">Ver carrito</span>
 		<span class="font-mono">{fmtCOP(cart.total)}</span>
