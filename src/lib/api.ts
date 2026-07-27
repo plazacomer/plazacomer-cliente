@@ -1,7 +1,7 @@
 import { authStore } from '$lib/stores/auth.svelte';
 
 /**
- * El backend (docs/API.md en plazacomer-claudflare) habla snake_case porque así son
+ * El backend (docs/API.md en plazacomer-cloudflare) habla snake_case porque así son
  * los structs de Rust y el schema de D1 -- cero traducción de ese lado. El resto de
  * este cliente es camelCase (es lo idiomático en TS/Svelte). Este archivo es el único
  * punto donde se cruza esa frontera, para no ensuciar el resto del código con casing
@@ -60,7 +60,7 @@ type ApiFetchOptions = {
 };
 
 /**
- * Wrapper único para hablar con los workers de plazacomer-claudflare: adjunta el token
+ * Wrapper único para hablar con los workers de plazacomer-cloudflare: adjunta el token
  * de Firebase, convierte el body a snake_case antes de mandarlo, convierte la respuesta
  * a camelCase, y lanza ApiError si la respuesta trae el envoltorio de error.
  */

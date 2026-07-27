@@ -26,7 +26,7 @@ es un error del documento — repórtalo, no decidas tú.
 **No toques estos archivos/carpetas bajo ninguna circunstancia en este plan:**
 - `src/lib/gen/**` (tipos generados desde Protobuf)
 - `src/lib/*.ts` que hablan con los Workers (`catalog.ts`, `user.ts`, etc.)
-- Cualquier `*.proto` (no existe en este repo, vive en `plazacomer-claudflare`)
+- Cualquier `*.proto` (no existe en este repo, vive en `plazacomer-cloudflare`)
 - `messages/es.json`, `messages/en.json` (contenido de i18n)
 - Nombres de carpetas dentro de `src/routes/**` (deben seguir en inglés, no las renombres)
 - No agregues ningún string de texto visible para el usuario que no exista ya. Si un componente

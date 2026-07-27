@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user.proto.
  */
 export const file_user: GenFile = /*@__PURE__*/
-  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIj8KEUNyZWF0ZVVzZXJSZXF1ZXN0EgwKBG5hbWUYASABKAkSDQoFZW1haWwYAiABKAkSDQoFcGhvbmUYAyABKAkiTQoPR2V0VXNlclJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIYCgR1c2VyGAMgASgLMgoudXNlci5Vc2VyIksKEVVwZGF0ZVVzZXJSZXF1ZXN0EgoKAmlkGAEgASgJEgwKBG5hbWUYAiABKAkSDQoFZW1haWwYAyABKAkSDQoFcGhvbmUYBCABKAkiUAoRTGlzdFVzZXJzUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhkKBXVzZXJzGAMgAygLMgoudXNlci5Vc2VyIj8KD0dlbmVyYWxSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSCgoCaWQYAyABKAkiUgoEVXNlchIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJEg0KBWVtYWlsGAMgASgJEg0KBXBob25lGAQgASgJEhIKCmNyZWF0ZWRfYXQYBSABKANiBnByb3RvMw");
+  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIj8KEUNyZWF0ZVVzZXJSZXF1ZXN0EgwKBG5hbWUYASABKAkSDQoFZW1haWwYAiABKAkSDQoFcGhvbmUYAyABKAkiTQoPR2V0VXNlclJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIYCgR1c2VyGAMgASgLMgoudXNlci5Vc2VyIksKEVVwZGF0ZVVzZXJSZXF1ZXN0EgoKAmlkGAEgASgJEgwKBG5hbWUYAiABKAkSDQoFZW1haWwYAyABKAkSDQoFcGhvbmUYBCABKAkiUAoRTGlzdFVzZXJzUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhkKBXVzZXJzGAMgAygLMgoudXNlci5Vc2VyIj8KD0dlbmVyYWxSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSCgoCaWQYAyABKAkidAoEVXNlchIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJEg0KBWVtYWlsGAMgASgJEg0KBXBob25lGAQgASgJEhIKCmNyZWF0ZWRfYXQYBSABKAMSDwoHYmxvY2tlZBgGIAEoCBIPCgdyb2xlX2lkGAcgASgJIiUKElNldFVzZXJSb2xlUmVxdWVzdBIPCgdyb2xlX2lkGAEgASgJIroBCgdUYXhEYXRhEg8KB3VzZXJfaWQYASABKAkSDgoGdGF4X2lkGAIgASgJEhAKCHRheF9uYW1lGAMgASgJEhIKCnRheF9yZWdpbWUYBCABKAkSFgoOZmlzY2FsX2FkZHJlc3MYBSABKAkSFAoMZmlzY2FsX2VtYWlsGAYgASgJEhIKCmlzX2NvbXBhbnkYByABKAgSEgoKY3JlYXRlZF9hdBgIIAEoAxISCgp1cGRhdGVkX2F0GAkgASgDIo4BChRVcHNlcnRUYXhEYXRhUmVxdWVzdBIOCgZ0YXhfaWQYASABKAkSEAoIdGF4X25hbWUYAiABKAkSEgoKdGF4X3JlZ2ltZRgDIAEoCRIWCg5maXNjYWxfYWRkcmVzcxgEIAEoCRIUCgxmaXNjYWxfZW1haWwYBSABKAkSEgoKaXNfY29tcGFueRgGIAEoCCJXChJHZXRUYXhEYXRhUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEh8KCHRheF9kYXRhGAMgASgLMg0udXNlci5UYXhEYXRhYgZwcm90bzM");
 
 /**
  * @generated from message user.CreateUserRequest
@@ -180,6 +180,18 @@ export type User = Message<"user.User"> & {
    * @generated from field: int64 created_at = 5;
    */
   createdAt: bigint;
+
+  /**
+   * @generated from field: bool blocked = 6;
+   */
+  blocked: boolean;
+
+  /**
+   * "admin" | "manager" | "user" -- see shared::authz::Role
+   *
+   * @generated from field: string role_id = 7;
+   */
+  roleId: string;
 };
 
 /**
@@ -188,4 +200,151 @@ export type User = Message<"user.User"> & {
  */
 export const UserSchema: GenMessage<User> = /*@__PURE__*/
   messageDesc(file_user, 5);
+
+/**
+ * @generated from message user.SetUserRoleRequest
+ */
+export type SetUserRoleRequest = Message<"user.SetUserRoleRequest"> & {
+  /**
+   * @generated from field: string role_id = 1;
+   */
+  roleId: string;
+};
+
+/**
+ * Describes the message user.SetUserRoleRequest.
+ * Use `create(SetUserRoleRequestSchema)` to create a new message.
+ */
+export const SetUserRoleRequestSchema: GenMessage<SetUserRoleRequest> = /*@__PURE__*/
+  messageDesc(file_user, 6);
+
+/**
+ * @generated from message user.TaxData
+ */
+export type TaxData = Message<"user.TaxData"> & {
+  /**
+   * @generated from field: string user_id = 1;
+   */
+  userId: string;
+
+  /**
+   * @generated from field: string tax_id = 2;
+   */
+  taxId: string;
+
+  /**
+   * @generated from field: string tax_name = 3;
+   */
+  taxName: string;
+
+  /**
+   * @generated from field: string tax_regime = 4;
+   */
+  taxRegime: string;
+
+  /**
+   * @generated from field: string fiscal_address = 5;
+   */
+  fiscalAddress: string;
+
+  /**
+   * @generated from field: string fiscal_email = 6;
+   */
+  fiscalEmail: string;
+
+  /**
+   * @generated from field: bool is_company = 7;
+   */
+  isCompany: boolean;
+
+  /**
+   * @generated from field: int64 created_at = 8;
+   */
+  createdAt: bigint;
+
+  /**
+   * @generated from field: int64 updated_at = 9;
+   */
+  updatedAt: bigint;
+};
+
+/**
+ * Describes the message user.TaxData.
+ * Use `create(TaxDataSchema)` to create a new message.
+ */
+export const TaxDataSchema: GenMessage<TaxData> = /*@__PURE__*/
+  messageDesc(file_user, 7);
+
+/**
+ * Used by both the self-service endpoint (worker-user, user_id from the
+ * Firebase token) and the admin endpoint (worker-user-admin, user_id from
+ * the URL param) -- the request body never carries user_id itself.
+ *
+ * @generated from message user.UpsertTaxDataRequest
+ */
+export type UpsertTaxDataRequest = Message<"user.UpsertTaxDataRequest"> & {
+  /**
+   * @generated from field: string tax_id = 1;
+   */
+  taxId: string;
+
+  /**
+   * @generated from field: string tax_name = 2;
+   */
+  taxName: string;
+
+  /**
+   * @generated from field: string tax_regime = 3;
+   */
+  taxRegime: string;
+
+  /**
+   * @generated from field: string fiscal_address = 4;
+   */
+  fiscalAddress: string;
+
+  /**
+   * @generated from field: string fiscal_email = 5;
+   */
+  fiscalEmail: string;
+
+  /**
+   * @generated from field: bool is_company = 6;
+   */
+  isCompany: boolean;
+};
+
+/**
+ * Describes the message user.UpsertTaxDataRequest.
+ * Use `create(UpsertTaxDataRequestSchema)` to create a new message.
+ */
+export const UpsertTaxDataRequestSchema: GenMessage<UpsertTaxDataRequest> = /*@__PURE__*/
+  messageDesc(file_user, 8);
+
+/**
+ * @generated from message user.GetTaxDataResponse
+ */
+export type GetTaxDataResponse = Message<"user.GetTaxDataResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+
+  /**
+   * @generated from field: user.TaxData tax_data = 3;
+   */
+  taxData?: TaxData | undefined;
+};
+
+/**
+ * Describes the message user.GetTaxDataResponse.
+ * Use `create(GetTaxDataResponseSchema)` to create a new message.
+ */
+export const GetTaxDataResponseSchema: GenMessage<GetTaxDataResponse> = /*@__PURE__*/
+  messageDesc(file_user, 9);
 
