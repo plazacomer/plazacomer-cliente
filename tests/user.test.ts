@@ -185,6 +185,68 @@ describe("E2E - Rust Worker Zero-Copy Protobuf", () => {
     expect(getResponse.taxData?.isCompany).toBe(true);
   });
 
+  it("Should return a clean 404 (not a raw D1 FK-constraint 500) for tax-data on an unregistered uid", async () => {
+    const neverRegisteredUid = `e2e-unregistered-${Date.now()}`;
+    const request = create(UpsertTaxDataRequestSchema, {
+      taxId: "900000000-0",
+      taxName: "No Existe SAS",
+      taxRegime: "COMMON",
+      fiscalAddress: "N/A",
+      fiscalEmail: "nadie@example.com",
+      isCompany: true
+    });
+
+    const res = await fetch(`${WORKER_URL}/users/me/tax-data`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/x-protobuf",
+        Authorization: `Bearer mock-token-${neverRegisteredUid}`
+      },
+      body: toBinary(UpsertTaxDataRequestSchema, request)
+    });
+    expect(res.status).toBe(404);
+    const response = fromBinary(GeneralResponseSchema, new Uint8Array(await res.arrayBuffer()));
+    expect(response.success).toBe(false);
+  });
+
+  it("Should return a clean 404 (not a raw D1 FK-constraint 500) for admin tax-data on a nonexistent user id", async () => {
+    const request = create(UpsertTaxDataRequestSchema, {
+      taxId: "900000000-0",
+      taxName: "No Existe SAS",
+      taxRegime: "COMMON",
+      fiscalAddress: "N/A",
+      fiscalEmail: "nadie@example.com",
+      isCompany: true
+    });
+
+    const res = await fetch(`${ADMIN_WORKER_URL}/users/admin/users/no-such-user-id/tax-data`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/x-protobuf", ...adminAuthHeader },
+      body: toBinary(UpsertTaxDataRequestSchema, request)
+    });
+    expect(res.status).toBe(404);
+    const response = fromBinary(GeneralResponseSchema, new Uint8Array(await res.arrayBuffer()));
+    expect(response.success).toBe(false);
+  });
+
+  it("Should not report success when blocking or granting a role to a nonexistent user id", async () => {
+    const blockRes = await fetch(`${ADMIN_WORKER_URL}/users/admin/users/no-such-user-id/block`, {
+      method: "PATCH",
+      headers: adminAuthHeader
+    });
+    const blockResponse = fromBinary(GeneralResponseSchema, new Uint8Array(await blockRes.arrayBuffer()));
+    expect(blockResponse.success).toBe(false);
+
+    const roleReq = create(SetUserRoleRequestSchema, { roleId: "manager" });
+    const roleRes = await fetch(`${ADMIN_WORKER_URL}/users/admin/users/no-such-user-id/role`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/x-protobuf", ...adminAuthHeader },
+      body: toBinary(SetUserRoleRequestSchema, roleReq)
+    });
+    const roleResponse = fromBinary(GeneralResponseSchema, new Uint8Array(await roleRes.arrayBuffer()));
+    expect(roleResponse.success).toBe(false);
+  });
+
   it("Should reject a plain-user token on worker-user-admin (role check, not just auth)", async () => {
     const res = await fetch(`${ADMIN_WORKER_URL}/users/admin/users`, {
       headers: authHeader // the e2e test user is role "user" by default

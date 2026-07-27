@@ -112,8 +112,18 @@ async function waitForServersReady() {
 	}
 }
 
+// Explicit allowlist, not a bare `vitest run` -- otherwise any future test file
+// dropped into tests/ (e.g. a manual/diagnostic one pointed at a fixed dev port
+// test:api doesn't manage, like tests/manual-admin.test.ts) gets silently picked
+// up by default glob discovery and makes this "isolated" run's pass/fail depend
+// on whatever else happens to be running outside the temp DB this script builds.
+const AUTOMATED_TEST_FILES = ['tests/user.test.ts', 'tests/catalog.test.ts'];
+
 function runVitest() {
-	return runToCompletion('npx', ['vitest', 'run'], { cwd: CLIENT_DIR, env: process.env });
+	return runToCompletion('npx', ['vitest', 'run', ...AUTOMATED_TEST_FILES], {
+		cwd: CLIENT_DIR,
+		env: process.env
+	});
 }
 
 function killServers() {

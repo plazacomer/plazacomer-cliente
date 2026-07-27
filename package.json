@@ -17,10 +17,11 @@
 		"db:init:catalog": "cd ../plazacomer-cloudflare/worker-catalog && /Users/christian.cabrera/Documents/Emprendimientos/plazacomer/plazacomer-client/node_modules/.bin/wrangler d1 execute DB --local --env co --persist-to ../../.wrangler --file ../../plazacomer-client/tests/init-catalog.sql",
 		"db:init": "npm run db:init:users && npm run db:init:catalog",
 		"wrangler:user": "RUSTC=\"/Users/christian.cabrera/.cargo/bin/rustc\" PATH=\"/Users/christian.cabrera/.cargo/bin:$PATH\" cd ../plazacomer-cloudflare/worker-user && /Users/christian.cabrera/Documents/Emprendimientos/plazacomer/plazacomer-client/node_modules/.bin/wrangler dev --local --env co --port 8787 --persist-to ../../.wrangler --inspector-port 9229",
-		"wrangler:catalog": "sleep 3 && RUSTC=\"/Users/christian.cabrera/.cargo/bin/rustc\" PATH=\"/Users/christian.cabrera/.cargo/bin:$PATH\" cd ../plazacomer-cloudflare/worker-catalog && /Users/christian.cabrera/Documents/Emprendimientos/plazacomer/plazacomer-client/node_modules/.bin/wrangler dev --local --env co --port 8788 --persist-to ../../.wrangler --inspector-port 9230",
-		"wrangler:admin": "sleep 6 && RUSTC=\"/Users/christian.cabrera/.cargo/bin/rustc\" PATH=\"/Users/christian.cabrera/.cargo/bin:$PATH\" cd ../plazacomer-cloudflare/worker-catalog-admin && /Users/christian.cabrera/Documents/Emprendimientos/plazacomer/plazacomer-client/node_modules/.bin/wrangler dev --local --env co --port 8789 --persist-to ../../.wrangler --inspector-port 9231",
-		"wrangler:user-admin": "sleep 9 && RUSTC=\"/Users/christian.cabrera/.cargo/bin/rustc\" PATH=\"/Users/christian.cabrera/.cargo/bin:$PATH\" cd ../plazacomer-cloudflare/worker-user-admin && /Users/christian.cabrera/Documents/Emprendimientos/plazacomer/plazacomer-client/node_modules/.bin/wrangler dev --local --env co --port 8790 --persist-to ../../.wrangler --inspector-port 9232",
-		"test:api": "node tests/run-e2e.js"
+		"wrangler:catalog": "RUSTC=\"/Users/christian.cabrera/.cargo/bin/rustc\" PATH=\"/Users/christian.cabrera/.cargo/bin:$PATH\" cd ../plazacomer-cloudflare/worker-catalog && /Users/christian.cabrera/Documents/Emprendimientos/plazacomer/plazacomer-client/node_modules/.bin/wrangler dev --local --env co --port 8788 --persist-to ../../.wrangler --inspector-port 9230",
+		"wrangler:admin": "RUSTC=\"/Users/christian.cabrera/.cargo/bin/rustc\" PATH=\"/Users/christian.cabrera/.cargo/bin:$PATH\" cd ../plazacomer-cloudflare/worker-catalog-admin && /Users/christian.cabrera/Documents/Emprendimientos/plazacomer/plazacomer-client/node_modules/.bin/wrangler dev --local --env co --port 8789 --persist-to ../../.wrangler --inspector-port 9231",
+		"wrangler:user-admin": "RUSTC=\"/Users/christian.cabrera/.cargo/bin/rustc\" PATH=\"/Users/christian.cabrera/.cargo/bin:$PATH\" cd ../plazacomer-cloudflare/worker-user-admin && /Users/christian.cabrera/Documents/Emprendimientos/plazacomer/plazacomer-client/node_modules/.bin/wrangler dev --local --env co --port 8790 --persist-to ../../.wrangler --inspector-port 9232",
+		"test:api": "node tests/run-e2e.js",
+		"test:manual": "vitest run tests/manual-admin.test.ts"
 	},
 	"devDependencies": {
 		"@bufbuild/protoc-gen-es": "^2.12.1",
