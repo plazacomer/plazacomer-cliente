@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file catalog.proto.
  */
 export const file_catalog: GenFile = /*@__PURE__*/
-  fileDesc("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c2NyaXB0aW9uQggKBl9lbW9qaUIICgZfc3RvY2sivAEKFFVwZGF0ZVByb2R1Y3RSZXF1ZXN0EhEKBG5hbWUYASABKAlIAIgBARIYCgtkZXNjcmlwdGlvbhgCIAEoCUgBiAEBEhUKCGNhdGVnb3J5GAMgASgJSAKIAQESEgoFZW1vamkYBCABKAlIA4gBARISCgVwcmljZRgFIAEoA0gEiAEBQgcKBV9uYW1lQg4KDF9kZXNjcmlwdGlvbkILCglfY2F0ZWdvcnlCCAoGX2Vtb2ppQggKBl9wcmljZSIjChJVcGRhdGVTdG9ja1JlcXVlc3QSDQoFc3RvY2sYASABKAMiKwoWVG9nZ2xlQXZhaWxhYmxlUmVxdWVzdBIRCglhdmFpbGFibGUYASABKAgicQoRQ3JlYXRlRGVhbFJlcXVlc3QSEgoKcHJvZHVjdF9pZBgBIAEoAxISCgpkZWFsX3ByaWNlGAIgASgDEhIKCmRlYWxfc3RvY2sYAyABKAMSDQoFbGFiZWwYBCABKAkSEQoJZmluaXNoX2F0GAUgASgDIikKF1RvZ2dsZURlYWxBY3RpdmVSZXF1ZXN0Eg4KBmFjdGl2ZRgBIAEoCCJWChJMaXN0U3RvcmVzUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEh4KBnN0b3JlcxgDIAMoCzIOLmNhdGFsb2cuU3RvcmUiZQoTU3RvcmVEZXRhaWxSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSIgoFc3RvcmUYAyABKAsyDi5jYXRhbG9nLlN0b3JlSACIAQFCCAoGX3N0b3JlIlwKFExpc3RQcm9kdWN0c1Jlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIiCghwcm9kdWN0cxgDIAMoCzIQLmNhdGFsb2cuUHJvZHVjdCJtChVQcm9kdWN0RGV0YWlsUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEiYKB3Byb2R1Y3QYAyABKAsyEC5jYXRhbG9nLlByb2R1Y3RIAIgBAUIKCghfcHJvZHVjdCJTChFMaXN0RGVhbHNSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSHAoFZGVhbHMYAyADKAsyDS5jYXRhbG9nLkRlYWwiWQoTTGlzdFJldmlld3NSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSIAoHcmV2aWV3cxgDIAMoCzIPLmNhdGFsb2cuUmV2aWV3IlIKDEZlZWRSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSIAoFaXRlbXMYAyADKAsyES5jYXRhbG9nLkZlZWRJdGVtIl4KCEZlZWRJdGVtEiEKBGRlYWwYASABKAsyES5jYXRhbG9nLkRlYWxJdGVtSAASJwoHcHJvZHVjdBgCIAEoCzIULmNhdGFsb2cuUHJvZHVjdEl0ZW1IAEIGCgRpdGVtIhsKCERlYWxJdGVtEg8KB2RlYWxfaWQYASABKAMiUQoLUHJvZHVjdEl0ZW0SEgoKcHJvZHVjdF9pZBgBIAEoAxISCgVleHRyYRgCIAEoCUgAiAEBEhAKCHRpbWVfYWdvGAMgASgJQggKBl9leHRyYSJ2Cg5TZWFyY2hSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSHgoGc3RvcmVzGAMgAygLMg4uY2F0YWxvZy5TdG9yZRIiCghwcm9kdWN0cxgEIAMoCzIQLmNhdGFsb2cuUHJvZHVjdCI/Cg9HZW5lcmFsUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEgoKAmlkGAMgASgDYgZwcm90bzM");
+  fileDesc("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X3N1YnR5cGVCCAoGX2Vtb2ppQg0KC19sb2dvX2NvbG9yQhIKEF9iYW5uZXJfZ3JhZGllbnRCDgoMX2Rlc2NyaXB0aW9uQggKBl9ob3Vyc0ILCglfbG9jYXRpb24iIQoRVG9nZ2xlT3BlblJlcXVlc3QSDAoEb3BlbhgBIAEoCCLFAQoUQ3JlYXRlUHJvZHVjdFJlcXVlc3QSDAoEbmFtZRgBIAEoCRINCgVwcmljZRgCIAEoAxIQCghjYXRlZ29yeRgDIAEoCRIYCgtkZXNjcmlwdGlvbhgEIAEoCUgAiAEBEhIKBWVtb2ppGAUgASgJSAGIAQESEgoFc3RvY2sYBiABKANIAogBARIQCgNlYW4YByABKAlIA4gBAUIOCgxfZGVzY3JpcHRpb25CCAoGX2Vtb2ppQggKBl9zdG9ja0IGCgRfZWFuIrwBChRVcGRhdGVQcm9kdWN0UmVxdWVzdBIRCgRuYW1lGAEgASgJSACIAQESGAoLZGVzY3JpcHRpb24YAiABKAlIAYgBARIVCghjYXRlZ29yeRgDIAEoCUgCiAEBEhIKBWVtb2ppGAQgASgJSAOIAQESEgoFcHJpY2UYBSABKANIBIgBAUIHCgVfbmFtZUIOCgxfZGVzY3JpcHRpb25CCwoJX2NhdGVnb3J5QggKBl9lbW9qaUIICgZfcHJpY2UiIwoSVXBkYXRlU3RvY2tSZXF1ZXN0Eg0KBXN0b2NrGAEgASgDIisKFlRvZ2dsZUF2YWlsYWJsZVJlcXVlc3QSEQoJYXZhaWxhYmxlGAEgASgIInEKEUNyZWF0ZURlYWxSZXF1ZXN0EhIKCnByb2R1Y3RfaWQYASABKAMSEgoKZGVhbF9wcmljZRgCIAEoAxISCgpkZWFsX3N0b2NrGAMgASgDEg0KBWxhYmVsGAQgASgJEhEKCWZpbmlzaF9hdBgFIAEoAyIpChdUb2dnbGVEZWFsQWN0aXZlUmVxdWVzdBIOCgZhY3RpdmUYASABKAgiVgoSTGlzdFN0b3Jlc1Jlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIeCgZzdG9yZXMYAyADKAsyDi5jYXRhbG9nLlN0b3JlImUKE1N0b3JlRGV0YWlsUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEiIKBXN0b3JlGAMgASgLMg4uY2F0YWxvZy5TdG9yZUgAiAEBQggKBl9zdG9yZSJcChRMaXN0UHJvZHVjdHNSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSIgoIcHJvZHVjdHMYAyADKAsyEC5jYXRhbG9nLlByb2R1Y3QibQoVUHJvZHVjdERldGFpbFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRImCgdwcm9kdWN0GAMgASgLMhAuY2F0YWxvZy5Qcm9kdWN0SACIAQFCCgoIX3Byb2R1Y3QiUwoRTGlzdERlYWxzUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhwKBWRlYWxzGAMgAygLMg0uY2F0YWxvZy5EZWFsIlkKE0xpc3RSZXZpZXdzUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEiAKB3Jldmlld3MYAyADKAsyDy5jYXRhbG9nLlJldmlldyJSCgxGZWVkUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEiAKBWl0ZW1zGAMgAygLMhEuY2F0YWxvZy5GZWVkSXRlbSJeCghGZWVkSXRlbRIhCgRkZWFsGAEgASgLMhEuY2F0YWxvZy5EZWFsSXRlbUgAEicKB3Byb2R1Y3QYAiABKAsyFC5jYXRhbG9nLlByb2R1Y3RJdGVtSABCBgoEaXRlbSIbCghEZWFsSXRlbRIPCgdkZWFsX2lkGAEgASgDIlEKC1Byb2R1Y3RJdGVtEhIKCnByb2R1Y3RfaWQYASABKAMSEgoFZXh0cmEYAiABKAlIAIgBARIQCgh0aW1lX2FnbxgDIAEoCUIICgZfZXh0cmEidgoOU2VhcmNoUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEh4KBnN0b3JlcxgDIAMoCzIOLmNhdGFsb2cuU3RvcmUSIgoIcHJvZHVjdHMYBCADKAsyEC5jYXRhbG9nLlByb2R1Y3QiPwoPR2VuZXJhbFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIKCgJpZBgDIAEoA2IGcHJvdG8z");
 
 /**
  * @generated from message catalog.Store
@@ -120,6 +120,12 @@ export const StoreSchema: GenMessage<Store> = /*@__PURE__*/
   messageDesc(file_catalog, 0);
 
 /**
+ * name/description/category/emoji/image_key are always populated on the wire even
+ * when the listing points to a GenericProduct (ADR-007) -- the Worker resolves them
+ * via COALESCE against generic_products at read time, so this shape never changes
+ * for existing clients. generic_product_id/ean are the only new, purely additive
+ * fields; a client that ignores them keeps working exactly as before.
+ *
  * @generated from message catalog.Product
  */
 export type Product = Message<"catalog.Product"> & {
@@ -182,6 +188,16 @@ export type Product = Message<"catalog.Product"> & {
    * @generated from field: int64 updated_at = 12;
    */
   updatedAt: bigint;
+
+  /**
+   * @generated from field: optional int64 generic_product_id = 13;
+   */
+  genericProductId?: bigint | undefined;
+
+  /**
+   * @generated from field: optional string ean = 14;
+   */
+  ean?: string | undefined;
 };
 
 /**
@@ -190,6 +206,67 @@ export type Product = Message<"catalog.Product"> & {
  */
 export const ProductSchema: GenMessage<Product> = /*@__PURE__*/
   messageDesc(file_catalog, 1);
+
+/**
+ * Canonical, shared product data (ADR-007) -- exists once per EAN regardless of how
+ * many stores sell it. Never carries price/stock/available: those stay on Product,
+ * which is always store-scoped.
+ *
+ * @generated from message catalog.GenericProduct
+ */
+export type GenericProduct = Message<"catalog.GenericProduct"> & {
+  /**
+   * @generated from field: int64 id = 1;
+   */
+  id: bigint;
+
+  /**
+   * @generated from field: string ean = 2;
+   */
+  ean: string;
+
+  /**
+   * @generated from field: string name = 3;
+   */
+  name: string;
+
+  /**
+   * @generated from field: string description = 4;
+   */
+  description: string;
+
+  /**
+   * @generated from field: string category = 5;
+   */
+  category: string;
+
+  /**
+   * @generated from field: string emoji = 6;
+   */
+  emoji: string;
+
+  /**
+   * @generated from field: optional string image_key = 7;
+   */
+  imageKey?: string | undefined;
+
+  /**
+   * @generated from field: int64 created_at = 8;
+   */
+  createdAt: bigint;
+
+  /**
+   * @generated from field: int64 updated_at = 9;
+   */
+  updatedAt: bigint;
+};
+
+/**
+ * Describes the message catalog.GenericProduct.
+ * Use `create(GenericProductSchema)` to create a new message.
+ */
+export const GenericProductSchema: GenMessage<GenericProduct> = /*@__PURE__*/
+  messageDesc(file_catalog, 2);
 
 /**
  * @generated from message catalog.Deal
@@ -256,7 +333,7 @@ export type Deal = Message<"catalog.Deal"> & {
  * Use `create(DealSchema)` to create a new message.
  */
 export const DealSchema: GenMessage<Deal> = /*@__PURE__*/
-  messageDesc(file_catalog, 2);
+  messageDesc(file_catalog, 3);
 
 /**
  * @generated from message catalog.Review
@@ -303,7 +380,7 @@ export type Review = Message<"catalog.Review"> & {
  * Use `create(ReviewSchema)` to create a new message.
  */
 export const ReviewSchema: GenMessage<Review> = /*@__PURE__*/
-  messageDesc(file_catalog, 3);
+  messageDesc(file_catalog, 4);
 
 /**
  * @generated from message catalog.CreateStoreRequest
@@ -355,7 +432,7 @@ export type CreateStoreRequest = Message<"catalog.CreateStoreRequest"> & {
  * Use `create(CreateStoreRequestSchema)` to create a new message.
  */
 export const CreateStoreRequestSchema: GenMessage<CreateStoreRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 4);
+  messageDesc(file_catalog, 5);
 
 /**
  * @generated from message catalog.UpdateStoreRequest
@@ -422,7 +499,7 @@ export type UpdateStoreRequest = Message<"catalog.UpdateStoreRequest"> & {
  * Use `create(UpdateStoreRequestSchema)` to create a new message.
  */
 export const UpdateStoreRequestSchema: GenMessage<UpdateStoreRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 5);
+  messageDesc(file_catalog, 6);
 
 /**
  * @generated from message catalog.ToggleOpenRequest
@@ -439,7 +516,7 @@ export type ToggleOpenRequest = Message<"catalog.ToggleOpenRequest"> & {
  * Use `create(ToggleOpenRequestSchema)` to create a new message.
  */
 export const ToggleOpenRequestSchema: GenMessage<ToggleOpenRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 6);
+  messageDesc(file_catalog, 7);
 
 /**
  * @generated from message catalog.CreateProductRequest
@@ -474,6 +551,16 @@ export type CreateProductRequest = Message<"catalog.CreateProductRequest"> & {
    * @generated from field: optional int64 stock = 6;
    */
   stock?: bigint | undefined;
+
+  /**
+   * If set, this listing links to (or creates) the GenericProduct with this EAN --
+   * name/category/description/emoji are only used to create it the first time any
+   * store registers this EAN; later stores linking the same EAN have theirs ignored.
+   * If unset, this is a store-custom product: name/category/etc. are stored as-is.
+   *
+   * @generated from field: optional string ean = 7;
+   */
+  ean?: string | undefined;
 };
 
 /**
@@ -481,7 +568,7 @@ export type CreateProductRequest = Message<"catalog.CreateProductRequest"> & {
  * Use `create(CreateProductRequestSchema)` to create a new message.
  */
 export const CreateProductRequestSchema: GenMessage<CreateProductRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 7);
+  messageDesc(file_catalog, 8);
 
 /**
  * @generated from message catalog.UpdateProductRequest
@@ -518,7 +605,7 @@ export type UpdateProductRequest = Message<"catalog.UpdateProductRequest"> & {
  * Use `create(UpdateProductRequestSchema)` to create a new message.
  */
 export const UpdateProductRequestSchema: GenMessage<UpdateProductRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 8);
+  messageDesc(file_catalog, 9);
 
 /**
  * @generated from message catalog.UpdateStockRequest
@@ -535,7 +622,7 @@ export type UpdateStockRequest = Message<"catalog.UpdateStockRequest"> & {
  * Use `create(UpdateStockRequestSchema)` to create a new message.
  */
 export const UpdateStockRequestSchema: GenMessage<UpdateStockRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 9);
+  messageDesc(file_catalog, 10);
 
 /**
  * @generated from message catalog.ToggleAvailableRequest
@@ -552,7 +639,7 @@ export type ToggleAvailableRequest = Message<"catalog.ToggleAvailableRequest"> &
  * Use `create(ToggleAvailableRequestSchema)` to create a new message.
  */
 export const ToggleAvailableRequestSchema: GenMessage<ToggleAvailableRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 10);
+  messageDesc(file_catalog, 11);
 
 /**
  * @generated from message catalog.CreateDealRequest
@@ -589,7 +676,7 @@ export type CreateDealRequest = Message<"catalog.CreateDealRequest"> & {
  * Use `create(CreateDealRequestSchema)` to create a new message.
  */
 export const CreateDealRequestSchema: GenMessage<CreateDealRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 11);
+  messageDesc(file_catalog, 12);
 
 /**
  * @generated from message catalog.ToggleDealActiveRequest
@@ -606,7 +693,7 @@ export type ToggleDealActiveRequest = Message<"catalog.ToggleDealActiveRequest">
  * Use `create(ToggleDealActiveRequestSchema)` to create a new message.
  */
 export const ToggleDealActiveRequestSchema: GenMessage<ToggleDealActiveRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 12);
+  messageDesc(file_catalog, 13);
 
 /**
  * @generated from message catalog.ListStoresResponse
@@ -633,7 +720,7 @@ export type ListStoresResponse = Message<"catalog.ListStoresResponse"> & {
  * Use `create(ListStoresResponseSchema)` to create a new message.
  */
 export const ListStoresResponseSchema: GenMessage<ListStoresResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 13);
+  messageDesc(file_catalog, 14);
 
 /**
  * @generated from message catalog.StoreDetailResponse
@@ -660,7 +747,7 @@ export type StoreDetailResponse = Message<"catalog.StoreDetailResponse"> & {
  * Use `create(StoreDetailResponseSchema)` to create a new message.
  */
 export const StoreDetailResponseSchema: GenMessage<StoreDetailResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 14);
+  messageDesc(file_catalog, 15);
 
 /**
  * @generated from message catalog.ListProductsResponse
@@ -687,7 +774,7 @@ export type ListProductsResponse = Message<"catalog.ListProductsResponse"> & {
  * Use `create(ListProductsResponseSchema)` to create a new message.
  */
 export const ListProductsResponseSchema: GenMessage<ListProductsResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 15);
+  messageDesc(file_catalog, 16);
 
 /**
  * @generated from message catalog.ProductDetailResponse
@@ -714,7 +801,7 @@ export type ProductDetailResponse = Message<"catalog.ProductDetailResponse"> & {
  * Use `create(ProductDetailResponseSchema)` to create a new message.
  */
 export const ProductDetailResponseSchema: GenMessage<ProductDetailResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 16);
+  messageDesc(file_catalog, 17);
 
 /**
  * @generated from message catalog.ListDealsResponse
@@ -741,7 +828,7 @@ export type ListDealsResponse = Message<"catalog.ListDealsResponse"> & {
  * Use `create(ListDealsResponseSchema)` to create a new message.
  */
 export const ListDealsResponseSchema: GenMessage<ListDealsResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 17);
+  messageDesc(file_catalog, 18);
 
 /**
  * @generated from message catalog.ListReviewsResponse
@@ -768,7 +855,7 @@ export type ListReviewsResponse = Message<"catalog.ListReviewsResponse"> & {
  * Use `create(ListReviewsResponseSchema)` to create a new message.
  */
 export const ListReviewsResponseSchema: GenMessage<ListReviewsResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 18);
+  messageDesc(file_catalog, 19);
 
 /**
  * @generated from message catalog.FeedResponse
@@ -795,7 +882,7 @@ export type FeedResponse = Message<"catalog.FeedResponse"> & {
  * Use `create(FeedResponseSchema)` to create a new message.
  */
 export const FeedResponseSchema: GenMessage<FeedResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 19);
+  messageDesc(file_catalog, 20);
 
 /**
  * @generated from message catalog.FeedItem
@@ -824,7 +911,7 @@ export type FeedItem = Message<"catalog.FeedItem"> & {
  * Use `create(FeedItemSchema)` to create a new message.
  */
 export const FeedItemSchema: GenMessage<FeedItem> = /*@__PURE__*/
-  messageDesc(file_catalog, 20);
+  messageDesc(file_catalog, 21);
 
 /**
  * @generated from message catalog.DealItem
@@ -841,7 +928,7 @@ export type DealItem = Message<"catalog.DealItem"> & {
  * Use `create(DealItemSchema)` to create a new message.
  */
 export const DealItemSchema: GenMessage<DealItem> = /*@__PURE__*/
-  messageDesc(file_catalog, 21);
+  messageDesc(file_catalog, 22);
 
 /**
  * @generated from message catalog.ProductItem
@@ -868,7 +955,7 @@ export type ProductItem = Message<"catalog.ProductItem"> & {
  * Use `create(ProductItemSchema)` to create a new message.
  */
 export const ProductItemSchema: GenMessage<ProductItem> = /*@__PURE__*/
-  messageDesc(file_catalog, 22);
+  messageDesc(file_catalog, 23);
 
 /**
  * @generated from message catalog.SearchResponse
@@ -900,7 +987,7 @@ export type SearchResponse = Message<"catalog.SearchResponse"> & {
  * Use `create(SearchResponseSchema)` to create a new message.
  */
 export const SearchResponseSchema: GenMessage<SearchResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 23);
+  messageDesc(file_catalog, 24);
 
 /**
  * @generated from message catalog.GeneralResponse
@@ -927,5 +1014,5 @@ export type GeneralResponse = Message<"catalog.GeneralResponse"> & {
  * Use `create(GeneralResponseSchema)` to create a new message.
  */
 export const GeneralResponseSchema: GenMessage<GeneralResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 24);
+  messageDesc(file_catalog, 25);
 
