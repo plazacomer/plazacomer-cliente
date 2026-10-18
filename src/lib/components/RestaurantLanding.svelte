@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { favoritos } from '$lib/stores/favoritos.svelte';
 	import { cart, toast } from '$lib/stores/app.svelte';
@@ -29,10 +30,8 @@
 		storeUi.reset();
 	});
 
-	let siguiendo = $state(false);
-	$effect(() => {
-		siguiendo = tienda.following;
-	});
+	// Arranca en tienda.following y se reinicia al cambiar de tienda; el botón lo sobrescribe localmente.
+	let siguiendo = $derived(tienda.following);
 
 	// Platos con oferta primero — lo más relevante para decidir rápido
 	const menu = $derived(() => {
@@ -57,7 +56,7 @@
 	}
 
 	function goChat() {
-		goto(`/app/messages/${tienda.id}`);
+		goto(resolve(`/app/messages/${tienda.id}`));
 	}
 
 	async function share() {
@@ -273,7 +272,7 @@
 						</span>
 					</div>
 					<div class="mb-2.5 flex gap-1.5">
-						{#each Array(loyaltyProgress.config.threshold) as _, i}
+						{#each Array(loyaltyProgress.config.threshold) as _, i (i)}
 							<div
 								class="h-1.5 flex-1 rounded-full"
 								style="background:{i < loyaltyProgress.stamps
@@ -309,7 +308,7 @@
 					</div>
 				{:else}
 					<div class="flex flex-col gap-2.5 md:grid md:grid-cols-2 md:gap-3 lg:grid-cols-3">
-						{#each menu() as p}
+						{#each menu() as p (p.id)}
 							{@render menuItem(p)}
 						{/each}
 					</div>
@@ -343,7 +342,7 @@
 				</div>
 			{:else}
 				<div class="flex flex-col gap-2.5 md:grid md:grid-cols-2 md:gap-3 lg:grid-cols-3">
-					{#each searchResults as p}
+					{#each searchResults as p (p.id)}
 						{@render menuItem(p)}
 					{/each}
 				</div>
@@ -358,7 +357,7 @@
 				</div>
 			{:else}
 				<div class="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-					{#each ofertas as o}
+					{#each ofertas as o (o.id)}
 						{@const p = productos.find((pr) => pr.id === o.productId)}
 						{#if p}
 							{@const disc = Math.round((1 - o.dealPrice / o.originalPrice) * 100)}
@@ -520,7 +519,7 @@
 
 {#if cart.count > 0}
 	<button
-		onclick={() => goto('/app/cart')}
+		onclick={() => goto(resolve('/app/cart'))}
 		class="fixed right-4 bottom-[calc(70px+env(safe-area-inset-bottom))] left-4 z-50 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-[14px] font-semibold text-white md:right-auto md:left-1/2 md:w-full md:max-w-md md:-translate-x-1/2 lg:bottom-6"
 		style="background:{accent};box-shadow:0 8px 24px {accent}66"
 	>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
@@ -55,7 +56,11 @@
 	<div class="mx-auto max-w-lg px-5 pt-16 text-center">
 		<div class="mb-4 text-6xl">💬</div>
 		<h2 class="mb-2 font-display text-xl font-bold">Conversación no encontrada</h2>
-		<button onclick={() => goto('/app/messages')} class="text-sm" style="color:var(--c-brand)">
+		<button
+			onclick={() => goto(resolve('/app/messages'))}
+			class="text-sm"
+			style="color:var(--c-brand)"
+		>
 			← Volver a mensajes
 		</button>
 	</div>
@@ -70,7 +75,7 @@
 			style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 		>
 			<button
-				onclick={() => goto('/app/messages')}
+				onclick={() => goto(resolve('/app/messages'))}
 				class="flex h-9 w-9 items-center justify-center rounded-[10px] transition-colors hover:bg-[var(--c-bg-secondary)]"
 			>
 				<Icon name="arrowLeft" size={18} />
@@ -100,7 +105,7 @@
 					</p>
 				</div>
 			{:else}
-				{#each msgs as msg}
+				{#each msgs as msg, idx (idx)}
 					{@const isCliente = msg.author === 'customer'}
 					<div
 						class="animate-fade-in flex"
@@ -135,7 +140,7 @@
 							class="flex items-center gap-1.5 rounded-[16px_16px_16px_4px] border px-4 py-3"
 							style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 						>
-							{#each [0, 1, 2] as i}
+							{#each [0, 1, 2] as i (i)}
 								<span
 									class="h-1.5 w-1.5 rounded-full"
 									style="background:var(--c-text-muted);animation:bounce 1.2s {i * 0.2}s infinite"

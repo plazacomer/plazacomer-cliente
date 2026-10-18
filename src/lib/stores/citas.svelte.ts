@@ -65,8 +65,11 @@ export function fmtFechaCita(iso: string | null): string {
 		'nov',
 		'dic'
 	];
+	// Fechas temporales de una función de formato pura, no estado reactivo.
+	/* eslint-disable svelte/prefer-svelte-reactivity */
 	const d = new Date(iso + 'T00:00:00');
 	const hoy = new Date();
+	/* eslint-enable svelte/prefer-svelte-reactivity */
 	hoy.setHours(0, 0, 0, 0);
 	const diff = Math.round((d.getTime() - hoy.getTime()) / 86400000);
 	if (diff === 0) return 'Hoy';

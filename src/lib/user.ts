@@ -2,7 +2,8 @@ import { authStore } from '$lib/stores/auth.svelte';
 import {
 	GetUserResponseSchema,
 	UpdateUserRequestSchema,
-	GeneralResponseSchema
+	GeneralResponseSchema,
+	type User
 } from './gen/user_pb';
 import { toBinary, fromBinary, create } from '@bufbuild/protobuf';
 
@@ -14,7 +15,7 @@ const USER_WORKER_URL = 'http://localhost:8787';
  * Grabs the current Firebase ID token and sends it in the Authorization header.
  * The Rust worker verifies the token and returns the user profile as a Protobuf buffer.
  */
-export async function loginUser(): Promise<{ success: boolean; message: string; user?: any }> {
+export async function loginUser(): Promise<{ success: boolean; message: string; user?: User }> {
 	if (!authStore.user) {
 		throw new Error('No active Firebase session.');
 	}
@@ -99,7 +100,7 @@ export async function updateUser(
  */
 export async function getUserById(
 	id: string
-): Promise<{ success: boolean; message: string; user?: any }> {
+): Promise<{ success: boolean; message: string; user?: User }> {
 	if (!authStore.user) {
 		throw new Error('No active Firebase session.');
 	}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { CURRENT_USER, ADDRESSES, type Address } from '$lib/data/mock';
 	import { darkMode, orders } from '$lib/stores/app.svelte';
@@ -168,7 +169,7 @@
 
 		<!-- Stats row -->
 		<div class="grid grid-cols-3 divide-x" style="divide-color:var(--c-border-soft)">
-			{#each [{ label: 'Pedidos', value: CURRENT_USER.totalOrders }, { label: 'Puntos', value: CURRENT_USER.rewards }, { label: 'Miembro desde', value: CURRENT_USER.memberSince }] as s}
+			{#each [{ label: 'Pedidos', value: CURRENT_USER.totalOrders }, { label: 'Puntos', value: CURRENT_USER.rewards }, { label: 'Miembro desde', value: CURRENT_USER.memberSince }] as s, idx (idx)}
 				<div class="py-3 text-center">
 					<div class="font-display text-[15px] font-extrabold">{s.value}</div>
 					<div class="mt-0.5 text-[10.5px]" style="color:var(--c-text-muted)">{s.label}</div>
@@ -180,7 +181,7 @@
 	<!-- ── Quick links: Citas + Guardados ── -->
 	<div class="mb-5 grid grid-cols-2 gap-3">
 		<button
-			onclick={() => goto('/app/appointments')}
+			onclick={() => goto(resolve('/app/appointments'))}
 			class="flex flex-col gap-1.5 rounded-2xl border border-[var(--c-border-soft)] p-4 text-left"
 			style="background:var(--c-bg-card)"
 		>
@@ -198,7 +199,7 @@
 			</div>
 		</button>
 		<button
-			onclick={() => goto('/app/saved')}
+			onclick={() => goto(resolve('/app/saved'))}
 			class="flex flex-col gap-1.5 rounded-2xl border border-[var(--c-border-soft)] p-4 text-left"
 			style="background:var(--c-bg-card)"
 		>
@@ -238,7 +239,7 @@
 		</div>
 
 		<div class="flex flex-col divide-y" style="divide-color:var(--c-border-soft)">
-			{#each direcciones as dir}
+			{#each direcciones as dir (dir.id)}
 				<div class="flex items-center gap-3 px-4 py-3">
 					<button
 						onclick={() => marcarPrincipal(dir.id)}
@@ -299,7 +300,7 @@
 		style="background:var(--c-bg-card)"
 	>
 		<button
-			onclick={() => goto('/app/orders')}
+			onclick={() => goto(resolve('/app/orders'))}
 			class="flex items-center gap-3 border-b border-[var(--c-border-soft)] px-4 py-3.5 text-left transition-colors hover:bg-[var(--c-bg-secondary)]"
 			style="color:var(--c-text-primary)"
 		>
@@ -314,9 +315,9 @@
 			<Icon name="arrowRight" size={16} color="var(--c-text-muted)" />
 		</button>
 
-		{#each [{ icon: 'bell', label: 'Notificaciones', path: null }, { icon: 'tag', label: 'Mis cupones', path: null }, { icon: 'store', label: 'Panel Vendedor', path: '/seller' }, { icon: 'truck', label: 'Panel Repartidor', path: '/app/courier' }] as item}
+		{#each [{ icon: 'bell', label: 'Notificaciones', path: null }, { icon: 'tag', label: 'Mis cupones', path: null }, { icon: 'store', label: 'Panel Vendedor', path: '/seller' }, { icon: 'truck', label: 'Panel Repartidor', path: '/app/courier' }] as const as item, idx (idx)}
 			<button
-				onclick={() => (item.path ? goto(item.path) : undefined)}
+				onclick={() => (item.path ? goto(resolve(item.path)) : undefined)}
 				class="flex items-center gap-3 border-b border-[var(--c-border-soft)] px-4 py-3.5 text-left transition-colors hover:bg-[var(--c-bg-secondary)]"
 				style="color:var(--c-text-primary)"
 			>
@@ -353,7 +354,7 @@
 	</div>
 
 	<button
-		onclick={() => goto('/')}
+		onclick={() => goto(resolve('/'))}
 		class="flex w-full items-center gap-3 rounded-xl px-4 py-3.5 text-left transition-colors hover:bg-[var(--c-error-light)]"
 		style="color:var(--c-error)"
 	>
@@ -378,7 +379,7 @@
 			</button>
 		</div>
 
-		{#each [{ key: 'label', label: 'Nombre *', placeholder: 'Ej: Casa 🏠', bind: dirLabel }, { key: 'direccion', label: 'Dirección *', placeholder: 'Ej: Cra 10 #45-23', bind: dirDireccion }, { key: 'barrio', label: 'Barrio', placeholder: 'Ej: El Poblado', bind: dirBarrio }, { key: 'ciudad', label: 'Ciudad', placeholder: 'Ej: Medellín', bind: dirCiudad }] as field}
+		{#each [{ key: 'label', label: 'Nombre *', placeholder: 'Ej: Casa 🏠', bind: dirLabel }, { key: 'direccion', label: 'Dirección *', placeholder: 'Ej: Cra 10 #45-23', bind: dirDireccion }, { key: 'barrio', label: 'Barrio', placeholder: 'Ej: El Poblado', bind: dirBarrio }, { key: 'ciudad', label: 'Ciudad', placeholder: 'Ej: Medellín', bind: dirCiudad }] as field, idx (idx)}
 			<div>
 				<div
 					class="mb-1.5 text-[12px] font-bold tracking-[0.8px] uppercase"

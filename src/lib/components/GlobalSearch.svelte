@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { STORES, PRODUCTS, CATEGORIES, getStore, type Store, type Product } from '$lib/data/mock';
 	import { fmtCOP } from '$lib/utils';
@@ -63,13 +64,13 @@
 
 	function selectTienda(t: Store) {
 		recordSearch(t.name);
-		goto(`/app/store/${t.id}`);
+		goto(resolve(`/app/store/${t.id}`));
 		onclose();
 	}
 
 	function selectProducto(p: Product) {
 		recordSearch(p.name);
-		goto(`/app/store/${p.storeId}`);
+		goto(resolve(`/app/store/${p.storeId}`));
 		onclose();
 	}
 
@@ -149,7 +150,7 @@
 									>
 								</div>
 								<div class="flex flex-col gap-0.5">
-									{#each historial as h}
+									{#each historial as h (h)}
 										<button
 											onclick={() => (query = h)}
 											class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors hover:opacity-80"
@@ -172,7 +173,7 @@
 								Tendencias hoy
 							</div>
 							<div class="flex flex-wrap gap-1.5">
-								{#each TRENDING as t}
+								{#each TRENDING as t, idx (idx)}
 									<button
 										onclick={() => (query = t.replace(/^.{2}\s/, ''))}
 										class="rounded-full px-3.5 py-1.5 text-[12.5px] font-semibold"
@@ -196,7 +197,7 @@
 								class="grid gap-2"
 								style="grid-template-columns:repeat(auto-fill,minmax(100px,1fr))"
 							>
-								{#each Object.entries(CATEGORIES) as [, c]}
+								{#each Object.entries(CATEGORIES) as [, c] (c.slug)}
 									<button
 										onclick={() => (query = c.label)}
 										class="flex flex-col items-center gap-1.5 rounded-xl border border-[var(--c-border-soft)] p-3"
@@ -225,7 +226,7 @@
 									Tiendas
 								</div>
 								<div class="flex flex-col gap-1.5">
-									{#each tiendasMatch as t}
+									{#each tiendasMatch as t (t.id)}
 										<button
 											onclick={() => selectTienda(t)}
 											class="flex w-full items-center gap-3 rounded-xl border border-[var(--c-border-soft)] p-2.5 text-left"
@@ -260,7 +261,7 @@
 									Productos
 								</div>
 								<div class="flex flex-col gap-1.5">
-									{#each productosMatch as p}
+									{#each productosMatch as p (p.id)}
 										{@const t = getStore(p.storeId)}
 										<button
 											onclick={() => selectProducto(p)}
@@ -296,7 +297,7 @@
 									Categorías
 								</div>
 								<div class="flex flex-wrap gap-1.5">
-									{#each categoriasMatch as [, c]}
+									{#each categoriasMatch as [, c] (c.slug)}
 										<button
 											onclick={() => {
 												recordSearch(c.label);

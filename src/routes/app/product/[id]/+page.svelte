@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { getProduct, getStore, getDeal } from '$lib/data/mock';
@@ -25,7 +26,7 @@
 	let customizeOpen = $state(false);
 
 	function goStore() {
-		goto(`/app/store/${store.id}`);
+		goto(resolve(`/app/store/${store.id}`));
 	}
 
 	function goBack() {

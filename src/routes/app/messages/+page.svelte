@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { messages } from '$lib/stores/app.svelte';
 	import { getStore } from '$lib/data/mock';
@@ -20,10 +21,10 @@
 		</div>
 	{:else}
 		<div class="flex flex-col gap-2">
-			{#each messages.conversations as conv}
+			{#each messages.conversations as conv (conv.storeId)}
 				{@const tienda = getStore(conv.storeId)}
 				<button
-					onclick={() => goto(`/app/messages/${conv.storeId}`)}
+					onclick={() => goto(resolve(`/app/messages/${conv.storeId}`))}
 					class="flex w-full items-center gap-3 rounded-xl border p-3.5 text-left transition-all hover:border-[var(--c-brand)]"
 					style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 				>

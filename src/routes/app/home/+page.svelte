@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import {
 		STORES,
@@ -43,11 +44,13 @@
 	}
 
 	function goStore(store: Store) {
-		goto(`/app/store/${store.id}`);
+		goto(resolve(`/app/store/${store.id}`));
 	}
 
 	function goProduct(productId: string, dealId?: string) {
-		goto(dealId ? `/app/product/${productId}?deal=${dealId}` : `/app/product/${productId}`);
+		goto(
+			resolve(dealId ? `/app/product/${productId}?deal=${dealId}` : `/app/product/${productId}`)
+		);
 	}
 </script>
 
@@ -62,7 +65,7 @@
 
 	<!-- Stories rail -->
 	<div class="no-scrollbar flex gap-3.5 overflow-x-auto px-5 py-4">
-		{#each STORES.filter((t) => t.following) as t}
+		{#each STORES.filter((t) => t.following) as t (t.id)}
 			<button
 				onclick={() => goStore(t)}
 				class="flex min-w-[68px] shrink-0 flex-col items-center gap-1.5"
@@ -98,7 +101,7 @@
 				: 'var(--c-bg-card)'};color:{!filterCat ? 'var(--c-bg-card)' : 'var(--c-text-primary)'}"
 			>{m.home_category_all()}</button
 		>
-		{#each Object.entries(CATEGORIES) as [key, cat]}
+		{#each Object.entries(CATEGORIES) as [key, cat] (key)}
 			<button
 				onclick={() => (filterCat = filterCat === key ? null : key)}
 				class="flex shrink-0 items-center gap-1.5 rounded-full border border-[var(--c-border-soft)] px-3.5 py-2 text-[13px] font-semibold transition-colors"
@@ -120,11 +123,13 @@
 				<h3 class="mb-2 font-display text-lg font-bold">{m.home_empty_title()}</h3>
 				<p class="text-sm" style="color:var(--c-text-secondary)">{m.home_empty_subtitle()}</p>
 				<div class="mt-4">
-					<Button variant="brand" onclick={() => goto('/app/explore')}>{m.home_empty_cta()}</Button>
+					<Button variant="brand" onclick={() => goto(resolve('/app/explore'))}
+						>{m.home_empty_cta()}</Button
+					>
 				</div>
 			</div>
 		{:else}
-			{#each filtered as item}
+			{#each filtered as item, idx (idx)}
 				{#if item.kind === 'deal'}
 					{@const deal = getDeal(item.dealId)}
 					{@const product = getProduct(deal.productId)}

@@ -22,6 +22,8 @@
 
 	// Group servicios by categoria
 	const serviciosPorCat = $derived(() => {
+		// Map temporal: se arma de cero en cada cálculo del $derived y no se muta después.
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const map = new Map<string, Servicio[]>();
 		for (const s of servicios) {
 			const arr = map.get(s.categoria) ?? [];
@@ -334,7 +336,7 @@
 			<!-- ── STATS ── -->
 			{#if land?.stats}
 				<div class="mt-6 grid grid-cols-2 gap-2.5 md:grid-cols-4">
-					{#each land.stats as s, i}
+					{#each land.stats as s, i (i)}
 						<Card.Root
 							class="animate-slide-up gap-0 rounded-lg bg-[var(--c-bg-card)] p-3.5 ring-1 ring-[var(--c-border-soft)] transition-shadow hover:shadow-[var(--shadow-md)]"
 							style="animation-delay:{80 + i * 60}ms"
@@ -359,7 +361,7 @@
 				<section class="mt-11">
 					{@render sectionHeader('Por qué con nosotros', 'Lo que nos define')}
 					<div class="grid grid-cols-1 gap-3 md:grid-cols-3">
-						{#each land.pillars as pillar}
+						{#each land.pillars as pillar, idx (idx)}
 							<Card.Root
 								class="gap-0 rounded-lg bg-[var(--c-bg-card)] p-4 ring-1 ring-[var(--c-border-soft)]"
 							>
@@ -386,7 +388,7 @@
 				<section class="mt-11">
 					{@render sectionHeader('Catálogo', 'Nuestros servicios')}
 
-					{#each serviciosPorCat().entries() as [cat, items]}
+					{#each serviciosPorCat().entries() as [cat, items] (cat)}
 						<div class="mb-6">
 							<div
 								class="mb-3 flex items-center gap-2 font-mono text-[10.5px] font-bold tracking-[1.5px] uppercase"
@@ -396,7 +398,7 @@
 								{cat}
 							</div>
 							<div class="flex flex-col gap-2.5">
-								{#each items as s}
+								{#each items as s (s.id)}
 									<Card.Root
 										class="gap-0 rounded-lg bg-[var(--c-bg-card)] p-0 ring-1 ring-[var(--c-border-soft)]"
 									>
@@ -481,7 +483,7 @@
 												<div
 													class="grid grid-cols-2 gap-x-4 gap-y-1 border-t border-[var(--c-border-soft)] pt-3"
 												>
-													{#each s.incluye as item}
+													{#each s.incluye as item, idx (idx)}
 														<div
 															class="flex items-start gap-1.5 text-[11.5px] leading-snug"
 															style="color:var(--c-text-secondary)"
@@ -508,7 +510,7 @@
 				<section class="mt-11">
 					{@render sectionHeader('Cómo funciona', 'Paso a paso')}
 					<div class="flex flex-col gap-3">
-						{#each land.proceso as p}
+						{#each land.proceso as p, idx (idx)}
 							<Card.Root
 								class="flex-row gap-4 rounded-lg bg-[var(--c-bg-card)] p-4 ring-1 ring-[var(--c-border-soft)]"
 							>
@@ -535,7 +537,7 @@
 				<section class="mt-11">
 					{@render sectionHeader('Quiénes somos', 'El equipo')}
 					<div class="grid grid-cols-1 gap-3 md:grid-cols-2">
-						{#each land.equipo as m}
+						{#each land.equipo as m, idx (idx)}
 							<Card.Root
 								class="flex-row gap-3.5 rounded-lg bg-[var(--c-bg-card)] p-3.5 ring-1 ring-[var(--c-border-soft)]"
 							>
@@ -570,7 +572,7 @@
 						<div class="mb-6">
 							{@render subHeader('¿Qué paquete necesitas?')}
 							<div class="grid grid-cols-1 gap-3 md:grid-cols-3">
-								{#each land.paquetes as pk}
+								{#each land.paquetes as pk, idx (idx)}
 									<div
 										class="flex flex-col gap-3 rounded-lg border-l-4 p-4 ring-1 ring-[var(--c-border-soft)]"
 										style="background:var(--c-bg-card);border-left-color:{pk.color}"
@@ -579,7 +581,7 @@
 											{pk.nombre}
 										</div>
 										<ul class="flex flex-1 flex-col gap-1.5">
-											{#each pk.incluido as item}
+											{#each pk.incluido as item, idx (idx)}
 												<li
 													class="flex items-start gap-2 text-[12.5px] leading-snug"
 													style="color:var(--c-text-secondary)"
@@ -610,7 +612,7 @@
 						<div class="mb-6">
 							{@render subHeader('Nuestra flota')}
 							<div class="grid grid-cols-1 gap-2.5 md:grid-cols-3">
-								{#each land.flota as v}
+								{#each land.flota as v, idx (idx)}
 									<Card.Root
 										class="flex-row items-start gap-3 rounded-lg bg-[var(--c-bg-card)] p-3.5 ring-1 ring-[var(--c-border-soft)]"
 									>
@@ -637,7 +639,7 @@
 						<div class="mb-6">
 							{@render subHeader('Cobertura')}
 							<div class="flex flex-wrap gap-2">
-								{#each land.cobertura as zona}
+								{#each land.cobertura as zona, idx (idx)}
 									<Badge
 										variant="outline"
 										class="gap-1.5 rounded-xl border-[var(--c-border-soft)] px-3 py-2 text-[12.5px] font-medium"
@@ -654,7 +656,7 @@
 						<div class="mb-6">
 							{@render subHeader('Ramos disponibles')}
 							<div class="grid grid-cols-2 gap-3 md:grid-cols-3">
-								{#each land.ramos as r}
+								{#each land.ramos as r (r.id)}
 									<Card.Root
 										class="gap-2 rounded-lg bg-[var(--c-bg-card)] p-4 ring-1 ring-[var(--c-border-soft)]"
 									>
@@ -679,7 +681,7 @@
 						<div class="mb-6">
 							{@render subHeader('Aceptamos tu seguro')}
 							<div class="flex flex-wrap gap-2">
-								{#each land.convenios as c}
+								{#each land.convenios as c, idx (idx)}
 									<Badge
 										variant="outline"
 										class="rounded-xl border-[var(--c-border-soft)] px-4 py-2.5 text-[13px] font-bold"
@@ -696,7 +698,7 @@
 						<div>
 							{@render subHeader('Aliados estratégicos')}
 							<div class="flex flex-wrap gap-2">
-								{#each land.aliados as a}
+								{#each land.aliados as a, idx (idx)}
 									<Badge
 										variant="outline"
 										class="rounded-xl border-[var(--c-border-soft)] px-4 py-2.5 text-[13px] font-semibold"
@@ -716,7 +718,7 @@
 				<section class="mt-11">
 					{@render sectionHeader('Nuestras instalaciones', 'Conoce el espacio')}
 					<div class="grid grid-cols-2 gap-2.5 md:grid-cols-3">
-						{#each land.galeria as g}
+						{#each land.galeria as g, idx (idx)}
 							<div
 								class="relative flex items-end overflow-hidden rounded-lg border"
 								style="height:140px;background:{g.tono};border-color:rgba(0,0,0,.08);background-image:repeating-linear-gradient(135deg,rgba(0,0,0,.04) 0,rgba(0,0,0,.04) 1px,transparent 1px,transparent 14px)"
@@ -738,7 +740,7 @@
 				<section class="mt-11">
 					{@render sectionHeader('Preguntas frecuentes', 'Lo que más nos preguntan')}
 					<Accordion.Root type="single" class="flex flex-col gap-2">
-						{#each land.faqs as faq, i}
+						{#each land.faqs as faq, i (i)}
 							<Card.Root
 								class="gap-0 rounded-lg bg-[var(--c-bg-card)] p-0 ring-1 ring-[var(--c-border-soft)]"
 							>
@@ -784,7 +786,7 @@
 						</div>
 					</div>
 					<div class="flex flex-col gap-2.5">
-						{#each [{ icon: 'location', label: 'Ubicación', value: tienda.location }, { icon: 'clock', label: 'Horario', value: tienda.hours }, { icon: 'credit', label: 'Pagos', value: tienda.paymentMethods.join(' · ') }] as row}
+						{#each [{ icon: 'location', label: 'Ubicación', value: tienda.location }, { icon: 'clock', label: 'Horario', value: tienda.hours }, { icon: 'credit', label: 'Pagos', value: tienda.paymentMethods.join(' · ') }] as row, idx (idx)}
 							<Card.Root
 								class="flex-row gap-3 rounded-lg bg-[var(--c-bg-card)] p-3.5 ring-1 ring-[var(--c-border-soft)]"
 							>

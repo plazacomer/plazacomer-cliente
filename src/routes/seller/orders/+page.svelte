@@ -50,7 +50,7 @@
 
 	<!-- Tabs -->
 	<div class="mb-5 flex rounded-xl p-1" style="background:var(--c-bg-secondary)">
-		{#each [['activos', 'Activos'], ['historial', 'Historial']] as [Tab, string][] as [id, label]}
+		{#each [['activos', 'Activos'], ['historial', 'Historial']] as [Tab, string][] as [id, label] (id)}
 			<button
 				onclick={() => (tab = id)}
 				class="flex-1 rounded-[10px] py-2.5 text-[13.5px] font-bold transition-all"
@@ -79,7 +79,7 @@
 		</div>
 	{:else}
 		<div class="flex flex-col gap-3">
-			{#each lista as pedido}
+			{#each lista as pedido (pedido.id)}
 				{@const trans = TRANSITIONS[pedido.status]}
 				<div
 					class="overflow-hidden rounded-2xl border border-[var(--c-border-soft)]"
@@ -116,7 +116,7 @@
 							style="background:var(--c-bg-secondary)"
 						>
 							<div class="mb-3 flex flex-col gap-1.5 pt-3">
-								{#each pedido.items as item}
+								{#each pedido.items as item, idx (idx)}
 									<div class="flex items-center justify-between text-[13px]">
 										<span class="text-[var(--c-text-secondary)]">
 											{item.quantity}× Producto #{item.productId}

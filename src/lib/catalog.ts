@@ -7,7 +7,9 @@ import {
 	CreateStoreRequestSchema,
 	CreateProductRequestSchema,
 	CreateDealRequestSchema,
-	GeneralResponseSchema
+	GeneralResponseSchema,
+	type Store,
+	type Product
 } from './gen/catalog_pb';
 import { toBinary, fromBinary, create } from '@bufbuild/protobuf';
 
@@ -25,7 +27,7 @@ async function getAuthHeader(): Promise<Record<string, string>> {
 
 // === PUBLIC API (worker-catalogo) ===
 
-export async function listStores(category?: string, query?: string): Promise<any[]> {
+export async function listStores(category?: string, query?: string): Promise<Store[]> {
 	const url = new URL(`${CATALOG_URL}/stores`);
 	if (category) url.searchParams.set('category', category);
 	if (query) url.searchParams.set('q', query);
@@ -39,7 +41,7 @@ export async function listStores(category?: string, query?: string): Promise<any
 	return res.stores;
 }
 
-export async function getStore(id: number): Promise<any> {
+export async function getStore(id: number): Promise<Store | undefined> {
 	const response = await fetch(`${CATALOG_URL}/stores/${id}`, {
 		headers: { Accept: 'application/x-protobuf' }
 	});
@@ -50,7 +52,7 @@ export async function getStore(id: number): Promise<any> {
 	return res.store;
 }
 
-export async function listProducts(storeId: number): Promise<any[]> {
+export async function listProducts(storeId: number): Promise<Product[]> {
 	const response = await fetch(`${CATALOG_URL}/stores/${storeId}/products`, {
 		headers: { Accept: 'application/x-protobuf' }
 	});
@@ -60,7 +62,7 @@ export async function listProducts(storeId: number): Promise<any[]> {
 	return res.products;
 }
 
-export async function search(query: string): Promise<{ stores: any[]; products: any[] }> {
+export async function search(query: string): Promise<{ stores: Store[]; products: Product[] }> {
 	const response = await fetch(`${CATALOG_URL}/search?q=${encodeURIComponent(query)}`, {
 		headers: { Accept: 'application/x-protobuf' }
 	});

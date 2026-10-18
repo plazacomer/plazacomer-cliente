@@ -151,7 +151,7 @@
 					Calificación mínima
 				</div>
 				<div class="flex gap-1.5">
-					{#each [0, 3, 3.5, 4, 4.5, 4.8] as r}
+					{#each [0, 3, 3.5, 4, 4.5, 4.8] as r (r)}
 						<button
 							onclick={() => upd('ratingMin', r)}
 							class="flex-1 rounded-[10px] py-2.5 text-[11px] font-bold transition-colors"
@@ -229,7 +229,7 @@
 					Precio máximo por producto
 				</div>
 				<div class="grid grid-cols-4 gap-1.5">
-					{#each [null, 15000, 30000, 50000] as p}
+					{#each [null, 15000, 30000, 50000] as p, idx (idx)}
 						<button
 							onclick={() => upd('precioMax', p)}
 							class="rounded-[10px] py-2.5 text-[11.5px] font-bold transition-colors"

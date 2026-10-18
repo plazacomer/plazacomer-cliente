@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { orders, cart, toast, type Order } from '$lib/stores/app.svelte';
 	import { getStore } from '$lib/data/mock';
@@ -22,7 +23,7 @@
 		toast.show(
 			`✓ ${pedido.items.length} producto${pedido.items.length !== 1 ? 's' : ''} agregado${pedido.items.length !== 1 ? 's' : ''} al carrito`
 		);
-		goto('/app/cart');
+		goto(resolve('/app/cart'));
 	}
 
 	function guardarComoLista(pedido: Order) {
@@ -60,14 +61,14 @@
 			<p class="mb-6 text-sm" style="color:var(--c-text-secondary)">
 				Explora las tiendas y haz tu primer pedido.
 			</p>
-			<Button variant="brand" onclick={() => goto('/app/explore')}>
+			<Button variant="brand" onclick={() => goto(resolve('/app/explore'))}>
 				<Icon name="search" size={16} />
 				Explorar tiendas
 			</Button>
 		</div>
 	{:else}
 		<div class="flex flex-col gap-3.5">
-			{#each orders.items as pedido}
+			{#each orders.items as pedido (pedido.id)}
 				{@const tienda = getStore(pedido.storeId)}
 				{@const estado = estadoMap[pedido.status]}
 				<div
@@ -75,7 +76,7 @@
 					style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 				>
 					<button
-						onclick={() => goto(`/app/orders/${pedido.id}`)}
+						onclick={() => goto(resolve(`/app/orders/${pedido.id}`))}
 						class="flex w-full items-center gap-3.5 p-4 text-left transition-all hover:bg-[var(--c-bg-secondary)]"
 					>
 						<TiendaLogo {tienda} size={48} />

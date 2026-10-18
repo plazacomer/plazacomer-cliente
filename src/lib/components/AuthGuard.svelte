@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { authStore } from '$lib/stores/auth.svelte';
 	import type { Snippet } from 'svelte';
@@ -7,7 +8,7 @@
 
 	$effect(() => {
 		if (!authStore.loading && !authStore.isAuthenticated) {
-			goto('/login');
+			goto(resolve('/login'));
 		}
 	});
 </script>

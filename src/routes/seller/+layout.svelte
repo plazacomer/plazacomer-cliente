@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { vendedor } from '$lib/stores/vendedor.svelte';
@@ -17,7 +18,7 @@
 		{ id: 'catalogo', label: 'Catálogo', icon: 'store', path: '/seller/catalog' },
 		{ id: 'ofertas', label: 'Ofertas', icon: 'tag', path: '/seller/deals' },
 		{ id: 'fidelidad', label: 'Fidelidad', icon: 'heart', path: '/seller/loyalty' }
-	];
+	] as const;
 
 	function currentId() {
 		const segs = $page.url.pathname.split('/');
@@ -63,10 +64,10 @@
 				</div>
 			</div>
 
-			{#each NAV as item}
+			{#each NAV as item (item.id)}
 				{@const active = currentId() === item.id}
 				<button
-					onclick={() => goto(item.path)}
+					onclick={() => goto(resolve(item.path))}
 					class="relative flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors"
 					style="background:{active ? 'var(--c-brand-light)' : 'transparent'};color:{active
 						? 'var(--c-brand)'
@@ -92,7 +93,7 @@
 
 			<div class="mt-auto border-t border-[var(--c-border-soft)] pt-3">
 				<button
-					onclick={() => goto('/app/home')}
+					onclick={() => goto(resolve('/app/home'))}
 					class="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm"
 					style="color:var(--c-text-secondary)"
 				>
@@ -139,10 +140,10 @@
 				class="fixed right-0 bottom-0 left-0 z-30 flex items-center justify-around border-t border-[var(--c-border-soft)] px-1 lg:hidden"
 				style="background:var(--c-bg-card);padding-bottom:max(12px,env(safe-area-inset-bottom));padding-top:8px"
 			>
-				{#each NAV as item}
+				{#each NAV as item (item.id)}
 					{@const active = currentId() === item.id}
 					<button
-						onclick={() => goto(item.path)}
+						onclick={() => goto(resolve(item.path))}
 						class="relative flex min-w-14 flex-col items-center gap-0.5 px-2.5 py-1.5"
 						style="color:{active ? 'var(--c-brand)' : 'var(--c-text-muted)'}"
 					>

@@ -1,12 +1,14 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { vendedor } from '$lib/stores/vendedor.svelte';
 	import { ESTADOS_CITA, fmtFechaCita } from '$lib/stores/citas.svelte';
 	import { fmtCOP } from '$lib/utils';
+	import type { OrderStatus } from '$lib/stores/app.svelte';
 	import Icon from '$lib/components/ui/Icon.svelte';
 	import { Badge } from '$lib/components/ui/badge';
 
-	const ESTADO_STEPS: Record<string, string> = {
+	const ESTADO_STEPS: Partial<Record<OrderStatus, OrderStatus>> = {
 		confirmed: 'preparing',
 		preparing: 'shipping',
 		shipping: 'delivered'
@@ -64,7 +66,7 @@
 
 	<!-- KPI cards -->
 	<div class="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
-		{#each [{ label: 'Pedidos activos', value: vendedor.pedidosActivos.length.toString(), icon: 'package', color: '#2563EB', bg: 'rgba(37,99,235,.08)' }, { label: 'Ingresos de hoy', value: fmtCOP(vendedor.ingresosHoy), icon: 'coin', color: '#16A34A', bg: 'rgba(22,163,74,.08)' }, { label: 'Ventas del mes', value: vendedor.totalVentasMes.toString(), icon: 'store', color: '#7C3AED', bg: 'rgba(124,58,237,.08)' }, { label: 'Ticket promedio', value: fmtCOP(vendedor.ticketPromedio), icon: 'tag', color: '#F59E0B', bg: 'rgba(245,158,11,.08)' }] as kpi}
+		{#each [{ label: 'Pedidos activos', value: vendedor.pedidosActivos.length.toString(), icon: 'package', color: '#2563EB', bg: 'rgba(37,99,235,.08)' }, { label: 'Ingresos de hoy', value: fmtCOP(vendedor.ingresosHoy), icon: 'coin', color: '#16A34A', bg: 'rgba(22,163,74,.08)' }, { label: 'Ventas del mes', value: vendedor.totalVentasMes.toString(), icon: 'store', color: '#7C3AED', bg: 'rgba(124,58,237,.08)' }, { label: 'Ticket promedio', value: fmtCOP(vendedor.ticketPromedio), icon: 'tag', color: '#F59E0B', bg: 'rgba(245,158,11,.08)' }] as kpi, idx (idx)}
 			<div
 				class="rounded-2xl border border-[var(--c-border-soft)] p-4"
 				style="background:var(--c-bg-card)"
@@ -83,9 +85,9 @@
 
 	<!-- Acciones rápidas -->
 	<div class="mb-7 grid grid-cols-4 gap-2.5">
-		{#each [{ label: 'Pedidos', icon: 'package', path: '/seller/orders', color: 'var(--c-brand)' }, { label: 'Citas', icon: 'calendar', path: '/seller/appointments', color: '#2563EB' }, { label: 'Catálogo', icon: 'store', path: '/seller/catalog', color: '#7C3AED' }, { label: 'Ofertas', icon: 'tag', path: '/seller/deals', color: '#F59E0B' }] as a}
+		{#each [{ label: 'Pedidos', icon: 'package', path: '/seller/orders', color: 'var(--c-brand)' }, { label: 'Citas', icon: 'calendar', path: '/seller/appointments', color: '#2563EB' }, { label: 'Catálogo', icon: 'store', path: '/seller/catalog', color: '#7C3AED' }, { label: 'Ofertas', icon: 'tag', path: '/seller/deals', color: '#F59E0B' }] as const as a, idx (idx)}
 			<button
-				onclick={() => goto(a.path)}
+				onclick={() => goto(resolve(a.path))}
 				class="flex flex-col items-center gap-2 rounded-2xl border border-[var(--c-border-soft)] py-4 text-center transition-all hover:border-[var(--c-brand)]"
 				style="background:var(--c-bg-card)"
 			>
@@ -113,7 +115,7 @@
 					</div>
 				</div>
 				<button
-					onclick={() => goto('/seller/appointments')}
+					onclick={() => goto(resolve('/seller/appointments'))}
 					class="text-[12px] font-semibold"
 					style="color:var(--c-brand)"
 				>
@@ -122,7 +124,7 @@
 			</div>
 
 			<div class="flex flex-col gap-2.5">
-				{#each vendedor.citasPendientes.slice(0, 3) as cita}
+				{#each vendedor.citasPendientes.slice(0, 3) as cita (cita.id)}
 					{@const estadoInfo = ESTADOS_CITA[cita.estado]}
 					<div
 						class="flex items-center gap-3 rounded-2xl border border-[var(--c-border-soft)] p-3.5"
@@ -155,7 +157,7 @@
 		<div class="mb-2 flex items-center justify-between">
 			<h2 class="font-display text-[16px] font-bold">Pedidos activos</h2>
 			<button
-				onclick={() => goto('/seller/orders')}
+				onclick={() => goto(resolve('/seller/orders'))}
 				class="text-[12px] font-semibold"
 				style="color:var(--c-brand)"
 			>
@@ -164,7 +166,7 @@
 		</div>
 
 		<div class="flex flex-col gap-3">
-			{#each vendedor.pedidosActivos as pedido}
+			{#each vendedor.pedidosActivos as pedido (pedido.id)}
 				<div
 					class="overflow-hidden rounded-2xl border border-[var(--c-border-soft)]"
 					style="background:var(--c-bg-card)"
@@ -188,8 +190,7 @@
 							style="background:var(--c-bg-secondary)"
 						>
 							<button
-								onclick={() =>
-									vendedor.cambiarEstado(pedido.id, ESTADO_STEPS[pedido.status] as any)}
+								onclick={() => vendedor.cambiarEstado(pedido.id, ESTADO_STEPS[pedido.status]!)}
 								class="mt-3 w-full rounded-xl py-2.5 text-sm font-bold text-white"
 								style="background:var(--c-brand)"
 							>
