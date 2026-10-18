@@ -7,7 +7,7 @@
 	import Icon from '$lib/components/ui/Icon.svelte';
 	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
 
-	const tiendaId = $derived($page.params.storeId);
+	const tiendaId = $derived($page.params.storeId ?? '');
 	const tienda = $derived(getStore(tiendaId));
 	const conv = $derived(messages.getConversation(tiendaId));
 	const msgs = $derived(conv?.messages ?? []);

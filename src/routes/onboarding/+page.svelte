@@ -120,7 +120,7 @@
 				<div class="flex justify-center mb-6">
 					<div class="w-20 h-20 rounded-[22px] flex items-center justify-center shadow-lg"
 						style="background:var(--c-brand)">
-						<Logo size={44} color="#fff"/>
+						<Logo size={44}/>
 					</div>
 				</div>
 

@@ -11,7 +11,7 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import type { OrderStatus } from '$lib/stores/app.svelte';
 
-	const id = $derived($page.params.id);
+	const id = $derived($page.params.id ?? '');
 	const pedido = $derived(orders.get(id));
 	const tienda = $derived(pedido ? getStore(pedido.storeId) : null);
 
