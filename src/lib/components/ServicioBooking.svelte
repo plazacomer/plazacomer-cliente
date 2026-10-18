@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Store, Servicio } from '$lib/data/mock';
 	import { citas } from '$lib/stores/citas.svelte';
-	import { toast } from '$lib/stores/app.svelte';
 	import { fmtCOP } from '$lib/utils';
 	import Icon from '$lib/components/ui/Icon.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';

@@ -43,7 +43,7 @@ export type CartItem = {
 };
 
 function createCart() {
-	let items = $state<CartItem[]>(
+	const items = $state<CartItem[]>(
 		browser ? JSON.parse(localStorage.getItem('pc_cart_v2') ?? '[]') : []
 	);
 
@@ -193,7 +193,7 @@ const MOCK_ORDERS: Order[] = [
 ];
 
 function createOrders() {
-	let items = $state<Order[]>(
+	const items = $state<Order[]>(
 		browser ? (JSON.parse(localStorage.getItem('pc_orders') ?? 'null') ?? MOCK_ORDERS) : MOCK_ORDERS
 	);
 
@@ -314,7 +314,7 @@ const MOCK_CONVERSATIONS: Conversation[] = [
 ];
 
 function createMessages() {
-	let convs = $state<Conversation[]>(
+	const convs = $state<Conversation[]>(
 		browser
 			? (JSON.parse(localStorage.getItem('pc_messages') ?? 'null') ?? MOCK_CONVERSATIONS)
 			: MOCK_CONVERSATIONS

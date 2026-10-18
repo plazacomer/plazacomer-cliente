@@ -100,9 +100,8 @@
 					</p>
 				</div>
 			{:else}
-				{#each msgs as msg, i}
+				{#each msgs as msg}
 					{@const isCliente = msg.author === 'customer'}
-					{@const isFirst = i === 0 || msgs[i - 1].author !== msg.author}
 					<div
 						class="animate-fade-in flex"
 						style="justify-content:{isCliente ? 'flex-end' : 'flex-start'}"

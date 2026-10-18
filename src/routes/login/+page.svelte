@@ -138,9 +138,12 @@
 									></div>
 								</div>
 							{:else}
+								<!-- SVG estático definido en este mismo archivo, no viene del usuario -->
+								<!-- eslint-disable svelte/no-at-html-tags -->
 								<span class="flex h-5 w-5 flex-shrink-0 items-center justify-center"
 									>{@html p.icon}</span
 								>
+								<!-- eslint-enable svelte/no-at-html-tags -->
 							{/if}
 							<span class="flex-1 text-left">
 								{signingIn === p.id ? m.login_connecting() : p.label}

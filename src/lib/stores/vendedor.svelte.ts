@@ -1,4 +1,3 @@
-import { browser } from '$app/environment';
 import { STORES, PRODUCTS, DEALS, SERVICIOS, type Product } from '$lib/data/mock';
 import { orders, type OrderStatus } from '$lib/stores/app.svelte';
 import { citas, type EstadoCita } from '$lib/stores/citas.svelte';

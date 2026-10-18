@@ -56,7 +56,9 @@
 		historial = next;
 		try {
 			localStorage.setItem('pc_search_hist', JSON.stringify(next));
-		} catch {}
+		} catch {
+			// localStorage puede no estar disponible (modo privado); el historial es opcional
+		}
 	}
 
 	function selectTienda(t: Store) {

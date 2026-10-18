@@ -46,7 +46,7 @@ export function rewardLabel(cfg: LoyaltyCardConfig): string {
 }
 
 function createLoyalty() {
-	let configs = $state<LoyaltyCardConfig[]>(LOYALTY_CARDS);
+	const configs = $state<LoyaltyCardConfig[]>(LOYALTY_CARDS);
 	let claimed = $state<Record<string, number>>(readClaims());
 
 	$effect.root(() => {

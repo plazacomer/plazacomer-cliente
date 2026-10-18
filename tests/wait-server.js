@@ -7,7 +7,7 @@ const check = async () => {
 		]);
 		console.log('All local Wrangler (Rust) servers ready.');
 		process.exit(0);
-	} catch (e) {
+	} catch {
 		setTimeout(check, 500);
 	}
 };

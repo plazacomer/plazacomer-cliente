@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { citas, ESTADOS_CITA, fmtFechaCita, type Cita } from '$lib/stores/citas.svelte';
-	import { getStore, getServicio } from '$lib/data/mock';
+	import { getStore } from '$lib/data/mock';
 	import { fmtCOP } from '$lib/utils';
 	import Icon from '$lib/components/ui/Icon.svelte';
 
@@ -84,7 +84,6 @@
 		<div class="flex flex-col gap-3">
 			{#each lista as cita}
 				{@const tienda = getStore(cita.tiendaId)}
-				{@const servicio = getServicio(cita.servicioId)}
 				{@const estado = ESTADOS_CITA[cita.estado]}
 
 				<div

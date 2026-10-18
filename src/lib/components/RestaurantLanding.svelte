@@ -24,6 +24,7 @@
 
 	// Cada vez que se entra a una tienda (o se cambia de tienda) arrancamos en "menu"
 	$effect(() => {
+		// eslint-disable-next-line @typescript-eslint/no-unused-expressions -- lectura intencional: registra tienda.id como dependencia del efecto
 		tienda.id;
 		storeUi.reset();
 	});

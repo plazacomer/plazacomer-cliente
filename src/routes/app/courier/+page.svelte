@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { repartidor, REPARTIDOR } from '$lib/stores/repartidor.svelte';
 	import { fmtCOP } from '$lib/utils';
 	import { getStore } from '$lib/data/mock';

@@ -17,7 +17,6 @@ const ADMIN_URL = 'http://localhost:8789';
 describe('E2E - Rust Catalog Workers Zero-Copy Protobuf', () => {
 	let storeId: bigint = 0n;
 	let productId: bigint = 0n;
-	let dealId: bigint = 0n;
 	const mockToken = 'mock-token-merchant123';
 
 	it('Should deny store creation when authorization is missing', async () => {
@@ -178,6 +177,5 @@ describe('E2E - Rust Catalog Workers Zero-Copy Protobuf', () => {
 
 		expect(response.success).toBe(true);
 		expect(response.id).toBeGreaterThan(0n);
-		dealId = response.id;
 	});
 });

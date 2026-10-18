@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { vendedor } from '$lib/stores/vendedor.svelte';
-	import { ESTADOS_CITA, fmtFechaCita, type EstadoCita, type Cita } from '$lib/stores/citas.svelte';
+	import { ESTADOS_CITA, fmtFechaCita, type EstadoCita } from '$lib/stores/citas.svelte';
 	import { fmtCOP } from '$lib/utils';
 	import Icon from '$lib/components/ui/Icon.svelte';
 	import { Badge } from '$lib/components/ui/badge';
@@ -11,7 +11,6 @@
 	let tab = $state<Tab>('pendientes');
 
 	const lista = $derived.by(() => {
-		const hoy = new Date().toISOString().slice(0, 10);
 		if (tab === 'pendientes') return vendedor.citasPendientes;
 		if (tab === 'hoy') return vendedor.citasHoy;
 		return vendedor.citasTienda.filter((c) =>

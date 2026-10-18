@@ -1,5 +1,4 @@
 import { orders } from '$lib/stores/app.svelte';
-import { STORES, getStore } from '$lib/data/mock';
 
 export type EntregaEstado = 'disponible' | 'recogiendo' | 'en_camino' | 'entregado';
 

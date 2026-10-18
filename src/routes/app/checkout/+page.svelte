@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { cart, orders, toast } from '$lib/stores/app.svelte';
+	import { cart, orders } from '$lib/stores/app.svelte';
 	import type { CartItem } from '$lib/stores/app.svelte';
 	import { getStore, getProduct, ADDRESSES, COUPONS } from '$lib/data/mock';
 	import { fmtCOP } from '$lib/utils';

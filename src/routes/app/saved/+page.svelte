@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { favoritos, EMOJIS_LISTA, type Lista } from '$lib/stores/favoritos.svelte';
+	import { favoritos, EMOJIS_LISTA } from '$lib/stores/favoritos.svelte';
 	import { cart, toast } from '$lib/stores/app.svelte';
 	import { fmtCOP } from '$lib/utils';
 	import Icon from '$lib/components/ui/Icon.svelte';

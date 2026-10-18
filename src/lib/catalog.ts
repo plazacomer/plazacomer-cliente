@@ -3,14 +3,9 @@ import {
 	ListStoresResponseSchema,
 	StoreDetailResponseSchema,
 	ListProductsResponseSchema,
-	ListDealsResponseSchema,
-	ListReviewsResponseSchema,
 	SearchResponseSchema,
-	FeedResponseSchema,
 	CreateStoreRequestSchema,
-	UpdateStoreRequestSchema,
 	CreateProductRequestSchema,
-	UpdateProductRequestSchema,
 	CreateDealRequestSchema,
 	GeneralResponseSchema
 } from './gen/catalog_pb';

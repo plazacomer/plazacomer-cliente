@@ -508,7 +508,7 @@
 				<section class="mt-11">
 					{@render sectionHeader('Cómo funciona', 'Paso a paso')}
 					<div class="flex flex-col gap-3">
-						{#each land.proceso as p, i}
+						{#each land.proceso as p}
 							<Card.Root
 								class="flex-row gap-4 rounded-lg bg-[var(--c-bg-card)] p-4 ring-1 ring-[var(--c-border-soft)]"
 							>

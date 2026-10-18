@@ -1,12 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import {
-	GeneralResponseSchema,
-	ListUsersResponseSchema,
-	GetTaxDataResponseSchema,
-	SetUserRoleRequestSchema,
-	UpsertTaxDataRequestSchema
-} from '../src/lib/gen/user_pb';
-import { toBinary, fromBinary, create } from '@bufbuild/protobuf';
+import { GeneralResponseSchema, ListUsersResponseSchema } from '../src/lib/gen/user_pb';
+import { fromBinary } from '@bufbuild/protobuf';
 
 // Point to the local worker-user-admin running dev port (8790) or the test port (8791)
 const ADMIN_WORKER_URL = process.env.TEST_WORKER_URL || 'http://localhost:8790';
