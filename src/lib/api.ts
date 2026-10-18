@@ -1,4 +1,4 @@
-import { authStore } from '$lib/stores/auth.svelte';
+import { authStore } from '#lib/stores/auth.svelte.js';
 
 /**
  * El backend (docs/API.md en plazacomer-cloudflare) habla snake_case porque así son

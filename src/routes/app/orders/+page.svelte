@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import { orders, cart, toast, type Order } from '$lib/stores/app.svelte';
-	import { getStore } from '$lib/data/mock';
-	import { favoritos } from '$lib/stores/favoritos.svelte';
-	import { fmtCOP } from '$lib/utils';
-	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
-	import { Badge } from '$lib/components/ui/badge';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import { Button } from '$lib/components/ui/button';
-	import type { OrderStatus } from '$lib/stores/app.svelte';
+	import { orders, cart, toast, type Order } from '#lib/stores/app.svelte.js';
+	import { getStore } from '#lib/data/mock.js';
+	import { favoritos } from '#lib/stores/favoritos.svelte.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import TiendaLogo from '#lib/components/TiendaLogo.svelte';
+	import { Badge } from '#lib/components/ui/badge/index.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import type { OrderStatus } from '#lib/stores/app.svelte.js';
 
 	function pedirDeNuevo(pedido: Order) {
 		pedido.items.forEach((item) => {
@@ -20,10 +20,11 @@
 				quantity: item.quantity
 			});
 		});
+
 		toast.show(
 			`✓ ${pedido.items.length} producto${pedido.items.length !== 1 ? 's' : ''} agregado${pedido.items.length !== 1 ? 's' : ''} al carrito`
 		);
-		goto(resolve('/app/cart'));
+		goto(resolve('app/cart'));
 	}
 
 	function guardarComoLista(pedido: Order) {
@@ -50,6 +51,7 @@
 
 <div class="mx-auto max-w-[900px] px-4 pt-5 pb-12">
 	<h1 class="mb-1 font-display text-[26px] font-extrabold">Mis pedidos</h1>
+
 	<p class="mb-5 text-sm" style="color:var(--c-text-secondary)">
 		{orders.count} pedido{orders.count !== 1 ? 's' : ''} en total
 	</p>
@@ -58,13 +60,14 @@
 		<div class="pt-12 text-center">
 			<div class="mb-4 text-6xl">📦</div>
 			<h2 class="mb-2 font-display text-xl font-bold">Sin pedidos aún</h2>
+
 			<p class="mb-6 text-sm" style="color:var(--c-text-secondary)">
 				Explora las tiendas y haz tu primer pedido.
 			</p>
-			<Button variant="brand" onclick={() => goto(resolve('/app/explore'))}>
-				<Icon name="search" size={16} />
-				Explorar tiendas
-			</Button>
+
+			<Button variant="brand" onclick={() => goto(resolve('app/explore'))}
+				><Icon name="search" size={16} />Explorar tiendas</Button
+			>
 		</div>
 	{:else}
 		<div class="flex flex-col gap-3.5">
@@ -76,7 +79,7 @@
 					style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 				>
 					<button
-						onclick={() => goto(resolve(`/app/orders/${pedido.id}`))}
+						onclick={() => goto(resolve(`app/orders/${pedido.id}`))}
 						class="flex w-full items-center gap-3.5 p-4 text-left transition-all hover:bg-[var(--c-bg-secondary)]"
 					>
 						<TiendaLogo {tienda} size={48} />

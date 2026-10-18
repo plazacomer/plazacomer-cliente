@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { messages } from '$lib/stores/app.svelte';
-	import { getStore } from '$lib/data/mock';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
+	import { messages } from '#lib/stores/app.svelte.js';
+	import { getStore } from '#lib/data/mock.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import TiendaLogo from '#lib/components/TiendaLogo.svelte';
 
-	const tiendaId = $derived($page.params.storeId ?? '');
+	const tiendaId = $derived(page.params.storeId ?? '');
 	const tienda = $derived(getStore(tiendaId));
 	const conv = $derived(messages.getConversation(tiendaId));
 	const msgs = $derived(conv?.messages ?? []);
@@ -57,7 +57,7 @@
 		<div class="mb-4 text-6xl">💬</div>
 		<h2 class="mb-2 font-display text-xl font-bold">Conversación no encontrada</h2>
 		<button
-			onclick={() => goto(resolve('/app/messages'))}
+			onclick={() => goto(resolve('app/messages'))}
 			class="text-sm"
 			style="color:var(--c-brand)"
 		>
@@ -75,12 +75,13 @@
 			style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 		>
 			<button
-				onclick={() => goto(resolve('/app/messages'))}
+				onclick={() => goto(resolve('app/messages'))}
 				class="flex h-9 w-9 items-center justify-center rounded-[10px] transition-colors hover:bg-[var(--c-bg-secondary)]"
+				><Icon name="arrowLeft" size={18} /></button
 			>
-				<Icon name="arrowLeft" size={18} />
-			</button>
+
 			<TiendaLogo {tienda} size={40} />
+
 			<div class="min-w-0 flex-1">
 				<div class="truncate font-display text-sm font-bold">{tienda.name}</div>
 				<div class="flex items-center gap-1.5 text-[11px]" style="color:var(--c-success)">

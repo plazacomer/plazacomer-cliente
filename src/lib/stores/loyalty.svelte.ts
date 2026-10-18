@@ -1,7 +1,7 @@
-import { browser } from '$app/environment';
-import { LOYALTY_CARDS, type LoyaltyCardConfig, getProduct } from '$lib/data/mock';
-import { cart, orders, toast, type Order } from '$lib/stores/app.svelte';
-import { fmtCOP } from '$lib/utils';
+import { browser } from '$app/env';
+import { LOYALTY_CARDS, type LoyaltyCardConfig, getProduct } from '#lib/data/mock.js';
+import { cart, orders, toast, type Order } from '#lib/stores/app.svelte.js';
+import { fmtCOP } from '#lib/utils.js';
 
 const CLAIMS_KEY = 'pc_loyalty_claims_v1';
 
@@ -102,7 +102,7 @@ function createLoyalty() {
 			claimed = { ...claimed, [storeId]: (claimed[storeId] ?? 0) + 1 };
 			if (p.config.rewardType === 'product' && p.config.rewardProductId) {
 				const prod = getProduct(p.config.rewardProductId);
-				cart.add({ productId: prod.id, storeId: storeId, price: 0 });
+				cart.add({ productId: prod.id, storeId, price: 0 });
 				toast.show(`🎁 ${prod.name} gratis agregado a tu carrito`);
 			} else {
 				toast.show(`🎁 Premio reclamado · ${p.rewardLabel} se aplicará en tu próxima compra`);

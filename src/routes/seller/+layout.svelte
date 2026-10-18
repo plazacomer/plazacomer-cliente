@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
-	import { vendedor } from '$lib/stores/vendedor.svelte';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import Logo from '$lib/components/Logo.svelte';
-	import AuthGuard from '$lib/components/AuthGuard.svelte';
+	import { vendedor } from '#lib/stores/vendedor.svelte.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import Logo from '#lib/components/Logo.svelte';
+	import AuthGuard from '#lib/components/AuthGuard.svelte';
 	import type { Snippet } from 'svelte';
 
 	type Props = { children: Snippet };
@@ -21,7 +21,7 @@
 	] as const;
 
 	function currentId() {
-		const segs = $page.url.pathname.split('/');
+		const segs = page.url.pathname.split('/');
 		return segs[2] ?? '';
 	}
 </script>
@@ -37,6 +37,7 @@
 				<Logo size={30} />
 				<div>
 					<div class="font-display text-[13px] font-extrabold tracking-wide">PLAZACOMER</div>
+
 					<div
 						class="text-[9.5px] font-bold tracking-widest uppercase"
 						style="color:var(--c-brand)"
@@ -93,7 +94,7 @@
 
 			<div class="mt-auto border-t border-[var(--c-border-soft)] pt-3">
 				<button
-					onclick={() => goto(resolve('/app/home'))}
+					onclick={() => goto(resolve('app/home'))}
 					class="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm"
 					style="color:var(--c-text-secondary)"
 				>

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import { locales, localizeHref } from '$lib/paraglide/runtime';
+	import { locales, localizeHref } from '#lib/paraglide/runtime.js';
 	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
-	import { darkMode } from '$lib/stores/app.svelte';
-	import { toast } from '$lib/stores/app.svelte';
-	import { authStore } from '$lib/stores/auth.svelte';
+	import favicon from '#lib/assets/favicon.svg';
+	import { darkMode } from '#lib/stores/app.svelte.js';
+	import { toast } from '#lib/stores/app.svelte.js';
+	import { authStore } from '#lib/stores/auth.svelte.js';
 	import { onMount } from 'svelte';
 	import { goto, beforeNavigate } from '$app/navigation';
 	import type { Snippet } from 'svelte';
@@ -19,14 +19,15 @@
 
 	const PROTECTED = ['/app', '/seller', '/courier'];
 
-	beforeNavigate(({ to }) => {
+	beforeNavigate(({ to, shallow, type }) => {
+		if (shallow && type === 'goto') return;
 		if (!to) return;
 
 		const path = to.url.pathname;
 		const needsAuth = PROTECTED.some((p) => path.startsWith(p));
 
 		if (needsAuth && !authStore.loading && !authStore.isAuthenticated) {
-			goto(resolve('/login'));
+			goto(resolve('login'));
 		}
 	});
 </script>

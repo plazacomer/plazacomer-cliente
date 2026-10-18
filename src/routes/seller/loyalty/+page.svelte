@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { vendedor } from '$lib/stores/vendedor.svelte';
-	import { loyalty, rewardLabel } from '$lib/stores/loyalty.svelte';
-	import { fmtCOP } from '$lib/utils';
-	import type { LoyaltyCountingMode, LoyaltyRewardType } from '$lib/data/mock';
-	import Icon from '$lib/components/ui/Icon.svelte';
+	import { vendedor } from '#lib/stores/vendedor.svelte.js';
+	import { loyalty, rewardLabel } from '#lib/stores/loyalty.svelte.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import type { LoyaltyCountingMode, LoyaltyRewardType } from '#lib/data/mock.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
 
 	const storeId = $derived(vendedor.tienda.id);
 	const existing = $derived(loyalty.config(storeId));

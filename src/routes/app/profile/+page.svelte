@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import { CURRENT_USER, ADDRESSES, type Address } from '$lib/data/mock';
-	import { darkMode, orders } from '$lib/stores/app.svelte';
-	import { citas } from '$lib/stores/citas.svelte';
-	import { favoritos } from '$lib/stores/favoritos.svelte';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import { Badge } from '$lib/components/ui/badge';
-	import * as Dialog from '$lib/components/ui/dialog';
-	import { Input } from '$lib/components/ui/input';
+	import { CURRENT_USER, ADDRESSES, type Address } from '#lib/data/mock.js';
+	import { darkMode, orders } from '#lib/stores/app.svelte.js';
+	import { citas } from '#lib/stores/citas.svelte.js';
+	import { favoritos } from '#lib/stores/favoritos.svelte.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import { Badge } from '#lib/components/ui/badge/index.js';
+	import * as Dialog from '#lib/components/ui/dialog/index.js';
+	import { Input } from '#lib/components/ui/input/index.js';
 
 	// ── Club levels ──
 	const NIVELES = [
@@ -181,7 +181,7 @@
 	<!-- ── Quick links: Citas + Guardados ── -->
 	<div class="mb-5 grid grid-cols-2 gap-3">
 		<button
-			onclick={() => goto(resolve('/app/appointments'))}
+			onclick={() => goto(resolve('app/appointments'))}
 			class="flex flex-col gap-1.5 rounded-2xl border border-[var(--c-border-soft)] p-4 text-left"
 			style="background:var(--c-bg-card)"
 		>
@@ -191,7 +191,9 @@
 			>
 				<Icon name="calendar" size={18} color="#2563EB" />
 			</div>
+
 			<div class="mt-0.5 font-display text-[13.5px] font-bold">Mis citas</div>
+
 			<div class="text-[11.5px]" style="color:var(--c-text-muted)">
 				{citas.proximas.length > 0
 					? `${citas.proximas.length} próxima${citas.proximas.length !== 1 ? 's' : ''}`
@@ -199,7 +201,7 @@
 			</div>
 		</button>
 		<button
-			onclick={() => goto(resolve('/app/saved'))}
+			onclick={() => goto(resolve('app/saved'))}
 			class="flex flex-col gap-1.5 rounded-2xl border border-[var(--c-border-soft)] p-4 text-left"
 			style="background:var(--c-bg-card)"
 		>
@@ -209,7 +211,9 @@
 			>
 				<Icon name="heart" size={18} color="#DC2626" />
 			</div>
+
 			<div class="mt-0.5 font-display text-[13.5px] font-bold">Guardados</div>
+
 			<div class="text-[11.5px]" style="color:var(--c-text-muted)">
 				{favoritos.ids.length} favorito{favoritos.ids.length !== 1 ? 's' : ''} · {favoritos.listas
 					.length} lista{favoritos.listas.length !== 1 ? 's' : ''}
@@ -300,7 +304,7 @@
 		style="background:var(--c-bg-card)"
 	>
 		<button
-			onclick={() => goto(resolve('/app/orders'))}
+			onclick={() => goto(resolve('app/orders'))}
 			class="flex items-center gap-3 border-b border-[var(--c-border-soft)] px-4 py-3.5 text-left transition-colors hover:bg-[var(--c-bg-secondary)]"
 			style="color:var(--c-text-primary)"
 		>

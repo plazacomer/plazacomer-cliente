@@ -1,24 +1,26 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
-	import { getProduct, getStore, getDeal } from '$lib/data/mock';
-	import { cart, toast } from '$lib/stores/app.svelte';
-	import { fmtCOP } from '$lib/utils';
-	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
-	import CustomizeModal, { type CartLineItem } from '$lib/components/CustomizeModal.svelte';
-	import { Badge } from '$lib/components/ui/badge';
-	import { Button } from '$lib/components/ui/button';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import CountdownPill from '$lib/components/CountdownPill.svelte';
-	import { m } from '$lib/paraglide/messages.js';
+	import { getProduct, getStore, getDeal } from '#lib/data/mock.js';
+	import { cart, toast } from '#lib/stores/app.svelte.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import TiendaLogo from '#lib/components/TiendaLogo.svelte';
+	import CustomizeModal, { type CartLineItem } from '#lib/components/CustomizeModal.svelte';
+	import { Badge } from '#lib/components/ui/badge/index.js';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import CountdownPill from '#lib/components/CountdownPill.svelte';
+	import { m } from '#lib/paraglide/messages.js';
 
-	const productId = $derived($page.params.id ?? '');
+	const productId = $derived(page.params.id ?? '');
 	const product = $derived(getProduct(productId));
 	const store = $derived(getStore(product.storeId));
-	const dealId = $derived($page.url.searchParams.get('deal'));
+	const dealId = $derived(page.url.searchParams.get('deal'));
 	const deal = $derived(dealId ? getDeal(dealId) : null);
+
 	const discount = $derived(deal ? Math.round((1 - deal.dealPrice / deal.originalPrice) * 100) : 0);
+
 	const stockPct = $derived(deal ? (deal.dealStock / deal.initialStock) * 100 : 0);
 	const stockCritical = $derived(deal ? deal.dealStock <= 5 : false);
 	const displayPrice = $derived(deal ? deal.dealPrice : product.price);
@@ -26,7 +28,7 @@
 	let customizeOpen = $state(false);
 
 	function goStore() {
-		goto(resolve(`/app/store/${store.id}`));
+		goto(resolve(`app/store/${store.id}`));
 	}
 
 	function goBack() {

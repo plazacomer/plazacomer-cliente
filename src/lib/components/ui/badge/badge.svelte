@@ -1,7 +1,7 @@
 <script lang="ts" module>
 	import type { HTMLAnchorAttributes } from 'svelte/elements';
 	import { type VariantProps, tv } from 'tailwind-variants';
-	import { cn, type WithElementRef } from '$lib/utils.js';
+	import { cn, type WithElementRef } from '#lib/utils.js';
 
 	export const badgeVariants = tv({
 		base: 'inline-flex items-center justify-center rounded-full border px-2.5 py-0.5 text-xs font-semibold w-fit whitespace-nowrap shrink-0 gap-1 [&>svg]:size-3 [&>svg]:pointer-events-none transition-[color,box-shadow] overflow-hidden',

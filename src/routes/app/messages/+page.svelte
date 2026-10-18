@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import { messages } from '$lib/stores/app.svelte';
-	import { getStore } from '$lib/data/mock';
-	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
+	import { messages } from '#lib/stores/app.svelte.js';
+	import { getStore } from '#lib/data/mock.js';
+	import TiendaLogo from '#lib/components/TiendaLogo.svelte';
 </script>
 
 <div class="mx-auto max-w-[700px] px-4 pt-5 pb-12">
 	<h1 class="mb-1 font-display text-[26px] font-extrabold">Mensajes</h1>
+
 	<p class="mb-5 text-sm" style="color:var(--c-text-secondary)">
 		Chatea directamente con tus tiendas
 	</p>
@@ -24,7 +25,7 @@
 			{#each messages.conversations as conv (conv.storeId)}
 				{@const tienda = getStore(conv.storeId)}
 				<button
-					onclick={() => goto(resolve(`/app/messages/${conv.storeId}`))}
+					onclick={() => goto(resolve(`app/messages/${conv.storeId}`))}
 					class="flex w-full items-center gap-3 rounded-xl border p-3.5 text-left transition-all hover:border-[var(--c-brand)]"
 					style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 				>

@@ -26,7 +26,7 @@ Rust que hablan exclusivamente Protobuf.
    hardcodeado en el componente.** El backend devuelve `message` en inglés como texto de
    desarrollo/log, no como copy para mostrar. Todo string visible para el usuario va en
    `messages/es.json` (locale base) y `messages/en.json`, se consume vía
-   `import { m } from '$lib/paraglide/messages.js'` y se llama `m.nombre_del_mensaje()` — nunca un
+   `import { m } from '#lib/paraglide/messages.js'` y se llama `m.nombre_del_mensaje()` — nunca un
    string literal en el `.svelte`. Ver la sección de i18n abajo para el estado real.
 6. **Las carpetas de rutas de `src/routes` van en inglés.** Ej. `app/store`, `app/cart`,
    `app/messages`, `seller/catalog` — no `app/tienda`, `app/carrito`, `vendedor/catalogo`. El
@@ -39,8 +39,8 @@ Rust que hablan exclusivamente Protobuf.
 - El plugin de Vite (`paraglideVitePlugin` en `vite.config.ts`) compila los mensajes a
   `src/lib/paraglide/` (generado, gitignored) en cada `dev`/`build` — no lo edites a mano, y no hace
   falta correr `paraglide-js compile` manualmente salvo para depurar fuera de Vite.
-- Patrón de uso: `import { m } from '$lib/paraglide/messages.js'; import { setLocale } from
-'$lib/paraglide/runtime';` — ver el ejemplo real y funcionando en
+- Patrón de uso: `import { m } from '#lib/paraglide/messages.js'; import { setLocale } from
+'#lib/paraglide/runtime.js';` — ver el ejemplo real y funcionando en
   [`/demo/paraglide`](src/routes/demo/paraglide/+page.svelte).
 - **Estado real: solo instalado y probado de punta a punta (esta pasada), sin migrar copy
   existente.** Todo el texto Spanish hardcodeado en los ~20 componentes `.svelte` reales

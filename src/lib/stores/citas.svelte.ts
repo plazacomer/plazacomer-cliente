@@ -1,5 +1,5 @@
-import { browser } from '$app/environment';
-import type { Servicio, Store } from '$lib/data/mock';
+import { browser } from '$app/env';
+import type { Servicio, Store } from '#lib/data/mock.js';
 
 export type EstadoCita =
 	| 'pendiente'

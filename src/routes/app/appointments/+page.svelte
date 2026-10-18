@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { citas, ESTADOS_CITA, fmtFechaCita, type Cita } from '$lib/stores/citas.svelte';
-	import { getStore } from '$lib/data/mock';
-	import { fmtCOP } from '$lib/utils';
-	import Icon from '$lib/components/ui/Icon.svelte';
+	import { citas, ESTADOS_CITA, fmtFechaCita, type Cita } from '#lib/stores/citas.svelte.js';
+	import { getStore } from '#lib/data/mock.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
 
 	type Tab = 'proximas' | 'historial';
 	let tab = $state<Tab>('proximas');
@@ -73,7 +73,7 @@
 			</p>
 			{#if tab === 'proximas'}
 				<a
-					href={resolve('/app/explore')}
+					href={resolve('app/explore')}
 					class="mt-5 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold text-white"
 					style="background:var(--c-brand)"
 				>
@@ -119,6 +119,7 @@
 								<div class="mb-0.5 font-display text-[15px] leading-snug font-bold">
 									{cita.servicioNombre}
 								</div>
+
 								<div class="mb-2 text-[12.5px]" style="color:var(--c-text-secondary)">
 									{tienda.name}
 								</div>
@@ -173,7 +174,7 @@
 						{#if estado.grupo === 'activa' && cita.propio}
 							<div class="mt-4 flex gap-2 border-t border-[var(--c-border-soft)] pt-4">
 								<a
-									href={resolve(`/app/store/${cita.tiendaId}`)}
+									href={resolve(`app/store/${cita.tiendaId}`)}
 									class="flex flex-1 items-center justify-center gap-2 rounded-xl border py-2.5 text-center text-[13px] font-bold"
 									style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"
 								>
@@ -190,7 +191,7 @@
 						{:else if estado.grupo === 'cerrada'}
 							<div class="mt-4 flex gap-2 border-t border-[var(--c-border-soft)] pt-4">
 								<a
-									href={resolve(`/app/store/${cita.tiendaId}`)}
+									href={resolve(`app/store/${cita.tiendaId}`)}
 									class="flex flex-1 items-center justify-center gap-2 rounded-xl py-2.5 text-center text-[13px] font-bold"
 									style="background:var(--c-brand);color:#fff"
 								>

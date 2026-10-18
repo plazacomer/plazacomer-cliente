@@ -1,13 +1,13 @@
 <script lang="ts">
-	import type { Store, Servicio } from '$lib/data/mock';
-	import { citas } from '$lib/stores/citas.svelte';
-	import { fmtCOP } from '$lib/utils';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import * as Dialog from '$lib/components/ui/dialog';
-	import { Input } from '$lib/components/ui/input';
-	import { Textarea } from '$lib/components/ui/textarea';
-	import * as Select from '$lib/components/ui/select';
-	import { Button } from '$lib/components/ui/button';
+	import type { Store, Servicio } from '#lib/data/mock.js';
+	import { citas } from '#lib/stores/citas.svelte.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import * as Dialog from '#lib/components/ui/dialog/index.js';
+	import { Input } from '#lib/components/ui/input/index.js';
+	import { Textarea } from '#lib/components/ui/textarea/index.js';
+	import * as Select from '#lib/components/ui/select/index.js';
+	import { Button } from '#lib/components/ui/button/index.js';
 
 	type Props = {
 		open: boolean;

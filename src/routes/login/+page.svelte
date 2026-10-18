@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import Logo from '$lib/components/Logo.svelte';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import { authStore } from '$lib/stores/auth.svelte';
-	import { m } from '$lib/paraglide/messages.js';
+	import Logo from '#lib/components/Logo.svelte';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import { authStore } from '#lib/stores/auth.svelte.js';
+	import { m } from '#lib/paraglide/messages.js';
 
 	type Provider = {
 		id: 'google' | 'facebook' | 'apple';
@@ -64,7 +64,7 @@
 		};
 		await methodMap[provider.id]();
 		signingIn = null;
-		if (authStore.isAuthenticated) goto(resolve('/app/home'));
+		if (authStore.isAuthenticated) goto(resolve('app/home'));
 	}
 </script>
 
@@ -175,7 +175,7 @@
 					</div>
 					<div class="grid grid-cols-2 gap-2">
 						<button
-							onclick={() => goto(resolve('/onboarding?rol=vendedor'))}
+							onclick={() => goto(resolve('onboarding?rol=vendedor'))}
 							class="flex cursor-pointer flex-col items-center gap-1 rounded-xl p-3 text-center text-xs leading-tight font-semibold text-white"
 							style="background:linear-gradient(120deg,var(--c-text-primary),var(--c-brand))"
 						>
@@ -183,7 +183,7 @@
 							{m.login_seller_cta()}
 						</button>
 						<button
-							onclick={() => goto(resolve('/onboarding?rol=repartidor'))}
+							onclick={() => goto(resolve('onboarding?rol=repartidor'))}
 							class="flex cursor-pointer flex-col items-center gap-1 rounded-xl p-3 text-center text-xs leading-tight font-semibold text-white"
 							style="background:linear-gradient(120deg,#16A34A,#0F766E)"
 						>

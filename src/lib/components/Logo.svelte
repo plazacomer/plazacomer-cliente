@@ -1,6 +1,6 @@
 <script lang="ts">
-	import logoMark from '$lib/assets/plazacomer-logo-mark.svg';
-	import logoFull from '$lib/assets/plazacomer-logo-full.svg';
+	import logoMark from '#lib/assets/plazacomer-logo-mark.svg';
+	import logoFull from '#lib/assets/plazacomer-logo-full.svg';
 
 	type Props = {
 		size?: number;

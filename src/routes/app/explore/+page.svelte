@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import { STORES, CATEGORIES, DEALS, isServiceStore, type Store } from '$lib/data/mock';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import CategoryBadge from '$lib/components/CategoryBadge.svelte';
-	import FiltrosAvanzados, { type Filtros } from '$lib/components/FiltrosAvanzados.svelte';
-	import * as Card from '$lib/components/ui/card';
+	import { STORES, CATEGORIES, DEALS, isServiceStore, type Store } from '#lib/data/mock.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import CategoryBadge from '#lib/components/CategoryBadge.svelte';
+	import FiltrosAvanzados, { type Filtros } from '#lib/components/FiltrosAvanzados.svelte';
+	import * as Card from '#lib/components/ui/card/index.js';
 
 	let query = $state('');
 	let filterCat = $state<string | null>(null);
@@ -45,7 +45,7 @@
 	);
 
 	function goTienda(t: Store) {
-		goto(resolve(`/app/store/${t.id}`));
+		goto(resolve(`app/store/${t.id}`));
 	}
 </script>
 
@@ -69,9 +69,9 @@
 				style="color:var(--c-text-primary)"
 			/>
 			{#if query}
-				<button onclick={() => (query = '')} style="color:var(--c-text-muted)">
-					<Icon name="close" size={16} />
-				</button>
+				<button onclick={() => (query = '')} style="color:var(--c-text-muted)"
+					><Icon name="close" size={16} /></button
+				>
 			{/if}
 		</div>
 		<button

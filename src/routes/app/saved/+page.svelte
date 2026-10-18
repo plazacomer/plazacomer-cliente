@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { favoritos, EMOJIS_LISTA } from '$lib/stores/favoritos.svelte';
-	import { cart, toast } from '$lib/stores/app.svelte';
-	import { fmtCOP } from '$lib/utils';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import * as Dialog from '$lib/components/ui/dialog';
-	import { Input } from '$lib/components/ui/input';
+	import { favoritos, EMOJIS_LISTA } from '#lib/stores/favoritos.svelte.js';
+	import { cart, toast } from '#lib/stores/app.svelte.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import * as Dialog from '#lib/components/ui/dialog/index.js';
+	import { Input } from '#lib/components/ui/input/index.js';
 
 	type Tab = 'productos' | 'listas';
 	let tab = $state<Tab>('productos');
@@ -42,7 +42,9 @@
 		>
 			Tus artículos guardados
 		</div>
+
 		<h1 class="font-display text-[26px] font-extrabold tracking-[-0.4px]">Guardados</h1>
+
 		<p class="mt-1 text-sm" style="color:var(--c-text-secondary)">
 			{favoritos.ids.length} favorito{favoritos.ids.length !== 1 ? 's' : ''} · {favoritos.listas
 				.length} lista{favoritos.listas.length !== 1 ? 's' : ''}
@@ -74,7 +76,7 @@
 					Toca el corazón en cualquier producto para guardarlo acá.
 				</p>
 				<a
-					href={resolve('/app/explore')}
+					href={resolve('app/explore')}
 					class="mt-5 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold text-white"
 					style="background:var(--c-brand)"
 				>

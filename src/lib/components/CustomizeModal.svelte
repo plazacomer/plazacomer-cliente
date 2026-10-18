@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { fmtCOP } from '$lib/utils';
-	import type { Product, Modificador, Deal } from '$lib/data/mock';
+	import { fmtCOP } from '#lib/utils.js';
+	import type { Product, Modificador, Deal } from '#lib/data/mock.js';
 	import Icon from './ui/Icon.svelte';
-	import * as Dialog from '$lib/components/ui/dialog';
-	import { Button } from '$lib/components/ui/button';
-	import { Textarea } from '$lib/components/ui/textarea';
-	import { Label } from '$lib/components/ui/label';
-	import * as RadioGroup from '$lib/components/ui/radio-group';
-	import { Checkbox } from '$lib/components/ui/checkbox';
+	import * as Dialog from '#lib/components/ui/dialog/index.js';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import { Textarea } from '#lib/components/ui/textarea/index.js';
+	import { Label } from '#lib/components/ui/label/index.js';
+	import * as RadioGroup from '#lib/components/ui/radio-group/index.js';
+	import { Checkbox } from '#lib/components/ui/checkbox/index.js';
 
 	export type CartLineItem = {
 		productId: string;

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import { vendedor } from '$lib/stores/vendedor.svelte';
-	import { ESTADOS_CITA, fmtFechaCita } from '$lib/stores/citas.svelte';
-	import { fmtCOP } from '$lib/utils';
-	import type { OrderStatus } from '$lib/stores/app.svelte';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import { Badge } from '$lib/components/ui/badge';
+	import { vendedor } from '#lib/stores/vendedor.svelte.js';
+	import { ESTADOS_CITA, fmtFechaCita } from '#lib/stores/citas.svelte.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import type { OrderStatus } from '#lib/stores/app.svelte.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import { Badge } from '#lib/components/ui/badge/index.js';
 
 	const ESTADO_STEPS: Partial<Record<OrderStatus, OrderStatus>> = {
 		confirmed: 'preparing',
@@ -115,7 +115,7 @@
 					</div>
 				</div>
 				<button
-					onclick={() => goto(resolve('/seller/appointments'))}
+					onclick={() => goto(resolve('seller/appointments'))}
 					class="text-[12px] font-semibold"
 					style="color:var(--c-brand)"
 				>
@@ -157,7 +157,7 @@
 		<div class="mb-2 flex items-center justify-between">
 			<h2 class="font-display text-[16px] font-bold">Pedidos activos</h2>
 			<button
-				onclick={() => goto(resolve('/seller/orders'))}
+				onclick={() => goto(resolve('seller/orders'))}
 				class="text-[12px] font-semibold"
 				style="color:var(--c-brand)"
 			>

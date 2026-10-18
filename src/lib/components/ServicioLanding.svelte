@@ -1,13 +1,13 @@
 <script lang="ts">
-	import type { Store, Servicio } from '$lib/data/mock';
-	import { fmtCOP } from '$lib/utils';
-	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import ServicioBooking from '$lib/components/ServicioBooking.svelte';
-	import * as Card from '$lib/components/ui/card';
-	import * as Accordion from '$lib/components/ui/accordion';
-	import { Button } from '$lib/components/ui/button';
-	import { Badge } from '$lib/components/ui/badge';
+	import type { Store, Servicio } from '#lib/data/mock.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import TiendaLogo from '#lib/components/TiendaLogo.svelte';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import ServicioBooking from '#lib/components/ServicioBooking.svelte';
+	import * as Card from '#lib/components/ui/card/index.js';
+	import * as Accordion from '#lib/components/ui/accordion/index.js';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import { Badge } from '#lib/components/ui/badge/index.js';
 
 	type Props = {
 		tienda: Store;

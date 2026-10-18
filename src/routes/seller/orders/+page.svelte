@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { vendedor } from '$lib/stores/vendedor.svelte';
-	import { fmtCOP } from '$lib/utils';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import { Badge } from '$lib/components/ui/badge';
-	import type { OrderStatus } from '$lib/stores/app.svelte';
+	import { vendedor } from '#lib/stores/vendedor.svelte.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import { Badge } from '#lib/components/ui/badge/index.js';
+	import type { OrderStatus } from '#lib/stores/app.svelte.js';
 
 	type Tab = 'activos' | 'historial';
 	let tab = $state<Tab>('activos');

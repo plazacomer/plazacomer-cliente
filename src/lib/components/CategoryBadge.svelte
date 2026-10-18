@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getCategory } from '$lib/data/mock';
+	import { getCategory } from '#lib/data/mock.js';
 
 	type Props = { catKey: string; showIcon?: boolean };
 	let { catKey, showIcon = true }: Props = $props();

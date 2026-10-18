@@ -2,14 +2,14 @@
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { cart, orders } from '$lib/stores/app.svelte';
-	import type { CartItem } from '$lib/stores/app.svelte';
-	import { getStore, getProduct, ADDRESSES, COUPONS } from '$lib/data/mock';
-	import { fmtCOP } from '$lib/utils';
-	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
-	import { Button } from '$lib/components/ui/button';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import * as Dialog from '$lib/components/ui/dialog';
+	import { cart, orders } from '#lib/stores/app.svelte.js';
+	import type { CartItem } from '#lib/stores/app.svelte.js';
+	import { getStore, getProduct, ADDRESSES, COUPONS } from '#lib/data/mock.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import TiendaLogo from '#lib/components/TiendaLogo.svelte';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import * as Dialog from '#lib/components/ui/dialog/index.js';
 
 	// Snapshot cart on mount so clearing it doesn't break the flow
 	let snapshot = $state<CartItem[]>([]);
@@ -58,9 +58,11 @@
 	const currentItems = $derived(currentStoreId ? (groups[currentStoreId] ?? []) : []);
 	const currentSubtotal = $derived(currentItems.reduce((s, i) => s + i.price * i.quantity, 0));
 	const cuponActivoId = $derived(currentStoreId ? (cuponPorTienda[currentStoreId] ?? null) : null);
+
 	const cuponActivo = $derived(
 		cuponActivoId ? (COUPONS.find((c) => c.id === cuponActivoId) ?? null) : null
 	);
+
 	const descuento = $derived(
 		!cuponActivo
 			? 0
@@ -70,6 +72,7 @@
 					? cuponActivo.value
 					: 0
 	);
+
 	const envio = $derived(cuponActivo?.type === 'shipping' ? 0 : 4000);
 	const currentTotal = $derived(Math.max(0, currentSubtotal + envio - descuento));
 	const allDone = $derived(mounted && storeIds.length > 0 && step >= storeIds.length);
@@ -113,6 +116,7 @@
 
 	function validate(): boolean {
 		const e: Record<string, string> = {};
+
 		if (!selectedDireccionId && !form.address.trim())
 			e.direccion = 'Selecciona o ingresa una dirección de entrega';
 		if (!form.telefono.trim()) e.telefono = 'Teléfono requerido';
@@ -227,7 +231,7 @@
 
 	onMount(() => {
 		if (cart.items.length === 0) {
-			goto(resolve('/app/cart'));
+			goto(resolve('app/cart'));
 			return;
 		}
 		snapshot = [...cart.items];
@@ -302,10 +306,9 @@
 			</div>
 		</div>
 
-		<Button variant="brand" size="lg" fullWidth onclick={() => goto(resolve('/app/orders'))}>
-			<Icon name="package" size={18} />
-			Ver mis pedidos
-		</Button>
+		<Button variant="brand" size="lg" fullWidth onclick={() => goto(resolve('app/orders'))}
+			><Icon name="package" size={18} />Ver mis pedidos</Button
+		>
 	</div>
 
 	<!-- ── CHECKOUT FORM ── -->
@@ -314,7 +317,7 @@
 		<!-- Header -->
 		<div class="mb-4 flex items-center gap-3">
 			<button
-				onclick={() => goto(resolve('/app/cart'))}
+				onclick={() => goto(resolve('app/cart'))}
 				class="flex h-9 w-9 items-center justify-center rounded-[10px] border border-[var(--c-border-soft)]"
 				style="background:var(--c-bg-card)"
 			>
@@ -876,9 +879,11 @@
 				</p>
 				<div class="flex flex-col gap-2">
 					<Button variant="brand" fullWidth onclick={procesarPago}>Reintentar pago</Button>
-					<Button variant="ghost" fullWidth onclick={() => (paymentPhase = 'methods')}>
-						Cambiar método
-					</Button>
+
+					<Button variant="ghost" fullWidth onclick={() => (paymentPhase = 'methods')}
+						>Cambiar método</Button
+					>
+
 					<Button variant="ghost" fullWidth onclick={() => (paymentOpen = false)}>Cancelar</Button>
 				</div>
 			</div>
