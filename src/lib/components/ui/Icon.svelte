@@ -5,7 +5,7 @@
 		MessageSquare, Share2, Sparkles, Flame, Play, LogOut, ChevronDown, Trash2, Edit,
 		Send, Tag, CreditCard, Coins, AlertTriangle, Package, Truck, Map, Shield, Phone,
 		Timer, Box, Camera, Users, Receipt, Calendar, ArrowUp, ArrowDown,
-		type Icon as LucideIcon,
+		type LucideIcon,
 	} from '@lucide/svelte';
 
 	type Props = {
@@ -20,7 +20,7 @@
 	// Mapea los nombres que ya usa el resto de la app a los íconos oficiales de
 	// lucide-svelte (https://lucide.dev/icons/) — así ningún componente que ya
 	// usa <Icon name="..."> necesita cambiar.
-	const ICONS: Record<string, typeof LucideIcon> = {
+	const ICONS: Record<string, LucideIcon> = {
 		home: Home, search: Search, cart: ShoppingCart, message: MessageCircle, user: User,
 		bell: Bell, heart: Heart, heartFill: Heart, plus: Plus, minus: Minus, close: X,
 		arrowLeft: ArrowLeft, arrowRight: ArrowRight, check: Check, star: Star, starFill: Star,

@@ -38,17 +38,17 @@ es un error del documento — repórtalo, no decidas tú.
   Svelte 4 ni hooks de React.
 - Nunca colores hardcodeados nuevos (`#2563EB`, `bg-blue-600`, etc.) en un `.svelte`. Todo color
   sale de un token definido en `src/routes/layout.css` (clases `bg-brand`, `text-primary`, etc.).
-- No ejecutes `npx shadcn-svelte add <componente>` para ningún componente nuevo salvo que una fase
+- No ejecutes `yarn shadcn-svelte add <componente>` para ningún componente nuevo salvo que una fase
   de este documento te lo pida explícitamente con el nombre exacto del componente.
 
 **Verificación obligatoria después de CADA fase**, en este orden, sin excepciones:
 ```bash
-npm run check   # svelte-check — errores de tipos
-npm run lint    # prettier + eslint
-npm run dev     # levanta el servidor
+yarn check   # svelte-check — errores de tipos
+yarn lint    # prettier + eslint
+yarn dev     # levanta el servidor
 ```
-Con `npm run dev` corriendo, **abre en el navegador y mira visualmente** al menos las rutas que
-la fase tocó (la lista exacta está en cada fase). `npm run check` en verde **no significa que la
+Con `yarn dev` corriendo, **abre en el navegador y mira visualmente** al menos las rutas que
+la fase tocó (la lista exacta está en cada fase). `yarn check` en verde **no significa que la
 fase esté bien** — el bug más probable en este plan es visual (un botón que compila pero se ve
 negro, o con el padding equivocado), no un error de tipos. Si algo se ve mal, no sigas a la
 siguiente fase: repórtalo.
@@ -261,9 +261,9 @@ Reemplázalo por:
 ### 1.5 — Verificación de la Fase 1
 
 ```bash
-npm run check
-npm run lint
-npm run dev
+yarn check
+yarn lint
+yarn dev
 ```
 
 Con el navegador abierto en `/app/home` y en el demo de shadcn si existe (busca una ruta bajo
@@ -310,7 +310,7 @@ En `package.json`, dentro de `"dependencies"`, borra la línea:
     "lucide-svelte": "^1.0.1",
 ```
 
-Luego corre (este repo usa `yarn.lock` como lockfile activo — es el más reciente, no uses
+Luego corre (este repo usa Yarn 4 — no uses
 `npm install` para esto):
 
 ```bash
@@ -323,9 +323,9 @@ Si `yarn remove` da error porque ya la borraste a mano del `package.json`, en su
 ### 2.3 — Verificación de la Fase 2
 
 ```bash
-npm run check
-npm run lint
-npm run dev
+yarn check
+yarn lint
+yarn dev
 ```
 
 Abre cualquier pantalla con íconos (`/app/home` tiene varios: carrito, corazón, etc.) y confirma
@@ -491,8 +491,8 @@ que dependa del modo.
 ### 3.3 — Verificación de la Fase 3
 
 ```bash
-npm run check
-npm run lint
+yarn check
+yarn lint
 ```
 
 Todavía no hay ningún `.svelte` de pantalla usando estas variantes nuevas (eso es la Fase 4), así
@@ -539,7 +539,7 @@ Archivos a migrar (7):
 6. `src/routes/app/orders/+page.svelte`
 7. `src/routes/app/orders/[id]/+page.svelte`
 
-Después de cada archivo, antes de pasar al siguiente: `npm run check` y una mirada visual rápida
+Después de cada archivo, antes de pasar al siguiente: `yarn check` y una mirada visual rápida
 a esa pantalla en el navegador.
 
 ### 4.2 — Tabla de traducción: `Badge`
@@ -609,12 +609,12 @@ cambia para ellos.
 
 Después de migrar TODOS los archivos de 4.1/4.2/4.3:
 ```bash
-npm run check
-npm run lint
-npm run build
+yarn check
+yarn lint
+yarn build
 ```
-`npm run build` tiene que terminar sin errores — es la señal más fuerte de que no quedó ningún
-import roto. Después, con `npm run dev`, revisa visualmente cada una de las 10 rutas tocadas
+`yarn build` tiene que terminar sin errores — es la señal más fuerte de que no quedó ningún
+import roto. Después, con `yarn dev`, revisa visualmente cada una de las 10 rutas tocadas
 (home, cart, checkout, orders, orders/[id], seller, seller/orders, seller/appointments, courier,
 profile) en claro y oscuro.
 
@@ -639,7 +639,7 @@ Si los tres comandos no imprimen nada, borra:
 Si **cualquiera** de los tres comandos sí imprime un archivo, no borres nada — significa que a esa
 pantalla se le escapó la migración en la Fase 4. Repórtalo.
 
-Verificación final: `npm run check && npm run lint && npm run build`.
+Verificación final: `yarn check && yarn lint && yarn build`.
 
 ---
 
@@ -657,7 +657,7 @@ para y pregúntale al usuario si quiere que abordes esto como un plan aparte.
 
 Al final de cada fase (no solo al final de todo), reportá en una lista corta:
 - Qué archivos tocaste.
-- Resultado de `npm run check` / `npm run lint` / `npm run build` (verde o el error exacto).
+- Resultado de `yarn check` / `yarn lint` / `yarn build` (verde o el error exacto).
 - Qué revisaste visualmente y si se veía como se esperaba.
 - Cualquier discrepancia entre lo que este documento decía encontrar y lo que realmente
   encontraste en el código (aunque la hayas resuelto).

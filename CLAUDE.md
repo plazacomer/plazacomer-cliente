@@ -12,7 +12,7 @@ Rust que hablan exclusivamente Protobuf.
    ni `JSON.stringify` hacia estos endpoints.
 2. **Nunca dupliques tipos a mano.** Los tipos TS de mensajes viven en `src/lib/gen/*_pb.ts`,
    generados desde `../plazacomer-cloudflare/shared/proto/*.proto` vía
-   `npm run generate-proto`. Si falta un campo o mensaje, edítese el `.proto` en
+   `yarn generate-proto`. Si falta un campo o mensaje, edítese el `.proto` en
    `plazacomer-cloudflare` y regenera — no agregues un `interface` paralelo en TS.
 3. **Un cliente de dominio por Worker.** Sigue el patrón actual (`src/lib/catalog.ts`,
    `src/lib/user.ts`): cada archivo encapsula las llamadas a un Worker específico. No mezcles
@@ -48,7 +48,7 @@ Rust que hablan exclusivamente Protobuf.
   trabajo incremental pendiente, pantalla por pantalla. No asumas que un string en un componente ya
   usa `m.*` sin verificarlo.
 
-## Tests E2E (`npm run test:api`)
+## Tests E2E (`yarn test:api`)
 
 - `tests/run-e2e.js` orquesta la corrida: crea un directorio `--persist-to` **temporal y aislado**
   (`plazacomer/.wrangler-test-<timestamp>/`, fuera de cualquier repo git), aplica ahí el esquema de
@@ -68,11 +68,11 @@ Rust que hablan exclusivamente Protobuf.
   deja intacto y muestra su ruta por consola para poder inspeccionar el estado exacto en el que
   falló — nunca lo borra en ese caso.
 - Esto mantiene los datos de test completamente separados de la base que usan las sesiones
-  manuales de `wrangler dev` (`npm run wrangler:user/catalog/admin`, que siguen usando el
+  manuales de `wrangler dev` (`yarn wrangler:user/catalog/admin`, que siguen usando el
   `--persist-to ../../.wrangler` compartido) — la misma base que lee el panel de
   `plazacomer-admin`. Antes de esto, correr el suite E2E localmente filtraba usuarios de prueba
   (`e2e-<timestamp>`) a esa base compartida.
-- `npm run db:init:users` corre `wrangler d1 migrations apply` contra la base compartida de dev
+- `yarn db:init:users` corre `wrangler d1 migrations apply` contra la base compartida de dev
   manual (no la temporal de test) — no siembra el admin de prueba (`seed-admin.sql` es solo para
   `test:api`); el primer admin real se siembra a mano en D1, no hay ruta de API para eso.
 

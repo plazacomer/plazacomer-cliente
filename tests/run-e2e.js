@@ -120,7 +120,7 @@ async function waitForServersReady() {
 const AUTOMATED_TEST_FILES = ['tests/user.test.ts', 'tests/catalog.test.ts'];
 
 function runVitest() {
-	return runToCompletion('npx', ['vitest', 'run', ...AUTOMATED_TEST_FILES], {
+	return runToCompletion('yarn', ['vitest', 'run', ...AUTOMATED_TEST_FILES], {
 		cwd: CLIENT_DIR,
 		env: process.env
 	});
