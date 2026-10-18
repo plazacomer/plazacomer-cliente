@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import {
 		STORES,
@@ -43,11 +44,13 @@
 	}
 
 	function goStore(store: Store) {
-		goto(`/app/store/${store.id}`);
+		goto(resolve(`/app/store/${store.id}`));
 	}
 
 	function goProduct(productId: string, dealId?: string) {
-		goto(dealId ? `/app/product/${productId}?deal=${dealId}` : `/app/product/${productId}`);
+		goto(
+			resolve(dealId ? `/app/product/${productId}?deal=${dealId}` : `/app/product/${productId}`)
+		);
 	}
 </script>
 
@@ -120,7 +123,9 @@
 				<h3 class="mb-2 font-display text-lg font-bold">{m.home_empty_title()}</h3>
 				<p class="text-sm" style="color:var(--c-text-secondary)">{m.home_empty_subtitle()}</p>
 				<div class="mt-4">
-					<Button variant="brand" onclick={() => goto('/app/explore')}>{m.home_empty_cta()}</Button>
+					<Button variant="brand" onclick={() => goto(resolve('/app/explore'))}
+						>{m.home_empty_cta()}</Button
+					>
 				</div>
 			</div>
 		{:else}

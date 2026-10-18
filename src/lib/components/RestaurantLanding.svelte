@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { favoritos } from '$lib/stores/favoritos.svelte';
 	import { cart, toast } from '$lib/stores/app.svelte';
@@ -57,7 +58,7 @@
 	}
 
 	function goChat() {
-		goto(`/app/messages/${tienda.id}`);
+		goto(resolve(`/app/messages/${tienda.id}`));
 	}
 
 	async function share() {
@@ -520,7 +521,7 @@
 
 {#if cart.count > 0}
 	<button
-		onclick={() => goto('/app/cart')}
+		onclick={() => goto(resolve('/app/cart'))}
 		class="fixed right-4 bottom-[calc(70px+env(safe-area-inset-bottom))] left-4 z-50 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-[14px] font-semibold text-white md:right-auto md:left-1/2 md:w-full md:max-w-md md:-translate-x-1/2 lg:bottom-6"
 		style="background:{accent};box-shadow:0 8px 24px {accent}66"
 	>

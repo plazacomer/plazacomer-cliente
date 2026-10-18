@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
@@ -55,7 +56,11 @@
 	<div class="mx-auto max-w-lg px-5 pt-16 text-center">
 		<div class="mb-4 text-6xl">💬</div>
 		<h2 class="mb-2 font-display text-xl font-bold">Conversación no encontrada</h2>
-		<button onclick={() => goto('/app/messages')} class="text-sm" style="color:var(--c-brand)">
+		<button
+			onclick={() => goto(resolve('/app/messages'))}
+			class="text-sm"
+			style="color:var(--c-brand)"
+		>
 			← Volver a mensajes
 		</button>
 	</div>
@@ -70,7 +75,7 @@
 			style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 		>
 			<button
-				onclick={() => goto('/app/messages')}
+				onclick={() => goto(resolve('/app/messages'))}
 				class="flex h-9 w-9 items-center justify-center rounded-[10px] transition-colors hover:bg-[var(--c-bg-secondary)]"
 			>
 				<Icon name="arrowLeft" size={18} />

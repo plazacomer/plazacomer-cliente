@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { vendedor } from '$lib/stores/vendedor.svelte';
 	import { ESTADOS_CITA, fmtFechaCita } from '$lib/stores/citas.svelte';
@@ -83,9 +84,9 @@
 
 	<!-- Acciones rápidas -->
 	<div class="mb-7 grid grid-cols-4 gap-2.5">
-		{#each [{ label: 'Pedidos', icon: 'package', path: '/seller/orders', color: 'var(--c-brand)' }, { label: 'Citas', icon: 'calendar', path: '/seller/appointments', color: '#2563EB' }, { label: 'Catálogo', icon: 'store', path: '/seller/catalog', color: '#7C3AED' }, { label: 'Ofertas', icon: 'tag', path: '/seller/deals', color: '#F59E0B' }] as a, idx (idx)}
+		{#each [{ label: 'Pedidos', icon: 'package', path: '/seller/orders', color: 'var(--c-brand)' }, { label: 'Citas', icon: 'calendar', path: '/seller/appointments', color: '#2563EB' }, { label: 'Catálogo', icon: 'store', path: '/seller/catalog', color: '#7C3AED' }, { label: 'Ofertas', icon: 'tag', path: '/seller/deals', color: '#F59E0B' }] as const as a, idx (idx)}
 			<button
-				onclick={() => goto(a.path)}
+				onclick={() => goto(resolve(a.path))}
 				class="flex flex-col items-center gap-2 rounded-2xl border border-[var(--c-border-soft)] py-4 text-center transition-all hover:border-[var(--c-brand)]"
 				style="background:var(--c-bg-card)"
 			>
@@ -113,7 +114,7 @@
 					</div>
 				</div>
 				<button
-					onclick={() => goto('/seller/appointments')}
+					onclick={() => goto(resolve('/seller/appointments'))}
 					class="text-[12px] font-semibold"
 					style="color:var(--c-brand)"
 				>
@@ -155,7 +156,7 @@
 		<div class="mb-2 flex items-center justify-between">
 			<h2 class="font-display text-[16px] font-bold">Pedidos activos</h2>
 			<button
-				onclick={() => goto('/seller/orders')}
+				onclick={() => goto(resolve('/seller/orders'))}
 				class="text-[12px] font-semibold"
 				style="color:var(--c-brand)"
 			>

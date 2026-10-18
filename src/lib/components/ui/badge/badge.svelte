@@ -43,6 +43,8 @@
 </script>
 
 {#if href}
+	<!-- Wrapper genérico: quien lo usa pasa un href ya resuelto con resolve(). -->
+	<!-- eslint-disable svelte/no-navigation-without-resolve -->
 	<a
 		bind:this={ref}
 		data-slot="badge"
@@ -50,6 +52,7 @@
 		{href}
 		{...restProps}
 	>
+		<!-- eslint-enable svelte/no-navigation-without-resolve -->
 		{@render children?.()}
 	</a>
 {:else}

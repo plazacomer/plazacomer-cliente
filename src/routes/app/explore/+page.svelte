@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { STORES, CATEGORIES, DEALS, isServiceStore, type Store } from '$lib/data/mock';
 	import Icon from '$lib/components/ui/Icon.svelte';
@@ -44,7 +45,7 @@
 	);
 
 	function goTienda(t: Store) {
-		goto(`/app/store/${t.id}`);
+		goto(resolve(`/app/store/${t.id}`));
 	}
 </script>
 

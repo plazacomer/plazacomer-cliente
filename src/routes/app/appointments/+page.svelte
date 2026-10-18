@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { citas, ESTADOS_CITA, fmtFechaCita, type Cita } from '$lib/stores/citas.svelte';
 	import { getStore } from '$lib/data/mock';
 	import { fmtCOP } from '$lib/utils';
@@ -72,7 +73,7 @@
 			</p>
 			{#if tab === 'proximas'}
 				<a
-					href="/app/explore"
+					href={resolve('/app/explore')}
 					class="mt-5 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold text-white"
 					style="background:var(--c-brand)"
 				>
@@ -172,7 +173,7 @@
 						{#if estado.grupo === 'activa' && cita.propio}
 							<div class="mt-4 flex gap-2 border-t border-[var(--c-border-soft)] pt-4">
 								<a
-									href="/app/store/{cita.tiendaId}"
+									href={resolve(`/app/store/${cita.tiendaId}`)}
 									class="flex flex-1 items-center justify-center gap-2 rounded-xl border py-2.5 text-center text-[13px] font-bold"
 									style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"
 								>
@@ -189,7 +190,7 @@
 						{:else if estado.grupo === 'cerrada'}
 							<div class="mt-4 flex gap-2 border-t border-[var(--c-border-soft)] pt-4">
 								<a
-									href="/app/store/{cita.tiendaId}"
+									href={resolve(`/app/store/${cita.tiendaId}`)}
 									class="flex flex-1 items-center justify-center gap-2 rounded-xl py-2.5 text-center text-[13px] font-bold"
 									style="background:var(--c-brand);color:#fff"
 								>

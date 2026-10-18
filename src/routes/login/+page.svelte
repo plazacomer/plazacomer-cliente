@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import Logo from '$lib/components/Logo.svelte';
 	import Icon from '$lib/components/ui/Icon.svelte';
@@ -63,7 +64,7 @@
 		};
 		await methodMap[provider.id]();
 		signingIn = null;
-		if (authStore.isAuthenticated) goto('/app/home');
+		if (authStore.isAuthenticated) goto(resolve('/app/home'));
 	}
 </script>
 
@@ -174,7 +175,7 @@
 					</div>
 					<div class="grid grid-cols-2 gap-2">
 						<button
-							onclick={() => goto('/onboarding?rol=vendedor')}
+							onclick={() => goto(resolve('/onboarding?rol=vendedor'))}
 							class="flex cursor-pointer flex-col items-center gap-1 rounded-xl p-3 text-center text-xs leading-tight font-semibold text-white"
 							style="background:linear-gradient(120deg,var(--c-text-primary),var(--c-brand))"
 						>
@@ -182,7 +183,7 @@
 							{m.login_seller_cta()}
 						</button>
 						<button
-							onclick={() => goto('/onboarding?rol=repartidor')}
+							onclick={() => goto(resolve('/onboarding?rol=repartidor'))}
 							class="flex cursor-pointer flex-col items-center gap-1 rounded-xl p-3 text-center text-xs leading-tight font-semibold text-white"
 							style="background:linear-gradient(120deg,#16A34A,#0F766E)"
 						>

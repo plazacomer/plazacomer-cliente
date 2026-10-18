@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { cart, orders } from '$lib/stores/app.svelte';
@@ -226,7 +227,7 @@
 
 	onMount(() => {
 		if (cart.items.length === 0) {
-			goto('/app/cart');
+			goto(resolve('/app/cart'));
 			return;
 		}
 		snapshot = [...cart.items];
@@ -301,7 +302,7 @@
 			</div>
 		</div>
 
-		<Button variant="brand" size="lg" fullWidth onclick={() => goto('/app/orders')}>
+		<Button variant="brand" size="lg" fullWidth onclick={() => goto(resolve('/app/orders'))}>
 			<Icon name="package" size={18} />
 			Ver mis pedidos
 		</Button>
@@ -313,7 +314,7 @@
 		<!-- Header -->
 		<div class="mb-4 flex items-center gap-3">
 			<button
-				onclick={() => goto('/app/cart')}
+				onclick={() => goto(resolve('/app/cart'))}
 				class="flex h-9 w-9 items-center justify-center rounded-[10px] border border-[var(--c-border-soft)]"
 				style="background:var(--c-bg-card)"
 			>

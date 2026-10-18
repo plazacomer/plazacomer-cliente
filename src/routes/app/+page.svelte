@@ -1,5 +1,6 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	onMount(() => goto('/app/home', { replaceState: true }));
+	onMount(() => goto(resolve('/app/home'), { replaceState: true }));
 </script>

@@ -26,7 +26,7 @@
 		const needsAuth = PROTECTED.some((p) => path.startsWith(p));
 
 		if (needsAuth && !authStore.loading && !authStore.isAuthenticated) {
-			goto('/login');
+			goto(resolve('/login'));
 		}
 	});
 </script>
@@ -46,6 +46,9 @@
 
 <div style="display:none">
 	{#each locales as locale (locale)}
+		<!-- Plantilla de `sv add paraglide`: localizeHref devuelve la ruta con prefijo de idioma,
+		     que no es un Pathname tipado; el cast es intencional. -->
+		<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 		<a href={(resolve as (path: string) => string)(localizeHref(page.url.pathname, { locale }))}
 			>{locale}</a
 		>

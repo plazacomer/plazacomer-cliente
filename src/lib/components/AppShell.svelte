@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import Icon from './ui/Icon.svelte';
@@ -21,7 +22,7 @@
 		{ id: 'carrito', label: 'Carrito', icon: 'cart', path: '/app/cart' },
 		{ id: 'mensajes', label: 'Mensajes', icon: 'message', path: '/app/messages' },
 		{ id: 'perfil', label: 'Perfil', icon: 'user', path: '/app/profile' }
-	];
+	] as const;
 
 	// Dentro de una tienda, la barra inferior se dedica a esa tienda en vez
 	// de a la navegación global — más espacio y más foco para comprar.
@@ -31,7 +32,7 @@
 		{ id: 'carrito', label: 'Carrito', icon: 'cart', path: '/app/cart' },
 		{ id: 'mensajes', label: 'Mensajes', icon: 'message', path: '/app/messages' },
 		{ id: 'info', label: 'Tienda', icon: 'store' }
-	];
+	] as const;
 
 	const isStoreDetail = $derived($page.url.pathname.startsWith('/app/store/'));
 
@@ -44,8 +45,8 @@
 		return isStoreDetail ? storeUi.tab === item.id : currentId() === item.id;
 	}
 
-	function onNavClick(item: { id: string; path?: string }) {
-		if (item.path) goto(item.path);
+	function onNavClick(item: { id: string; path?: (typeof NAV)[number]['path'] }) {
+		if (item.path) goto(resolve(item.path));
 		else storeUi.setTab(item.id as 'search' | 'promos' | 'info');
 	}
 
@@ -63,7 +64,7 @@
 		class="sticky top-0 hidden h-screen w-60 shrink-0 flex-col gap-1 border-r border-[var(--c-border)] p-4 lg:flex"
 		style="background:var(--c-bg-card)"
 	>
-		<a href="/app/home" class="flex items-center gap-2.5 px-3 pt-2 pb-6">
+		<a href={resolve('/app/home')} class="flex items-center gap-2.5 px-3 pt-2 pb-6">
 			<Logo size={36} />
 			<div>
 				<div class="font-display text-base font-extrabold tracking-wide">PLAZACOMER</div>
@@ -77,7 +78,7 @@
 			{@const active = currentId() === item.id}
 			{@const count = badge(item.id)}
 			<button
-				onclick={() => goto(item.path)}
+				onclick={() => goto(resolve(item.path))}
 				class="relative flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors"
 				style="background:{active ? 'var(--c-brand-light)' : 'transparent'};color:{active
 					? 'var(--c-brand)'
@@ -97,7 +98,7 @@
 
 		<!-- Pedidos (desktop sidebar only) -->
 		<button
-			onclick={() => goto('/app/orders')}
+			onclick={() => goto(resolve('/app/orders'))}
 			class="relative flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors"
 			style="background:{currentId() === 'pedidos'
 				? 'var(--c-brand-light)'
@@ -118,7 +119,7 @@
 
 		<!-- Mis Citas (desktop sidebar) -->
 		<button
-			onclick={() => goto('/app/appointments')}
+			onclick={() => goto(resolve('/app/appointments'))}
 			class="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors"
 			style="background:{currentId() === 'mis-citas'
 				? 'var(--c-brand-light)'
@@ -139,7 +140,7 @@
 
 		<!-- Guardados (desktop sidebar) -->
 		<button
-			onclick={() => goto('/app/saved')}
+			onclick={() => goto(resolve('/app/saved'))}
 			class="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors"
 			style="background:{currentId() === 'guardados'
 				? 'var(--c-brand-light)'

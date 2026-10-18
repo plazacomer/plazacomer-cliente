@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { STORES, PRODUCTS, CATEGORIES, getStore, type Store, type Product } from '$lib/data/mock';
 	import { fmtCOP } from '$lib/utils';
@@ -63,13 +64,13 @@
 
 	function selectTienda(t: Store) {
 		recordSearch(t.name);
-		goto(`/app/store/${t.id}`);
+		goto(resolve(`/app/store/${t.id}`));
 		onclose();
 	}
 
 	function selectProducto(p: Product) {
 		recordSearch(p.name);
-		goto(`/app/store/${p.storeId}`);
+		goto(resolve(`/app/store/${p.storeId}`));
 		onclose();
 	}
 

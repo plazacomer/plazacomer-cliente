@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import Logo from '$lib/components/Logo.svelte';
 	import { Button } from '$lib/components/ui/button';
@@ -31,12 +32,12 @@
 			<p class="mb-8 text-base leading-relaxed text-[#E0E0E8]">
 				{m.landing_description()}
 			</p>
-			<Button variant="brand" size="lg" fullWidth onclick={() => goto('/login')}>
+			<Button variant="brand" size="lg" fullWidth onclick={() => goto(resolve('/login'))}>
 				{m.landing_login_cta()}
 				<Icon name="arrowRight" size={18} />
 			</Button>
 			<button
-				onclick={() => goto('/onboarding')}
+				onclick={() => goto(resolve('/onboarding'))}
 				class="mt-4 w-full rounded-2xl border-2 border-white/20 py-3.5 font-display text-[15px] font-bold text-white/80 transition-all hover:border-white/40 hover:text-white"
 			>
 				{m.landing_signup_cta()}

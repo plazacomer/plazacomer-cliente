@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { orders, toast } from '$lib/stores/app.svelte';
@@ -86,7 +87,7 @@
 	<div class="mx-auto max-w-lg px-5 pt-16 text-center">
 		<div class="mb-4 text-6xl">📦</div>
 		<h2 class="mb-2 font-display text-xl font-bold">Pedido no encontrado</h2>
-		<Button variant="ghost" onclick={() => goto('/app/orders')}>
+		<Button variant="ghost" onclick={() => goto(resolve('/app/orders'))}>
 			<Icon name="arrowLeft" size={16} />
 			Volver a pedidos
 		</Button>
@@ -98,7 +99,7 @@
 		<!-- Header -->
 		<div class="mb-5 flex items-center gap-3">
 			<button
-				onclick={() => goto('/app/orders')}
+				onclick={() => goto(resolve('/app/orders'))}
 				class="flex h-9 w-9 items-center justify-center rounded-[10px] border"
 				style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 			>

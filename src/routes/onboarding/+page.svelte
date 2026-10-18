@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import Logo from '$lib/components/Logo.svelte';
@@ -117,7 +118,7 @@
 	function finish() {
 		step = 'done';
 		// Redirect after 2.5s
-		setTimeout(() => goto(destination), 2500);
+		setTimeout(() => goto(resolve(destination)), 2500);
 	}
 </script>
 
@@ -503,7 +504,7 @@
 				</div>
 
 				<button
-					onclick={() => goto(destination)}
+					onclick={() => goto(resolve(destination))}
 					class="mt-8 text-[13px] font-semibold underline underline-offset-2"
 					style="color:var(--c-text-muted)"
 				>

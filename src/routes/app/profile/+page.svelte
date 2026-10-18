@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { CURRENT_USER, ADDRESSES, type Address } from '$lib/data/mock';
 	import { darkMode, orders } from '$lib/stores/app.svelte';
@@ -180,7 +181,7 @@
 	<!-- ── Quick links: Citas + Guardados ── -->
 	<div class="mb-5 grid grid-cols-2 gap-3">
 		<button
-			onclick={() => goto('/app/appointments')}
+			onclick={() => goto(resolve('/app/appointments'))}
 			class="flex flex-col gap-1.5 rounded-2xl border border-[var(--c-border-soft)] p-4 text-left"
 			style="background:var(--c-bg-card)"
 		>
@@ -198,7 +199,7 @@
 			</div>
 		</button>
 		<button
-			onclick={() => goto('/app/saved')}
+			onclick={() => goto(resolve('/app/saved'))}
 			class="flex flex-col gap-1.5 rounded-2xl border border-[var(--c-border-soft)] p-4 text-left"
 			style="background:var(--c-bg-card)"
 		>
@@ -299,7 +300,7 @@
 		style="background:var(--c-bg-card)"
 	>
 		<button
-			onclick={() => goto('/app/orders')}
+			onclick={() => goto(resolve('/app/orders'))}
 			class="flex items-center gap-3 border-b border-[var(--c-border-soft)] px-4 py-3.5 text-left transition-colors hover:bg-[var(--c-bg-secondary)]"
 			style="color:var(--c-text-primary)"
 		>
@@ -314,9 +315,9 @@
 			<Icon name="arrowRight" size={16} color="var(--c-text-muted)" />
 		</button>
 
-		{#each [{ icon: 'bell', label: 'Notificaciones', path: null }, { icon: 'tag', label: 'Mis cupones', path: null }, { icon: 'store', label: 'Panel Vendedor', path: '/seller' }, { icon: 'truck', label: 'Panel Repartidor', path: '/app/courier' }] as item, idx (idx)}
+		{#each [{ icon: 'bell', label: 'Notificaciones', path: null }, { icon: 'tag', label: 'Mis cupones', path: null }, { icon: 'store', label: 'Panel Vendedor', path: '/seller' }, { icon: 'truck', label: 'Panel Repartidor', path: '/app/courier' }] as const as item, idx (idx)}
 			<button
-				onclick={() => (item.path ? goto(item.path) : undefined)}
+				onclick={() => (item.path ? goto(resolve(item.path)) : undefined)}
 				class="flex items-center gap-3 border-b border-[var(--c-border-soft)] px-4 py-3.5 text-left transition-colors hover:bg-[var(--c-bg-secondary)]"
 				style="color:var(--c-text-primary)"
 			>
@@ -353,7 +354,7 @@
 	</div>
 
 	<button
-		onclick={() => goto('/')}
+		onclick={() => goto(resolve('/'))}
 		class="flex w-full items-center gap-3 rounded-xl px-4 py-3.5 text-left transition-colors hover:bg-[var(--c-error-light)]"
 		style="color:var(--c-error)"
 	>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { favoritos, EMOJIS_LISTA } from '$lib/stores/favoritos.svelte';
 	import { cart, toast } from '$lib/stores/app.svelte';
 	import { fmtCOP } from '$lib/utils';
@@ -73,7 +74,7 @@
 					Toca el corazón en cualquier producto para guardarlo acá.
 				</p>
 				<a
-					href="/app/explore"
+					href={resolve('/app/explore')}
 					class="mt-5 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold text-white"
 					style="background:var(--c-brand)"
 				>

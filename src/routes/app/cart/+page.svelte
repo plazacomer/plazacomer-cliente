@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { cart } from '$lib/stores/app.svelte';
 	import { getStore, getProduct, getCategory, type Product } from '$lib/data/mock';
@@ -76,7 +77,7 @@
 		<p class="mb-8 text-sm" style="color:var(--c-text-secondary)">
 			Explora las tiendas y agrega productos para empezar tu pedido.
 		</p>
-		<Button variant="brand" fullWidth onclick={() => goto('/app/explore')}>
+		<Button variant="brand" fullWidth onclick={() => goto(resolve('/app/explore'))}>
 			<Icon name="search" size={16} />
 			Explorar tiendas
 		</Button>
@@ -267,7 +268,7 @@
 					<span class="font-mono text-[22px] font-bold">{fmtCOP(cart.total)}</span>
 				</div>
 
-				<Button variant="brand" size="lg" fullWidth onclick={() => goto('/app/checkout')}>
+				<Button variant="brand" size="lg" fullWidth onclick={() => goto(resolve('/app/checkout'))}>
 					<Icon name="credit" size={18} />
 					Ir a pagar
 				</Button>
