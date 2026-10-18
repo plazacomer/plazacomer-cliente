@@ -1,11 +1,18 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import { STORES, PRODUCTS, CATEGORIES, getStore, type Store, type Product } from '$lib/data/mock';
-	import { fmtCOP } from '$lib/utils';
+	import {
+		STORES,
+		PRODUCTS,
+		CATEGORIES,
+		getStore,
+		type Store,
+		type Product
+	} from '#lib/data/mock.js';
+	import { fmtCOP } from '#lib/utils.js';
 	import Icon from './ui/Icon.svelte';
 	import { Dialog as DialogPrimitive } from 'bits-ui';
-	import * as Dialog from '$lib/components/ui/dialog';
+	import * as Dialog from '#lib/components/ui/dialog/index.js';
 
 	type Props = { open: boolean; onclose: () => void };
 	let { open, onclose }: Props = $props();
@@ -64,13 +71,13 @@
 
 	function selectTienda(t: Store) {
 		recordSearch(t.name);
-		goto(resolve(`/app/store/${t.id}`));
+		goto(resolve(`app/store/${t.id}`));
 		onclose();
 	}
 
 	function selectProducto(p: Product) {
 		recordSearch(p.name);
-		goto(resolve(`/app/store/${p.storeId}`));
+		goto(resolve(`app/store/${p.storeId}`));
 		onclose();
 	}
 

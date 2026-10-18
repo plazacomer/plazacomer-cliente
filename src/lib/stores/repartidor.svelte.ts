@@ -1,4 +1,4 @@
-import { orders } from '$lib/stores/app.svelte';
+import { orders } from '#lib/stores/app.svelte.js';
 
 export type EntregaEstado = 'disponible' | 'recogiendo' | 'en_camino' | 'entregado';
 

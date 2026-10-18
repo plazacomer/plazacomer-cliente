@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { favoritos } from '$lib/stores/favoritos.svelte';
-	import { fmtCOP } from '$lib/utils';
-	import { getCategory, type Product, type Store, type Deal, type Review } from '$lib/data/mock';
-	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
-	import CategoryBadge from '$lib/components/CategoryBadge.svelte';
-	import CountdownPill from '$lib/components/CountdownPill.svelte';
-	import { Button } from '$lib/components/ui/button';
-	import { Badge } from '$lib/components/ui/badge';
-	import Icon from '$lib/components/ui/Icon.svelte';
+	import { favoritos } from '#lib/stores/favoritos.svelte.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import { getCategory, type Product, type Store, type Deal, type Review } from '#lib/data/mock.js';
+	import TiendaLogo from '#lib/components/TiendaLogo.svelte';
+	import CategoryBadge from '#lib/components/CategoryBadge.svelte';
+	import CountdownPill from '#lib/components/CountdownPill.svelte';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import { Badge } from '#lib/components/ui/badge/index.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
 
 	type Props = {
 		tienda: Store;

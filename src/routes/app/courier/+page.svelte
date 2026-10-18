@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { repartidor, REPARTIDOR } from '$lib/stores/repartidor.svelte';
-	import { fmtCOP } from '$lib/utils';
-	import { getStore } from '$lib/data/mock';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import { Badge } from '$lib/components/ui/badge';
+	import { repartidor, REPARTIDOR } from '#lib/stores/repartidor.svelte.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import { getStore } from '#lib/data/mock.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import { Badge } from '#lib/components/ui/badge/index.js';
 
 	// Tiempo transcurrido desde que salió
 	let ahora = $state(Date.now());

@@ -2,9 +2,9 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
-	import Logo from '$lib/components/Logo.svelte';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import { m } from '$lib/paraglide/messages.js';
+	import Logo from '#lib/components/Logo.svelte';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import { m } from '#lib/paraglide/messages.js';
 
 	type Step = 'welcome' | 'role' | 'profile' | 'done';
 	type Role = 'buyer' | 'seller' | 'courier';

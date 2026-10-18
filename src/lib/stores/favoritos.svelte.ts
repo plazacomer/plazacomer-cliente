@@ -1,5 +1,5 @@
-import { browser } from '$app/environment';
-import { getProduct, type Product } from '$lib/data/mock';
+import { browser } from '$app/env';
+import { getProduct, type Product } from '#lib/data/mock.js';
 
 export type Lista = {
 	id: string;

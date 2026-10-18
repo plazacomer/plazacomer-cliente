@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import Logo from '$lib/components/Logo.svelte';
-	import { Button } from '$lib/components/ui/button';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import { m } from '$lib/paraglide/messages.js';
+	import Logo from '#lib/components/Logo.svelte';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import { m } from '#lib/paraglide/messages.js';
 </script>
 
 <div
@@ -20,24 +20,21 @@
 	{/each}
 
 	<div class="animate-fade-in relative z-10 text-center">
-		<div class="animate-radial mb-8 inline-block">
-			<Logo size={160} />
-		</div>
+		<div class="animate-radial mb-8 inline-block"><Logo size={160} /></div>
+
 		<h1 class="mb-2 font-display text-5xl font-extrabold tracking-[2px] text-white">PLAZACOMER</h1>
-		<p class="mb-12 text-[13px] tracking-[4px] text-[#A0A0B8] uppercase">
-			{m.landing_tagline()}
-		</p>
+
+		<p class="mb-12 text-[13px] tracking-[4px] text-[#A0A0B8] uppercase">{m.landing_tagline()}</p>
 
 		<div class="mx-auto max-w-sm">
-			<p class="mb-8 text-base leading-relaxed text-[#E0E0E8]">
-				{m.landing_description()}
-			</p>
-			<Button variant="brand" size="lg" fullWidth onclick={() => goto(resolve('/login'))}>
+			<p class="mb-8 text-base leading-relaxed text-[#E0E0E8]">{m.landing_description()}</p>
+
+			<Button variant="brand" size="lg" fullWidth onclick={() => goto(resolve('login'))}>
 				{m.landing_login_cta()}
 				<Icon name="arrowRight" size={18} />
 			</Button>
 			<button
-				onclick={() => goto(resolve('/onboarding'))}
+				onclick={() => goto(resolve('onboarding'))}
 				class="mt-4 w-full rounded-2xl border-2 border-white/20 py-3.5 font-display text-[15px] font-bold text-white/80 transition-all hover:border-white/40 hover:text-white"
 			>
 				{m.landing_signup_cta()}

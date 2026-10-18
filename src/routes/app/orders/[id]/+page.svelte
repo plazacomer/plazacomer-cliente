@@ -1,18 +1,18 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
-	import { orders, toast } from '$lib/stores/app.svelte';
-	import { getStore, getProduct, getCategory } from '$lib/data/mock';
-	import { fmtCOP } from '$lib/utils';
-	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
-	import { Badge } from '$lib/components/ui/badge';
-	import { Button } from '$lib/components/ui/button';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import * as Dialog from '$lib/components/ui/dialog';
-	import type { OrderStatus } from '$lib/stores/app.svelte';
+	import { orders, toast } from '#lib/stores/app.svelte.js';
+	import { getStore, getProduct, getCategory } from '#lib/data/mock.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import TiendaLogo from '#lib/components/TiendaLogo.svelte';
+	import { Badge } from '#lib/components/ui/badge/index.js';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import * as Dialog from '#lib/components/ui/dialog/index.js';
+	import type { OrderStatus } from '#lib/stores/app.svelte.js';
 
-	const id = $derived($page.params.id ?? '');
+	const id = $derived(page.params.id ?? '');
 	const pedido = $derived(orders.get(id));
 	const tienda = $derived(pedido ? getStore(pedido.storeId) : null);
 
@@ -87,7 +87,8 @@
 	<div class="mx-auto max-w-lg px-5 pt-16 text-center">
 		<div class="mb-4 text-6xl">📦</div>
 		<h2 class="mb-2 font-display text-xl font-bold">Pedido no encontrado</h2>
-		<Button variant="ghost" onclick={() => goto(resolve('/app/orders'))}>
+
+		<Button variant="ghost" onclick={() => goto(resolve('app/orders'))}>
 			<Icon name="arrowLeft" size={16} />
 			Volver a pedidos
 		</Button>
@@ -99,7 +100,7 @@
 		<!-- Header -->
 		<div class="mb-5 flex items-center gap-3">
 			<button
-				onclick={() => goto(resolve('/app/orders'))}
+				onclick={() => goto(resolve('app/orders'))}
 				class="flex h-9 w-9 items-center justify-center rounded-[10px] border"
 				style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 			>
@@ -235,9 +236,9 @@
 							</div>
 						</div>
 						{#if pedido.reviewPromptPending}
-							<Button variant="promo" fullWidth onclick={() => (buzonOpen = true)}>
-								Escribir sugerencia
-							</Button>
+							<Button variant="promo" fullWidth onclick={() => (buzonOpen = true)}
+								>Escribir sugerencia</Button
+							>
 						{:else}
 							<div class="py-2 text-center text-xs" style="color:var(--c-text-muted)">
 								✓ Ya enviaste tu sugerencia
@@ -457,6 +458,7 @@
 
 			<div class="flex gap-2">
 				<Button variant="ghost" fullWidth onclick={() => (cancelOpen = false)}>Volver</Button>
+
 				<Button
 					variant="danger"
 					fullWidth

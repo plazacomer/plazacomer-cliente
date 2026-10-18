@@ -1,6 +1,6 @@
-import { STORES, PRODUCTS, DEALS, SERVICIOS, type Product } from '$lib/data/mock';
-import { orders, type OrderStatus } from '$lib/stores/app.svelte';
-import { citas, type EstadoCita } from '$lib/stores/citas.svelte';
+import { STORES, PRODUCTS, DEALS, SERVICIOS, type Product } from '#lib/data/mock.js';
+import { orders, type OrderStatus } from '#lib/stores/app.svelte.js';
+import { citas, type EstadoCita } from '#lib/stores/citas.svelte.js';
 
 const VENDEDOR_TIENDA_ID = 't1'; // tienda de productos (demo)
 const VENDEDOR_SERVICIO_ID = 't9'; // tienda de servicios (demo)

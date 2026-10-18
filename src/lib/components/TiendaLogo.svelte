@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Store } from '$lib/data/mock';
+	import type { Store } from '#lib/data/mock.js';
 
 	type Props = { tienda: Store; size?: number };
 	let { tienda, size = 40 }: Props = $props();

@@ -1,16 +1,16 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import { favoritos } from '$lib/stores/favoritos.svelte';
-	import { cart, toast } from '$lib/stores/app.svelte';
-	import { loyalty } from '$lib/stores/loyalty.svelte';
-	import { storeUi } from '$lib/stores/storeUi.svelte';
-	import { fmtCOP } from '$lib/utils';
-	import type { Product, Store, Deal } from '$lib/data/mock';
-	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
-	import CategoryBadge from '$lib/components/CategoryBadge.svelte';
-	import CountdownPill from '$lib/components/CountdownPill.svelte';
-	import Icon from '$lib/components/ui/Icon.svelte';
+	import { favoritos } from '#lib/stores/favoritos.svelte.js';
+	import { cart, toast } from '#lib/stores/app.svelte.js';
+	import { loyalty } from '#lib/stores/loyalty.svelte.js';
+	import { storeUi } from '#lib/stores/storeUi.svelte.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import type { Product, Store, Deal } from '#lib/data/mock.js';
+	import TiendaLogo from '#lib/components/TiendaLogo.svelte';
+	import CategoryBadge from '#lib/components/CategoryBadge.svelte';
+	import CountdownPill from '#lib/components/CountdownPill.svelte';
+	import Icon from '#lib/components/ui/Icon.svelte';
 
 	type Props = {
 		tienda: Store;
@@ -56,7 +56,7 @@
 	}
 
 	function goChat() {
-		goto(resolve(`/app/messages/${tienda.id}`));
+		goto(resolve(`app/messages/${tienda.id}`));
 	}
 
 	async function share() {
@@ -205,6 +205,7 @@
 			<div class="rounded-full p-0.5 shadow-[var(--shadow-sm)]" style="background:var(--c-bg-card)">
 				<TiendaLogo {tienda} size={64} />
 			</div>
+
 			<div class="min-w-0 flex-1 pb-1">
 				<h1 class="truncate font-display text-xl leading-tight font-extrabold md:text-2xl">
 					{tienda.name}
@@ -519,7 +520,7 @@
 
 {#if cart.count > 0}
 	<button
-		onclick={() => goto(resolve('/app/cart'))}
+		onclick={() => goto(resolve('app/cart'))}
 		class="fixed right-4 bottom-[calc(70px+env(safe-area-inset-bottom))] left-4 z-50 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-[14px] font-semibold text-white md:right-auto md:left-1/2 md:w-full md:max-w-md md:-translate-x-1/2 lg:bottom-6"
 		style="background:{accent};box-shadow:0 8px 24px {accent}66"
 	>

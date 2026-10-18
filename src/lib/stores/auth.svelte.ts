@@ -1,4 +1,4 @@
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 import {
 	getFirebaseAuth,
 	signInWithGoogle,
@@ -7,9 +7,9 @@ import {
 	signOut as firebaseSignOut,
 	trackEvent,
 	type User
-} from '$lib/firebase';
+} from '#lib/firebase.js';
 import { onAuthStateChanged, getAdditionalUserInfo, type UserCredential } from 'firebase/auth';
-import { m } from '$lib/paraglide/messages.js';
+import { m } from '#lib/paraglide/messages.js';
 
 function createAuth() {
 	let user = $state<User | null>(null);

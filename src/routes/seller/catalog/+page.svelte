@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { vendedor, type ProductoVendedor } from '$lib/stores/vendedor.svelte';
-	import { fmtCOP } from '$lib/utils';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import * as Select from '$lib/components/ui/select';
-	import * as Tabs from '$lib/components/ui/tabs';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import * as Dialog from '$lib/components/ui/dialog';
-	import * as Card from '$lib/components/ui/card';
-	import { Input } from '$lib/components/ui/input';
+	import { vendedor, type ProductoVendedor } from '#lib/stores/vendedor.svelte.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import * as Select from '#lib/components/ui/select/index.js';
+	import * as Tabs from '#lib/components/ui/tabs/index.js';
+	import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
+	import * as Dialog from '#lib/components/ui/dialog/index.js';
+	import * as Card from '#lib/components/ui/card/index.js';
+	import { Input } from '#lib/components/ui/input/index.js';
 	import EllipsisVertical from '@lucide/svelte/icons/ellipsis-vertical';
 
 	// Nuevo producto modal

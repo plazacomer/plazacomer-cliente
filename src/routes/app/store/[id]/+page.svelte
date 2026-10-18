@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import {
 		getStore,
 		getStoreProducts,
@@ -8,14 +8,14 @@
 		getServiciosDe,
 		isServiceStore,
 		type Product
-	} from '$lib/data/mock';
-	import { cart, toast } from '$lib/stores/app.svelte';
-	import CustomizeModal, { type CartLineItem } from '$lib/components/CustomizeModal.svelte';
-	import ServicioLanding from '$lib/components/ServicioLanding.svelte';
-	import RestaurantLanding from '$lib/components/RestaurantLanding.svelte';
-	import TiendaLanding from '$lib/components/TiendaLanding.svelte';
+	} from '#lib/data/mock.js';
+	import { cart, toast } from '#lib/stores/app.svelte.js';
+	import CustomizeModal, { type CartLineItem } from '#lib/components/CustomizeModal.svelte';
+	import ServicioLanding from '#lib/components/ServicioLanding.svelte';
+	import RestaurantLanding from '#lib/components/RestaurantLanding.svelte';
+	import TiendaLanding from '#lib/components/TiendaLanding.svelte';
 
-	const tiendaId = $derived($page.params.id ?? '');
+	const tiendaId = $derived(page.params.id ?? '');
 	const tienda = $derived(getStore(tiendaId));
 	const esServicio = $derived(isServiceStore(tienda));
 	const esRestaurante = $derived(!esServicio && tienda.category === 'food');

@@ -1,17 +1,7 @@
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 
-export type TimelineStep = {
-	label: string;
-	time: string;
-	done: boolean;
-	active: boolean;
-};
-
-export type OrderItem = {
-	productId: string;
-	quantity: number;
-	price: number;
-};
+export type TimelineStep = { label: string; time: string; done: boolean; active: boolean };
+export type OrderItem = { productId: string; quantity: number; price: number };
 
 export type OrderStatus = 'confirmed' | 'preparing' | 'shipping' | 'delivered' | 'cancelled';
 

@@ -10,16 +10,16 @@
 		getProduct,
 		getDeal,
 		type Store
-	} from '$lib/data/mock';
-	import { cart, toast } from '$lib/stores/app.svelte';
-	import { fmtCOP } from '$lib/utils';
-	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
-	import { Badge } from '$lib/components/ui/badge';
-	import { Button } from '$lib/components/ui/button';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import { Card } from '$lib/components/ui/card';
-	import CountdownPill from '$lib/components/CountdownPill.svelte';
-	import { m } from '$lib/paraglide/messages.js';
+	} from '#lib/data/mock.js';
+	import { cart, toast } from '#lib/stores/app.svelte.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import TiendaLogo from '#lib/components/TiendaLogo.svelte';
+	import { Badge } from '#lib/components/ui/badge/index.js';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import { Card } from '#lib/components/ui/card/index.js';
+	import CountdownPill from '#lib/components/CountdownPill.svelte';
+	import { m } from '#lib/paraglide/messages.js';
 
 	let filterCat = $state<string | null>(null);
 
@@ -44,13 +44,12 @@
 	}
 
 	function goStore(store: Store) {
-		goto(resolve(`/app/store/${store.id}`));
+		goto(resolve(`app/store/${store.id}`));
 	}
 
 	function goProduct(productId: string, dealId?: string) {
-		goto(
-			resolve(dealId ? `/app/product/${productId}?deal=${dealId}` : `/app/product/${productId}`)
-		);
+		if (dealId) goto(resolve(`app/product/${productId}?deal=${dealId}`));
+		else goto(resolve(`app/product/${productId}`));
 	}
 </script>
 
@@ -123,7 +122,7 @@
 				<h3 class="mb-2 font-display text-lg font-bold">{m.home_empty_title()}</h3>
 				<p class="text-sm" style="color:var(--c-text-secondary)">{m.home_empty_subtitle()}</p>
 				<div class="mt-4">
-					<Button variant="brand" onclick={() => goto(resolve('/app/explore'))}
+					<Button variant="brand" onclick={() => goto(resolve('app/explore'))}
 						>{m.home_empty_cta()}</Button
 					>
 				</div>
@@ -184,9 +183,9 @@
 								type="button"
 								onclick={() => goProduct(product.id, deal.id)}
 								class="mb-2 block text-left"
+								><h3 class="font-display text-base font-bold">{product.name}</h3></button
 							>
-								<h3 class="font-display text-base font-bold">{product.name}</h3>
-							</button>
+
 							<p class="mb-3.5 text-[13px] leading-relaxed" style="color:var(--c-text-secondary)">
 								{product.description}
 							</p>

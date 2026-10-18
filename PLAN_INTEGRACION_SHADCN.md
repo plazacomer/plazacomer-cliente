@@ -517,7 +517,7 @@ Para cada archivo de la lista, hacés dos cosas: (a) cambiar el import, (b) trad
 
 | Import viejo                                             | Import nuevo                                          |
 | -------------------------------------------------------- | ----------------------------------------------------- |
-| `import Button from '$lib/components/ui/Button.svelte';` | `import { Button } from '$lib/components/ui/button';` |
+| `import Button from '#lib/components/ui/Button.svelte';` | `import { Button } from '$lib/components/ui/button';` |
 
 | `variant` viejo                                                    | `variant` nuevo   |
 | ------------------------------------------------------------------ | ----------------- |
@@ -553,7 +553,7 @@ a esa pantalla en el navegador.
 
 | Import viejo                                           | Import nuevo                                        |
 | ------------------------------------------------------ | --------------------------------------------------- |
-| `import Badge from '$lib/components/ui/Badge.svelte';` | `import { Badge } from '$lib/components/ui/badge';` |
+| `import Badge from '#lib/components/ui/Badge.svelte';` | `import { Badge } from '$lib/components/ui/badge';` |
 
 | `variant` viejo         | `variant` nuevo                                                                                |
 | ----------------------- | ---------------------------------------------------------------------------------------------- |
@@ -586,13 +586,13 @@ En `src/routes/app/home/+page.svelte`:
 Cambia el import:
 
 ```
-import Card from '$lib/components/ui/Card.svelte';
+import Card from '#lib/components/ui/Card.svelte';
 ```
 
 por:
 
 ```
-import { Card } from '$lib/components/ui/card';
+import { Card } from '#lib/components/ui/card/index.js';
 ```
 
 Hay 3 usos, los tres iguales: `<Card class="animate-slide-up">`. El `Card` de shadcn trae su

@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { vendedor } from '$lib/stores/vendedor.svelte';
-	import { ESTADOS_CITA, fmtFechaCita, type EstadoCita } from '$lib/stores/citas.svelte';
-	import { fmtCOP } from '$lib/utils';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import { Badge } from '$lib/components/ui/badge';
-	import * as Dialog from '$lib/components/ui/dialog';
-	import { Input } from '$lib/components/ui/input';
+	import { vendedor } from '#lib/stores/vendedor.svelte.js';
+	import { ESTADOS_CITA, fmtFechaCita, type EstadoCita } from '#lib/stores/citas.svelte.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import { Badge } from '#lib/components/ui/badge/index.js';
+	import * as Dialog from '#lib/components/ui/dialog/index.js';
+	import { Input } from '#lib/components/ui/input/index.js';
 
 	type Tab = 'pendientes' | 'hoy' | 'historial';
 	let tab = $state<Tab>('pendientes');

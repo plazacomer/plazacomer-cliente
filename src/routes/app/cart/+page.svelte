@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import { cart } from '$lib/stores/app.svelte';
-	import { getStore, getProduct, getCategory, type Product } from '$lib/data/mock';
-	import { fmtCOP } from '$lib/utils';
-	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
-	import { Badge } from '$lib/components/ui/badge';
-	import { Button } from '$lib/components/ui/button';
-	import Icon from '$lib/components/ui/Icon.svelte';
-	import CustomizeModal, { type CartLineItem } from '$lib/components/CustomizeModal.svelte';
+	import { cart } from '#lib/stores/app.svelte.js';
+	import { getStore, getProduct, getCategory, type Product } from '#lib/data/mock.js';
+	import { fmtCOP } from '#lib/utils.js';
+	import TiendaLogo from '#lib/components/TiendaLogo.svelte';
+	import { Badge } from '#lib/components/ui/badge/index.js';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import Icon from '#lib/components/ui/Icon.svelte';
+	import CustomizeModal, { type CartLineItem } from '#lib/components/CustomizeModal.svelte';
 
 	const groups = $derived.by(() => {
 		const g: Record<string, typeof cart.items> = {};
@@ -74,13 +74,14 @@
 	<div class="mx-auto max-w-md px-5 pt-16 text-center">
 		<div class="mb-5 text-7xl">🛒</div>
 		<h2 class="mb-3 font-display text-2xl font-bold">Tu carrito está vacío</h2>
+
 		<p class="mb-8 text-sm" style="color:var(--c-text-secondary)">
 			Explora las tiendas y agrega productos para empezar tu pedido.
 		</p>
-		<Button variant="brand" fullWidth onclick={() => goto(resolve('/app/explore'))}>
-			<Icon name="search" size={16} />
-			Explorar tiendas
-		</Button>
+
+		<Button variant="brand" fullWidth onclick={() => goto(resolve('app/explore'))}
+			><Icon name="search" size={16} />Explorar tiendas</Button
+		>
 	</div>
 {:else}
 	<div class="mx-auto max-w-4xl px-4 pt-5 pb-10">
@@ -268,10 +269,9 @@
 					<span class="font-mono text-[22px] font-bold">{fmtCOP(cart.total)}</span>
 				</div>
 
-				<Button variant="brand" size="lg" fullWidth onclick={() => goto(resolve('/app/checkout'))}>
-					<Icon name="credit" size={18} />
-					Ir a pagar
-				</Button>
+				<Button variant="brand" size="lg" fullWidth onclick={() => goto(resolve('app/checkout'))}
+					><Icon name="credit" size={18} />Ir a pagar</Button
+				>
 
 				<p class="mt-3 text-center text-[11px] leading-relaxed" style="color:var(--c-text-muted)">
 					🔒 Pago seguro · Cada tienda procesa su propia transacción

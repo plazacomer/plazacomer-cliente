@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import Icon from './ui/Icon.svelte';
 	import Logo from './Logo.svelte';
 	import GlobalSearch from './GlobalSearch.svelte';
-	import { darkMode, cart, orders, messages } from '$lib/stores/app.svelte';
-	import { citas } from '$lib/stores/citas.svelte';
-	import { storeUi } from '$lib/stores/storeUi.svelte';
-	import { CURRENT_USER } from '$lib/data/mock';
+	import { darkMode, cart, orders, messages } from '#lib/stores/app.svelte.js';
+	import { citas } from '#lib/stores/citas.svelte.js';
+	import { storeUi } from '#lib/stores/storeUi.svelte.js';
+	import { CURRENT_USER } from '#lib/data/mock.js';
 	import type { Snippet } from 'svelte';
 
 	type Props = { children: Snippet };
@@ -34,10 +34,10 @@
 		{ id: 'info', label: 'Tienda', icon: 'store' }
 	] as const;
 
-	const isStoreDetail = $derived($page.url.pathname.startsWith('/app/store/'));
+	const isStoreDetail = $derived(page.url.pathname.startsWith('/app/store/'));
 
 	function currentId() {
-		const seg = $page.url.pathname.split('/')[2] ?? 'inicio';
+		const seg = page.url.pathname.split('/')[2] ?? 'inicio';
 		return seg;
 	}
 
@@ -64,7 +64,7 @@
 		class="sticky top-0 hidden h-screen w-60 shrink-0 flex-col gap-1 border-r border-[var(--c-border)] p-4 lg:flex"
 		style="background:var(--c-bg-card)"
 	>
-		<a href={resolve('/app/home')} class="flex items-center gap-2.5 px-3 pt-2 pb-6">
+		<a href={resolve('app/home')} class="flex items-center gap-2.5 px-3 pt-2 pb-6">
 			<Logo size={36} />
 			<div>
 				<div class="font-display text-base font-extrabold tracking-wide">PLAZACOMER</div>
@@ -98,7 +98,7 @@
 
 		<!-- Pedidos (desktop sidebar only) -->
 		<button
-			onclick={() => goto(resolve('/app/orders'))}
+			onclick={() => goto(resolve('app/orders'))}
 			class="relative flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors"
 			style="background:{currentId() === 'pedidos'
 				? 'var(--c-brand-light)'
@@ -119,7 +119,7 @@
 
 		<!-- Mis Citas (desktop sidebar) -->
 		<button
-			onclick={() => goto(resolve('/app/appointments'))}
+			onclick={() => goto(resolve('app/appointments'))}
 			class="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors"
 			style="background:{currentId() === 'mis-citas'
 				? 'var(--c-brand-light)'
@@ -140,7 +140,7 @@
 
 		<!-- Guardados (desktop sidebar) -->
 		<button
-			onclick={() => goto(resolve('/app/saved'))}
+			onclick={() => goto(resolve('app/saved'))}
 			class="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors"
 			style="background:{currentId() === 'guardados'
 				? 'var(--c-brand-light)'
