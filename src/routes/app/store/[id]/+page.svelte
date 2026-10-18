@@ -1,9 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import {
-		getStore, getStoreProducts, getStoreDeals, getStoreReviews,
-		getServiciosDe, isServiceStore,
-		type Product,
+		getStore,
+		getStoreProducts,
+		getStoreDeals,
+		getStoreReviews,
+		getServiciosDe,
+		isServiceStore,
+		type Product
 	} from '$lib/data/mock';
 	import { cart, toast } from '$lib/stores/app.svelte';
 	import CustomizeModal, { type CartLineItem } from '$lib/components/CustomizeModal.svelte';
@@ -38,19 +42,43 @@
 	}
 
 	function onCustomizeConfirm(item: CartLineItem) {
-		cart.add({ productId: item.productId, storeId: item.storeId, price: item.price, quantity: item.quantity, selections: item.selections, notes: item.notes });
+		cart.add({
+			productId: item.productId,
+			storeId: item.storeId,
+			price: item.price,
+			quantity: item.quantity,
+			selections: item.selections,
+			notes: item.notes
+		});
 		toast.show(`✓ ${customizeProduct?.name} agregado al carrito`);
 	}
 
-	function goBack() { history.back(); }
+	function goBack() {
+		history.back();
+	}
 </script>
 
 {#if esServicio}
-	<ServicioLanding {tienda} {servicios} {isOpen} onBack={goBack}/>
+	<ServicioLanding {tienda} {servicios} {isOpen} onBack={goBack} />
 {:else if esRestaurante}
-	<RestaurantLanding {tienda} {productos} {ofertas} {accent} {isOpen} onOpenProduct={openProducto}/>
+	<RestaurantLanding
+		{tienda}
+		{productos}
+		{ofertas}
+		{accent}
+		{isOpen}
+		onOpenProduct={openProducto}
+	/>
 {:else}
-	<TiendaLanding {tienda} {productos} {ofertas} {resenas} {accent} {isOpen} onOpenProduct={openProducto}/>
+	<TiendaLanding
+		{tienda}
+		{productos}
+		{ofertas}
+		{resenas}
+		{accent}
+		{isOpen}
+		onOpenProduct={openProducto}
+	/>
 {/if}
 
 <CustomizeModal

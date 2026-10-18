@@ -24,6 +24,7 @@ es un error del documento — repórtalo, no decidas tú.
 ## 0. Reglas no negociables (léelas antes de tocar nada)
 
 **No toques estos archivos/carpetas bajo ninguna circunstancia en este plan:**
+
 - `src/lib/gen/**` (tipos generados desde Protobuf)
 - `src/lib/*.ts` que hablan con los Workers (`catalog.ts`, `user.ts`, etc.)
 - Cualquier `*.proto` (no existe en este repo, vive en `plazacomer-cloudflare`)
@@ -34,6 +35,7 @@ es un error del documento — repórtalo, no decidas tú.
   componente que lo envuelve, nunca el texto.
 
 **Reglas de código de este repo (Svelte 5 + Tailwind v4):**
+
 - Solo runas de Svelte 5 (`$state`, `$derived`, `$props`, `{@render children()}`). Nunca stores de
   Svelte 4 ni hooks de React.
 - Nunca colores hardcodeados nuevos (`#2563EB`, `bg-blue-600`, etc.) en un `.svelte`. Todo color
@@ -42,11 +44,13 @@ es un error del documento — repórtalo, no decidas tú.
   de este documento te lo pida explícitamente con el nombre exacto del componente.
 
 **Verificación obligatoria después de CADA fase**, en este orden, sin excepciones:
+
 ```bash
 yarn check   # svelte-check — errores de tipos
 yarn lint    # prettier + eslint
 yarn dev     # levanta el servidor
 ```
+
 Con `yarn dev` corriendo, **abre en el navegador y mira visualmente** al menos las rutas que
 la fase tocó (la lista exacta está en cada fase). `yarn check` en verde **no significa que la
 fase esté bien** — el bug más probable en este plan es visual (un botón que compila pero se ve
@@ -116,17 +120,17 @@ Archivo: `src/routes/layout.css`. Todos los cambios de esta fase van en ese úni
 Busca este bloque (dentro de `@theme`, cerca de la línea 18):
 
 ```css
-  --color-accent: #F59E0B;
-  --color-accent-hover: #D97706;
-  --color-accent-light: #FFFBEB;
+--color-accent: #f59e0b;
+--color-accent-hover: #d97706;
+--color-accent-light: #fffbeb;
 ```
 
 Reemplázalo por:
 
 ```css
-  --color-brand-accent: #F59E0B;
-  --color-brand-accent-hover: #D97706;
-  --color-brand-accent-light: #FFFBEB;
+--color-brand-accent: #f59e0b;
+--color-brand-accent-hover: #d97706;
+--color-brand-accent-light: #fffbeb;
 ```
 
 **Verificación de que este rename es seguro:** ya confirmamos que ningún `.svelte` usa las clases
@@ -142,13 +146,13 @@ que el código cambió desde el diagnóstico.
 Busca esta línea (cerca de la línea 97, dentro del mismo bloque `@theme`):
 
 ```css
-  --color-accent-foreground: var(--accent-foreground);
+--color-accent-foreground: var(--accent-foreground);
 ```
 
 Justo antes de esa línea, agrega:
 
 ```css
-  --color-accent: var(--accent);
+--color-accent: var(--accent);
 ```
 
 ### 1.3 — Reescribir los tokens semánticos de shadcn en `:root` (modo claro)
@@ -158,47 +162,47 @@ oklch(1 0 0);` hasta `--ring: oklch(0.708 0 0);` — **no toques** las líneas d
 `--sidebar-*` que vienen después, esas quedan igual):
 
 ```css
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+--background: oklch(1 0 0);
+--foreground: oklch(0.145 0 0);
+--card: oklch(1 0 0);
+--card-foreground: oklch(0.145 0 0);
+--popover: oklch(1 0 0);
+--popover-foreground: oklch(0.145 0 0);
+--primary: oklch(0.205 0 0);
+--primary-foreground: oklch(0.985 0 0);
+--secondary: oklch(0.97 0 0);
+--secondary-foreground: oklch(0.205 0 0);
+--muted: oklch(0.97 0 0);
+--muted-foreground: oklch(0.556 0 0);
+--accent: oklch(0.97 0 0);
+--accent-foreground: oklch(0.205 0 0);
+--destructive: oklch(0.577 0.245 27.325);
+--border: oklch(0.922 0 0);
+--input: oklch(0.922 0 0);
+--ring: oklch(0.708 0 0);
 ```
 
 Reemplázalo por (usamos hex directo, no conviertas nada a oklch):
 
 ```css
-  --background: #FAFAFA;
-  --foreground: #2D2D2D;
-  --card: #FFFFFF;
-  --card-foreground: #2D2D2D;
-  --popover: #FFFFFF;
-  --popover-foreground: #2D2D2D;
-  --primary: #2563EB;
-  --primary-foreground: #FFFFFF;
-  --secondary: #F2F2F2;
-  --secondary-foreground: #2D2D2D;
-  --muted: #F2F2F2;
-  --muted-foreground: #6B6B6B;
-  --accent: #F2F2F2;
-  --accent-foreground: #2D2D2D;
-  --destructive: #DC2626;
-  --border: #E5E5E5;
-  --input: #E5E5E5;
-  --ring: #2563EB;
+--background: #fafafa;
+--foreground: #2d2d2d;
+--card: #ffffff;
+--card-foreground: #2d2d2d;
+--popover: #ffffff;
+--popover-foreground: #2d2d2d;
+--primary: #2563eb;
+--primary-foreground: #ffffff;
+--secondary: #f2f2f2;
+--secondary-foreground: #2d2d2d;
+--muted: #f2f2f2;
+--muted-foreground: #6b6b6b;
+--accent: #f2f2f2;
+--accent-foreground: #2d2d2d;
+--destructive: #dc2626;
+--border: #e5e5e5;
+--input: #e5e5e5;
+--ring: #2563eb;
 ```
 
 Nota: `--accent` queda como un gris sutil (`#F2F2F2`), **no** como el ámbar de marca. Esto es
@@ -215,47 +219,47 @@ Busca este bloque dentro de `.dark { ... }` (desde `--background: oklch(0.145 0 
 `--ring: oklch(0.556 0 0);` — de nuevo, no toques `--chart-*` ni `--sidebar-*`):
 
 ```css
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+--background: oklch(0.145 0 0);
+--foreground: oklch(0.985 0 0);
+--card: oklch(0.205 0 0);
+--card-foreground: oklch(0.985 0 0);
+--popover: oklch(0.205 0 0);
+--popover-foreground: oklch(0.985 0 0);
+--primary: oklch(0.922 0 0);
+--primary-foreground: oklch(0.205 0 0);
+--secondary: oklch(0.269 0 0);
+--secondary-foreground: oklch(0.985 0 0);
+--muted: oklch(0.269 0 0);
+--muted-foreground: oklch(0.708 0 0);
+--accent: oklch(0.269 0 0);
+--accent-foreground: oklch(0.985 0 0);
+--destructive: oklch(0.704 0.191 22.216);
+--border: oklch(1 0 0 / 10%);
+--input: oklch(1 0 0 / 15%);
+--ring: oklch(0.556 0 0);
 ```
 
 Reemplázalo por:
 
 ```css
-  --background: #0F0F1A;
-  --foreground: #F0F0F0;
-  --card: #1E1E30;
-  --card-foreground: #F0F0F0;
-  --popover: #1E1E30;
-  --popover-foreground: #F0F0F0;
-  --primary: #2563EB;
-  --primary-foreground: #FFFFFF;
-  --secondary: #1A1A2E;
-  --secondary-foreground: #F0F0F0;
-  --muted: #1A1A2E;
-  --muted-foreground: #A0A0B8;
-  --accent: #1A1A2E;
-  --accent-foreground: #F0F0F0;
-  --destructive: #DC2626;
-  --border: #2A2A3E;
-  --input: #2A2A3E;
-  --ring: #2563EB;
+--background: #0f0f1a;
+--foreground: #f0f0f0;
+--card: #1e1e30;
+--card-foreground: #f0f0f0;
+--popover: #1e1e30;
+--popover-foreground: #f0f0f0;
+--primary: #2563eb;
+--primary-foreground: #ffffff;
+--secondary: #1a1a2e;
+--secondary-foreground: #f0f0f0;
+--muted: #1a1a2e;
+--muted-foreground: #a0a0b8;
+--accent: #1a1a2e;
+--accent-foreground: #f0f0f0;
+--destructive: #dc2626;
+--border: #2a2a3e;
+--input: #2a2a3e;
+--ring: #2563eb;
 ```
 
 ### 1.5 — Verificación de la Fase 1
@@ -268,6 +272,7 @@ yarn dev
 
 Con el navegador abierto en `/app/home` y en el demo de shadcn si existe (busca una ruta bajo
 `/demo` o similar; si no existe ninguna, usa `/app/orders`): confirma visualmente que:
+
 - Los botones y links que antes eran azules siguen azules (no se pusieron negros ni grises).
 - Ningún fondo se ve ámbar/naranja donde antes no lo estaba (eso confirmaría que el bug del punto
   1.1/1.2 quedó bien resuelto).
@@ -443,20 +448,21 @@ por `class={cn(buttonVariants({ variant, size }), fullWidth && "w-full", classNa
 Busca:
 
 ```ts
-	export const badgeVariants = tv({
-		base: "inline-flex items-center justify-center rounded-full border px-2.5 py-0.5 text-xs font-semibold w-fit whitespace-nowrap shrink-0 gap-1 [&>svg]:size-3 [&>svg]:pointer-events-none transition-[color,box-shadow] overflow-hidden",
-		variants: {
-			variant: {
-				default: "border-transparent bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
-				secondary: "border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
-				destructive: "border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90",
-				outline: "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
-			},
-		},
-		defaultVariants: {
-			variant: "default",
-		},
-	});
+export const badgeVariants = tv({
+	base: 'inline-flex items-center justify-center rounded-full border px-2.5 py-0.5 text-xs font-semibold w-fit whitespace-nowrap shrink-0 gap-1 [&>svg]:size-3 [&>svg]:pointer-events-none transition-[color,box-shadow] overflow-hidden',
+	variants: {
+		variant: {
+			default: 'border-transparent bg-primary text-primary-foreground [a&]:hover:bg-primary/90',
+			secondary:
+				'border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90',
+			destructive: 'border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90',
+			outline: 'text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground'
+		}
+	},
+	defaultVariants: {
+		variant: 'default'
+	}
+});
 ```
 
 Agrega estas siete claves nuevas dentro de `variant: { ... }`, sin tocar `default`, `secondary`,
@@ -509,15 +515,15 @@ Para cada archivo de la lista, hacés dos cosas: (a) cambiar el import, (b) trad
 
 ### 4.1 — Tabla de traducción: `Button`
 
-| Import viejo | Import nuevo |
-|---|---|
+| Import viejo                                             | Import nuevo                                          |
+| -------------------------------------------------------- | ----------------------------------------------------- |
 | `import Button from '$lib/components/ui/Button.svelte';` | `import { Button } from '$lib/components/ui/button';` |
 
-| `variant` viejo | `variant` nuevo |
-|---|---|
+| `variant` viejo                                                    | `variant` nuevo   |
+| ------------------------------------------------------------------ | ----------------- |
 | `variant="brand"` (o sin `variant`, porque `brand` era el default) | `variant="brand"` |
-| `variant="ghost"` | `variant="ghost"` |
-| `variant="promo"` | `variant="promo"` |
+| `variant="ghost"`                                                  | `variant="ghost"` |
+| `variant="promo"`                                                  | `variant="promo"` |
 
 | `variant="danger"` | `variant="danger"` (agregada al `tv()` en 3.1, existe un uso real en `orders/[id]/+page.svelte:451`, dentro de un botón con atributos multilínea — si buscás con un grep de una sola línea no lo vas a ver) |
 
@@ -531,6 +537,7 @@ arriba. Antes de dar por cerrada la migración de un archivo, abrilo y mirá cad
 tamaño grande por defecto) — no necesitas tocar el prop `size` en absoluto.
 
 Archivos a migrar (7):
+
 1. `src/lib/components/TiendaLanding.svelte`
 2. `src/routes/+page.svelte`
 3. `src/routes/app/home/+page.svelte`
@@ -544,22 +551,23 @@ a esa pantalla en el navegador.
 
 ### 4.2 — Tabla de traducción: `Badge`
 
-| Import viejo | Import nuevo |
-|---|---|
+| Import viejo                                           | Import nuevo                                        |
+| ------------------------------------------------------ | --------------------------------------------------- |
 | `import Badge from '$lib/components/ui/Badge.svelte';` | `import { Badge } from '$lib/components/ui/badge';` |
 
-| `variant` viejo | `variant` nuevo |
-|---|---|
+| `variant` viejo         | `variant` nuevo                                                                                |
+| ----------------------- | ---------------------------------------------------------------------------------------------- |
 | sin `variant` (default) | `variant="secondary"` — **este es el único caso donde el nombre no es igual, prestá atención** |
-| `variant="brand"` | `variant="brand"` |
-| `variant="accent"` | `variant="accent"` |
-| `variant="error"` | `variant="error"` |
-| `variant="promo"` | `variant="promo"` |
-| `variant="success"` | `variant="success"` |
-| `variant="warning"` | `variant="warning"` |
-| `variant="beauty"` | `variant="beauty"` |
+| `variant="brand"`       | `variant="brand"`                                                                              |
+| `variant="accent"`      | `variant="accent"`                                                                             |
+| `variant="error"`       | `variant="error"`                                                                              |
+| `variant="promo"`       | `variant="promo"`                                                                              |
+| `variant="success"`     | `variant="success"`                                                                            |
+| `variant="warning"`     | `variant="warning"`                                                                            |
+| `variant="beauty"`      | `variant="beauty"`                                                                             |
 
 Archivos a migrar (10):
+
 1. `src/lib/components/TiendaLanding.svelte`
 2. `src/routes/seller/appointments/+page.svelte`
 3. `src/routes/seller/+page.svelte`
@@ -576,10 +584,13 @@ Archivos a migrar (10):
 En `src/routes/app/home/+page.svelte`:
 
 Cambia el import:
+
 ```
 import Card from '$lib/components/ui/Card.svelte';
 ```
+
 por:
+
 ```
 import { Card } from '$lib/components/ui/card';
 ```
@@ -588,13 +599,17 @@ Hay 3 usos, los tres iguales: `<Card class="animate-slide-up">`. El `Card` de sh
 propio padding, borde y espaciado interno (`ring-1`, `py-4`, `flex flex-col gap-(--card-spacing)`)
 que el `Card` legacy no tenía (el legacy era un `<div>` sin padding ni gap propios, dejaba que el
 contenido lo manejara). En los 3 casos cambia:
+
 ```
 <Card class="animate-slide-up">
 ```
+
 por:
+
 ```
 <Card class="animate-slide-up py-0 ring-0 gap-0 border border-border-soft shadow-sm rounded-[18px]">
 ```
+
 El `gap-0` es necesario además de `py-0`/`ring-0`: sin él, shadcn sigue aplicando `flex flex-col
 gap-4` y vas a ver un espacio extra de ~1rem entre los hijos del Card que la versión legacy no
 tenía. No toques el `</Card>` de cierre ni nada del contenido entre las etiquetas.
@@ -608,11 +623,13 @@ cambia para ellos.
 ### 4.5 — Verificación de la Fase 4
 
 Después de migrar TODOS los archivos de 4.1/4.2/4.3:
+
 ```bash
 yarn check
 yarn lint
 yarn build
 ```
+
 `yarn build` tiene que terminar sin errores — es la señal más fuerte de que no quedó ningún
 import roto. Después, con `yarn dev`, revisa visualmente cada una de las 10 rutas tocadas
 (home, cart, checkout, orders, orders/[id], seller, seller/orders, seller/appointments, courier,
@@ -625,6 +642,7 @@ profile) en claro y oscuro.
 Solo después de que la Fase 4 esté 100% verificada y confirmada visualmente.
 
 Primero confirma que ya no queda ninguna referencia:
+
 ```bash
 grep -rl "ui/Button.svelte" src --include='*.svelte'   # debe imprimir nada
 grep -rl "ui/Card.svelte" src --include='*.svelte'     # debe imprimir nada
@@ -632,6 +650,7 @@ grep -rl "ui/Badge.svelte" src --include='*.svelte'    # debe imprimir nada
 ```
 
 Si los tres comandos no imprimen nada, borra:
+
 - `src/lib/components/ui/Button.svelte`
 - `src/lib/components/ui/Card.svelte`
 - `src/lib/components/ui/Badge.svelte`
@@ -656,6 +675,7 @@ para y pregúntale al usuario si quiere que abordes esto como un plan aparte.
 ## Qué reportar al terminar
 
 Al final de cada fase (no solo al final de todo), reportá en una lista corta:
+
 - Qué archivos tocaste.
 - Resultado de `yarn check` / `yarn lint` / `yarn build` (verde o el error exacto).
 - Qué revisaste visualmente y si se veía como se esperaba.

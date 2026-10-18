@@ -9,7 +9,20 @@ export type Lista = {
 	createdAt: number;
 };
 
-export const EMOJIS_LISTA = ['🛒', '🥑', '🍔', '🎉', '🏠', '🧺', '☕', '🥗', '🍱', '🎂', '🧼', '🐾'];
+export const EMOJIS_LISTA = [
+	'🛒',
+	'🥑',
+	'🍔',
+	'🎉',
+	'🏠',
+	'🧺',
+	'☕',
+	'🥗',
+	'🍱',
+	'🎂',
+	'🧼',
+	'🐾'
+];
 
 const FAV_KEY = 'pc_favoritos_v1';
 const LISTAS_KEY = 'pc_listas_v1';
@@ -19,7 +32,9 @@ function readIds(): string[] {
 	try {
 		const r = localStorage.getItem(FAV_KEY);
 		if (r) return JSON.parse(r);
-	} catch { /* */ }
+	} catch {
+		/* */
+	}
 	return [];
 }
 
@@ -28,7 +43,9 @@ function readListas(): Lista[] {
 	try {
 		const r = localStorage.getItem(LISTAS_KEY);
 		if (r) return JSON.parse(r);
-	} catch { /* */ }
+	} catch {
+		/* */
+	}
 	return [];
 }
 
@@ -45,16 +62,18 @@ function createFavoritosStore() {
 
 	return {
 		// ── Favoritos ──────────────────────────────────────────────
-		get ids() { return ids; },
+		get ids() {
+			return ids;
+		},
 		get productos(): Product[] {
-			return ids.map(id => getProduct(id)).filter(Boolean) as Product[];
+			return ids.map((id) => getProduct(id)).filter(Boolean) as Product[];
 		},
 		isFavorito(id: string): boolean {
 			return ids.includes(id);
 		},
 		toggle(id: string): boolean {
 			if (ids.includes(id)) {
-				ids = ids.filter(x => x !== id);
+				ids = ids.filter((x) => x !== id);
 			} else {
 				ids = [id, ...ids];
 			}
@@ -67,39 +86,55 @@ function createFavoritosStore() {
 			return [...listas].sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
 		},
 		getLista(id: string): Lista | undefined {
-			return listas.find(l => l.id === id);
+			return listas.find((l) => l.id === id);
 		},
-		createLista({ nombre, emoji, items = [] }: { nombre: string; emoji?: string; items?: Lista['items'] }): Lista {
+		createLista({
+			nombre,
+			emoji,
+			items = []
+		}: {
+			nombre: string;
+			emoji?: string;
+			items?: Lista['items'];
+		}): Lista {
 			const lista: Lista = {
 				id: 'l-' + Date.now() + '-' + Math.random().toString(36).slice(2, 5),
 				nombre: nombre || 'Mi lista',
 				emoji: emoji || '🧺',
-				items: items.map(it => ({ productoId: it.productoId, cantidad: it.cantidad || 1 })),
-				createdAt: Date.now(),
+				items: items.map((it) => ({ productoId: it.productoId, cantidad: it.cantidad || 1 })),
+				createdAt: Date.now()
 			};
 			listas = [...listas, lista];
 			persistListas();
 			return lista;
 		},
 		updateLista(id: string, patch: Partial<Pick<Lista, 'nombre' | 'emoji'>>) {
-			listas = listas.map(l => l.id === id ? { ...l, ...patch } : l);
+			listas = listas.map((l) => (l.id === id ? { ...l, ...patch } : l));
 			persistListas();
 		},
 		deleteLista(id: string) {
-			listas = listas.filter(l => l.id !== id);
+			listas = listas.filter((l) => l.id !== id);
 			persistListas();
 		},
 		addItemToLista(listaId: string, productoId: string) {
-			listas = listas.map(l => {
+			listas = listas.map((l) => {
 				if (l.id !== listaId) return l;
-				const ex = l.items.find(i => i.productoId === productoId);
-				if (ex) return { ...l, items: l.items.map(i => i.productoId === productoId ? { ...i, cantidad: i.cantidad + 1 } : i) };
+				const ex = l.items.find((i) => i.productoId === productoId);
+				if (ex)
+					return {
+						...l,
+						items: l.items.map((i) =>
+							i.productoId === productoId ? { ...i, cantidad: i.cantidad + 1 } : i
+						)
+					};
 				return { ...l, items: [...l.items, { productoId, cantidad: 1 }] };
 			});
 			persistListas();
 		},
 		removeItemFromLista(listaId: string, productoId: string) {
-			listas = listas.map(l => l.id === listaId ? { ...l, items: l.items.filter(i => i.productoId !== productoId) } : l);
+			listas = listas.map((l) =>
+				l.id === listaId ? { ...l, items: l.items.filter((i) => i.productoId !== productoId) } : l
+			);
 			persistListas();
 		},
 		totalLista(lista: Lista): number {
@@ -107,7 +142,7 @@ function createFavoritosStore() {
 				const p = getProduct(it.productoId);
 				return s + (p ? p.price * (it.cantidad || 1) : 0);
 			}, 0);
-		},
+		}
 	};
 }
 

@@ -12,11 +12,11 @@ PlazaComer es un **marketplace hiperlocal** diseñado para digitalizar el comerc
 
 ### Propuesta de valor central
 
-| Rol | Propuesta |
-|---|---|
-| **Comprador** | Descubrir, comparar y pedir a tiendas locales de su plaza desde el celular, con pago digital y entrega a domicilio. |
-| **Vendedor** | Tener vitrina digital propia dentro del ecosistema de la plaza, gestionar pedidos y chatear con clientes sin necesidad de conocimiento técnico. |
-| **Operador de plaza** | Modernizar su espacio comercial, aumentar ventas y fidelización con datos de comportamiento de compra. |
+| Rol                   | Propuesta                                                                                                                                       |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Comprador**         | Descubrir, comparar y pedir a tiendas locales de su plaza desde el celular, con pago digital y entrega a domicilio.                             |
+| **Vendedor**          | Tener vitrina digital propia dentro del ecosistema de la plaza, gestionar pedidos y chatear con clientes sin necesidad de conocimiento técnico. |
+| **Operador de plaza** | Modernizar su espacio comercial, aumentar ventas y fidelización con datos de comportamiento de compra.                                          |
 
 ---
 
@@ -27,6 +27,7 @@ PlazaComer es un **marketplace hiperlocal** diseñado para digitalizar el comerc
 El **feed social** de la aplicación. Es el punto de entrada principal del comprador.
 
 **Funcionalidades:**
+
 - **Stories rail** — acceso rápido a las tiendas que el usuario sigue, con anillo de gradiente tipo Instagram indicando actividad nueva.
 - **Feed filtrable por categoría** — filtra en tiempo real por Comida, Moda, Tecnología, Mercado, Servicios, Artesanías o Belleza.
 - **Tres tipos de cards en el feed:**
@@ -44,6 +45,7 @@ El **feed social** de la aplicación. Es el punto de entrada principal del compr
 Motor de **descubrimiento de tiendas** con búsqueda y filtrado avanzado.
 
 **Funcionalidades:**
+
 - **Búsqueda en tiempo real** — busca por nombre de tienda o descripción.
 - **Filtro por categoría** — chips horizontales con emoji y color de categoría.
 - **Filtros avanzados** (panel modal `FiltrosAvanzados`):
@@ -64,24 +66,29 @@ Motor de **descubrimiento de tiendas** con búsqueda y filtrado avanzado.
 Vista completa de una tienda con **4 pestañas navegables**.
 
 **Pestaña Catálogo:**
+
 - Grid de productos (2 columnas mobile, hasta 4 en desktop).
 - Botón `+` agrega directo al carrito; si el producto tiene modificadores, abre el `CustomizeModal`.
 - Badge de agotado y alerta de stock bajo (≤3).
 - Tienda cerrada bloquea toda compra con banner de error.
 
 **Pestaña Ofertas:**
+
 - Lista de ofertas activas de la tienda con countdown, badge de descuento y precio original tachado.
 
 **Pestaña Reseñas:**
+
 - Resumen de rating con promedio numérico, estrellas y distribución por estrella (barra horizontal).
 - Filtros por puntuación (1★ a 5★) y orden (recientes, más útiles, mejor/peor puntuadas).
 - Cards de reseña con avatar del usuario, texto, foto adjunta y respuesta del vendedor (hilo indentado).
 - Botón "Útil" con contador reactivo, marcado por sesión.
 
 **Pestaña Info:**
+
 - Horario, ubicación, métodos de pago aceptados y categoría.
 
 **Otras acciones:**
+
 - Seguir/Dejar de seguir tienda.
 - Botón Mensaje (abre chat).
 - Botón Compartir.
@@ -94,12 +101,14 @@ Vista completa de una tienda con **4 pestañas navegables**.
 Modal de **configuración de producto** con modificadores dinámicos. Es el componente más rico del flujo de compra.
 
 **Tipos de modificadores:**
-| Tipo | Comportamiento | Validación |
-|---|---|---|
+
+| Tipo     | Comportamiento                         | Validación                                        |
+| -------- | -------------------------------------- | ------------------------------------------------- |
 | `single` | Selección de una opción (radio visual) | Obligatorio: bloquea el botón si no hay selección |
-| `multi` | Selección múltiple (checkbox visual) | Min/max configurable; error si supera el máximo |
+| `multi`  | Selección múltiple (checkbox visual)   | Min/max configurable; error si supera el máximo   |
 
 **Características:**
+
 - Badge "Requerido" en rojo / "Opcional" en gris por cada grupo.
 - Indicador de `máx N` en modificadores multi.
 - Precio extra por opción sumado en tiempo real al total.
@@ -115,6 +124,7 @@ Modal de **configuración de producto** con modificadores dinámicos. Es el comp
 Gestión del carrito de compras con soporte **multi-tienda**.
 
 **Funcionalidades:**
+
 - Agrupación de ítems por tienda con encabezado de tienda (logo, nombre, categoría, método de pago).
 - Aviso informativo cuando hay productos de más de una tienda ("cada tienda procesa su pago por separado").
 - Por ítem:
@@ -137,6 +147,7 @@ Gestión del carrito de compras con soporte **multi-tienda**.
 Flujo de pago **por tienda** (multi-step cuando hay más de una tienda en el carrito).
 
 **Secciones del formulario:**
+
 1. **Dirección de entrega** — selector de direcciones guardadas con opción "Otra dirección" + campo libre.
 2. **Teléfono de contacto** — con validación de formato colombiano.
 3. **Notas para la tienda** — instrucciones especiales, timbre, piso, etc.
@@ -147,12 +158,13 @@ Flujo de pago **por tienda** (multi-step cuando hay más de una tienda en el car
 **Resumen lateral:** ítems, subtotal, envío ($4.000 o GRATIS con cupón), descuento aplicado, total.
 
 **Flujo de pago (modal):**
-| Fase | Descripción |
-|---|---|
-| `methods` | Selección de método: Nequi, Daviplata, PSE, Tarjeta, Contraentrega |
+
+| Fase         | Descripción                                                               |
+| ------------ | ------------------------------------------------------------------------- |
+| `methods`    | Selección de método: Nequi, Daviplata, PSE, Tarjeta, Contraentrega        |
 | `processing` | Spinner con mensaje "No cierres la ventana", indicador de conexión segura |
-| `approved` | Confirmación con método y monto, botón "Siguiente tienda" o "Ver resumen" |
-| `rejected` | Error de banco con opción de reintentar o cambiar método |
+| `approved`   | Confirmación con método y monto, botón "Siguiente tienda" o "Ver resumen" |
+| `rejected`   | Error de banco con opción de reintentar o cambiar método                  |
 
 **Multi-tienda:** barra de progreso con paso actual, tiendas completadas y pendientes visualmente diferenciadas.
 
@@ -165,12 +177,14 @@ Flujo de pago **por tienda** (multi-step cuando hay más de una tienda en el car
 Historial y seguimiento de pedidos del usuario.
 
 **Lista de pedidos:**
+
 - Badge de estado: Confirmado, Preparando, En camino, Entregado, Cancelado.
 - Badge "Deja tu sugerencia" cuando un pedido entregado tiene el buzón pendiente.
 - Badge de recompensa cuando se ganaron puntos.
 - Total y fecha de cada pedido.
 
 **Detalle de pedido:**
+
 - **Card de tienda** con badge de estado.
 - **CTA de mapa en vivo** — aparece cuando el pedido está en estado `preparing` o `shipping`. Botón con fondo con gradiente de marca y indicador pulsante "EN VIVO" (mock, ruta pendiente).
 - **Timeline de estados** — línea vertical con pasos: confirmado → preparando → en camino → entregado. Paso activo marcado con color de marca, completados en verde.
@@ -192,12 +206,14 @@ Historial y seguimiento de pedidos del usuario.
 Chat directo entre el comprador y las tiendas.
 
 **Lista de conversaciones:**
+
 - Ordenadas por actividad reciente.
 - Badge rojo de mensajes no leídos sobre el avatar de la tienda.
 - Preview del último mensaje con resaltado de no-leído.
 - Timestamp relativo ("5 min", "2 h", "ayer").
 
 **Vista de conversación:**
+
 - Burbuja de chat diferenciada: cliente (derecha, color de marca) vs. tienda (izquierda, fondo secundario).
 - Input de texto con envío por Enter o botón.
 - Auto-respuesta simulada de la tienda (`fakeReply`) con delay.
@@ -210,6 +226,7 @@ Chat directo entre el comprador y las tiendas.
 Panel de configuración y cuenta del usuario.
 
 **Funcionalidades:**
+
 - Card de usuario con avatar, nombre, nivel del club de lealtad y puntos de recompensa.
 - Acceso rápido a Mis pedidos (con contador de activos).
 - Links de navegación: Notificaciones, Mis direcciones, Mis cupones, Vender en PlazaComer.
@@ -230,121 +247,121 @@ Pantalla de login (flujo de entrada). Actualmente mock sin backend de autenticac
 
 ```ts
 type Tienda = {
-  id: string;
-  slug: string;
-  nombre: string;
-  categoria: string;          // food | fashion | tech | market | services | crafts | beauty
-  emoji: string;
-  logoColor: string;
-  bannerGradient: string;
-  descripcion: string;
-  horario: string;
-  pagos: string[];            // ['ePayco', 'Nequi', ...]
-  seguidores: number;
-  rating: number;
-  siguiendo: boolean;
-  ubicacion: string;
-  estado?: string;            // 'cerrado' | undefined (abierto por defecto)
-  ratingResumen?: RatingResumen;
-}
+	id: string;
+	slug: string;
+	nombre: string;
+	categoria: string; // food | fashion | tech | market | services | crafts | beauty
+	emoji: string;
+	logoColor: string;
+	bannerGradient: string;
+	descripcion: string;
+	horario: string;
+	pagos: string[]; // ['ePayco', 'Nequi', ...]
+	seguidores: number;
+	rating: number;
+	siguiendo: boolean;
+	ubicacion: string;
+	estado?: string; // 'cerrado' | undefined (abierto por defecto)
+	ratingResumen?: RatingResumen;
+};
 ```
 
 ### 3.2 Producto y Modificadores
 
 ```ts
 type Producto = {
-  id: string;
-  tiendaId: string;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-  emoji: string;
-  categoria: string;
-  stock?: number;
-  modificadores?: Modificador[];
-}
+	id: string;
+	tiendaId: string;
+	nombre: string;
+	descripcion: string;
+	precio: number;
+	emoji: string;
+	categoria: string;
+	stock?: number;
+	modificadores?: Modificador[];
+};
 
 type Modificador = {
-  id: string;
-  nombre: string;
-  tipo: 'single' | 'multi';
-  requerido: boolean;
-  min?: number;
-  max?: number;
-  opciones: OpcionMod[];
-}
+	id: string;
+	nombre: string;
+	tipo: 'single' | 'multi';
+	requerido: boolean;
+	min?: number;
+	max?: number;
+	opciones: OpcionMod[];
+};
 
 type OpcionMod = {
-  id: string;
-  nombre: string;
-  extra: number;              // costo adicional en COP
-}
+	id: string;
+	nombre: string;
+	extra: number; // costo adicional en COP
+};
 ```
 
 ### 3.3 Oferta Flash
 
 ```ts
 type Oferta = {
-  id: string;
-  tiendaId: string;
-  productoId: string;
-  precioOferta: number;
-  precioOriginal: number;
-  stockOferta: number;
-  stockInicial: number;
-  etiqueta: string;           // '🔥 Flash 2h', '🛒 Oferta semana'
-  finishAt: number;           // timestamp Unix (ms)
-}
+	id: string;
+	tiendaId: string;
+	productoId: string;
+	precioOferta: number;
+	precioOriginal: number;
+	stockOferta: number;
+	stockInicial: number;
+	etiqueta: string; // '🔥 Flash 2h', '🛒 Oferta semana'
+	finishAt: number; // timestamp Unix (ms)
+};
 ```
 
 ### 3.4 Pedido
 
 ```ts
 type Pedido = {
-  id: string;
-  numero: string;             // 'PC-2026-XXXX'
-  tiendaId: string;
-  items: PedidoItem[];
-  estado: PedidoEstado;       // 'confirmed' | 'preparing' | 'shipping' | 'delivered' | 'cancelled'
-  fecha: string;
-  total: number;
-  pasarela: string;
-  direccion: string;
-  notas?: string;
-  timeline: TimelineStep[];
-  sugerenciaPendiente: boolean;
-  recompensa?: string;
-}
+	id: string;
+	numero: string; // 'PC-2026-XXXX'
+	tiendaId: string;
+	items: PedidoItem[];
+	estado: PedidoEstado; // 'confirmed' | 'preparing' | 'shipping' | 'delivered' | 'cancelled'
+	fecha: string;
+	total: number;
+	pasarela: string;
+	direccion: string;
+	notas?: string;
+	timeline: TimelineStep[];
+	sugerenciaPendiente: boolean;
+	recompensa?: string;
+};
 ```
 
 ### 3.5 Cupón
 
 ```ts
 type Cupon = {
-  id: string;
-  codigo: string;
-  descripcion: string;
-  tipo: 'porcentaje' | 'fijo' | 'envio';
-  valor: number;
-  tiendaId: string | null;    // null = aplica a todas las tiendas
-  minimo: number;
-  activo: boolean;
-}
+	id: string;
+	codigo: string;
+	descripcion: string;
+	tipo: 'porcentaje' | 'fijo' | 'envio';
+	valor: number;
+	tiendaId: string | null; // null = aplica a todas las tiendas
+	minimo: number;
+	activo: boolean;
+};
 ```
 
 ### 3.6 Carrito (CartItem)
 
 ```ts
 type CartItem = {
-  productoId: string;
-  tiendaId: string;
-  cantidad: number;
-  precio: number;
-  esOferta?: boolean;
-  notas?: string;
-  lineId?: string;            // presente cuando el ítem tiene modificadores
-  selecciones?: Record<string, string | string[]>;
-}
+	productoId: string;
+	tiendaId: string;
+	cantidad: number;
+	precio: number;
+	esOferta?: boolean;
+	notas?: string;
+	lineId?: string; // presente cuando el ítem tiene modificadores
+	selecciones?: Record<string, string | string[]>;
+};
 ```
 
 ---
@@ -353,12 +370,12 @@ type CartItem = {
 
 Todo el estado relevante se almacena en `localStorage` del navegador (no hay backend todavía):
 
-| Clave | Contenido | Store |
-|---|---|---|
-| `pc_cart` | Ítems del carrito | `cart` |
-| `pc_pedidos` | Historial de pedidos | `pedidos` |
-| `pc_mensajes` | Conversaciones | `mensajes` |
-| `pc_dark` | Preferencia de tema | `darkMode` |
+| Clave         | Contenido            | Store      |
+| ------------- | -------------------- | ---------- |
+| `pc_cart`     | Ítems del carrito    | `cart`     |
+| `pc_pedidos`  | Historial de pedidos | `pedidos`  |
+| `pc_mensajes` | Conversaciones       | `mensajes` |
+| `pc_dark`     | Preferencia de tema  | `darkMode` |
 
 ---
 
@@ -366,15 +383,15 @@ Todo el estado relevante se almacena en `localStorage` del navegador (no hay bac
 
 ### Categorías
 
-| Slug | Label | Emoji |
-|---|---|---|
-| `food` | Comida | 🍔 |
-| `fashion` | Moda | 👗 |
-| `tech` | Tecnología | 💻 |
-| `market` | Mercado | 🛒 |
-| `services` | Servicios | ⚡ |
-| `crafts` | Artesanías | 🎨 |
-| `beauty` | Belleza | 💄 |
+| Slug       | Label      | Emoji |
+| ---------- | ---------- | ----- |
+| `food`     | Comida     | 🍔    |
+| `fashion`  | Moda       | 👗    |
+| `tech`     | Tecnología | 💻    |
+| `market`   | Mercado    | 🛒    |
+| `services` | Servicios  | ⚡    |
+| `crafts`   | Artesanías | 🎨    |
+| `beauty`   | Belleza    | 💄    |
 
 ### Pasarelas de pago registradas
 
@@ -404,19 +421,19 @@ Todo el estado relevante se almacena en `localStorage` del navegador (no hay bac
 
 ## 7. Componentes compartidos
 
-| Componente | Propósito |
-|---|---|
-| `AppShell` | Shell principal con navegación inferior y header |
-| `CustomizeModal` | Modal de personalización de producto con modificadores |
-| `TiendaLogo` | Avatar circular de tienda con color de marca |
-| `CategoryBadge` | Chip de categoría con emoji y color |
-| `CountdownPill` | Chip de countdown con actualización cada segundo |
-| `FiltrosAvanzados` | Panel modal de filtros de búsqueda avanzada |
-| `GlobalSearch` | Búsqueda global (componente disponible) |
-| `ui/Button` | Botón con variantes: `brand`, `ghost`, `outline`, `danger`, `promo` |
-| `ui/Badge` | Chip informativo con variantes de color |
-| `ui/Card` | Contenedor de card con sombra y borde |
-| `ui/Icon` | SVG icon system con ~40 iconos inline |
+| Componente         | Propósito                                                           |
+| ------------------ | ------------------------------------------------------------------- |
+| `AppShell`         | Shell principal con navegación inferior y header                    |
+| `CustomizeModal`   | Modal de personalización de producto con modificadores              |
+| `TiendaLogo`       | Avatar circular de tienda con color de marca                        |
+| `CategoryBadge`    | Chip de categoría con emoji y color                                 |
+| `CountdownPill`    | Chip de countdown con actualización cada segundo                    |
+| `FiltrosAvanzados` | Panel modal de filtros de búsqueda avanzada                         |
+| `GlobalSearch`     | Búsqueda global (componente disponible)                             |
+| `ui/Button`        | Botón con variantes: `brand`, `ghost`, `outline`, `danger`, `promo` |
+| `ui/Badge`         | Chip informativo con variantes de color                             |
+| `ui/Card`          | Contenedor de card con sombra y borde                               |
+| `ui/Icon`          | SVG icon system con ~40 iconos inline                               |
 
 ---
 
@@ -440,6 +457,7 @@ Las siguientes funcionalidades están scaffoldeadas en navegación pero sin impl
 ## 9. Flujos de usuario documentados
 
 ### Flujo de compra estándar
+
 ```
 Inicio/Explorar
   → Perfil de tienda
@@ -457,6 +475,7 @@ Inicio/Explorar
 ```
 
 ### Flujo de sugerencia post-pedido
+
 ```
 Pedido entregado
   → Badge "Deja tu sugerencia"
@@ -465,6 +484,7 @@ Pedido entregado
 ```
 
 ### Flujo de cancelación
+
 ```
 Pedido confirmado o preparando
   → Detalle de pedido
@@ -509,12 +529,14 @@ por puntos; esto es a nivel tienda individual, por conteo de compras).
 
 **Punto clave del pedido:** el **premio lo define el comercial (vendedor)**, no está fijo en el
 producto. Debe soportar al menos:
+
 - Producto específico gratis (de su propio catálogo)
 - Descuento (porcentaje o monto fijo) en la siguiente compra
 - Envío gratis
 - (dejar extensible — el vendedor podría querer combinar tipos a futuro)
 
 **Preguntas abiertas para esa sesión:**
+
 - ¿El umbral de compras (hoy "5") es fijo o configurable por el vendedor?
 - ¿Dónde vive la configuración? Presumiblemente un panel nuevo en `seller/*` (el vendedor es
   quien la define), con el progreso visible al comprador en la pantalla de tienda / perfil.

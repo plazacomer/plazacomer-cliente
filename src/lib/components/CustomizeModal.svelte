@@ -60,10 +60,13 @@
 				const op = m.opciones.find((o) => o.id === sel);
 				return sum + (op?.extra ?? 0);
 			}
-			return sum + (sel as string[]).reduce((s, oid) => {
-				const op = m.opciones.find((o) => o.id === oid);
-				return s + (op?.extra ?? 0);
-			}, 0);
+			return (
+				sum +
+				(sel as string[]).reduce((s, oid) => {
+					const op = m.opciones.find((o) => o.id === oid);
+					return s + (op?.extra ?? 0);
+				}, 0)
+			);
 		}, 0);
 	}
 
@@ -121,147 +124,220 @@
 			price: basePrice + extras,
 			selections: { ...selections },
 			notes: notes.trim(),
-			lineId: initial?.lineId,
+			lineId: initial?.lineId
 		});
 		onclose();
 	}
 </script>
 
-<Dialog.Root open={open && !!producto} onOpenChange={(v) => { if (!v) onclose(); }}>
-	<Dialog.Content showCloseButton={false} class="md:max-w-lg p-0 gap-0 flex flex-col max-h-[90vh] overflow-hidden">
-	{#if producto}
-		<!-- Header -->
-		<div class="flex items-center justify-between px-5 pt-5 pb-3 shrink-0">
-			<h2 class="font-display text-lg font-extrabold">
-				{initial ? 'Editar producto' : 'Personaliza tu pedido'}
-			</h2>
-			<Button onclick={onclose} variant="ghost" size="icon-sm" class="rounded-full">
-				<Icon name="close" size={16}/>
-			</Button>
-		</div>
-
-		<div class="flex-1 overflow-y-auto px-5 pb-4 flex flex-col gap-4">
-			<!-- Product header -->
-			<div class="flex items-center gap-3 p-3.5 rounded-2xl" style="background:var(--c-bg-secondary)">
-				<div class="w-14 h-14 rounded-xl flex items-center justify-center text-3xl shrink-0"
-					style="background:var(--c-bg-card)">{producto.emoji}</div>
-				<div class="flex-1 min-w-0">
-					<div class="font-display text-[15px] font-bold leading-tight">{producto.name}</div>
-					<div class="text-[12px] leading-snug mt-0.5" style="color:var(--c-text-muted)">{producto.description}</div>
-					<div class="font-mono text-[13px] font-bold mt-1" style="color:var(--c-brand)">
-						{fmtCOP(basePrice)}
-						{#if oferta}
-							<span class="font-normal line-through ml-2 text-[11px]" style="color:var(--c-text-muted)">{fmtCOP(oferta.originalPrice)}</span>
-						{/if}
-					</div>
-				</div>
+<Dialog.Root
+	open={open && !!producto}
+	onOpenChange={(v) => {
+		if (!v) onclose();
+	}}
+>
+	<Dialog.Content
+		showCloseButton={false}
+		class="flex max-h-[90vh] flex-col gap-0 overflow-hidden p-0 md:max-w-lg"
+	>
+		{#if producto}
+			<!-- Header -->
+			<div class="flex shrink-0 items-center justify-between px-5 pt-5 pb-3">
+				<h2 class="font-display text-lg font-extrabold">
+					{initial ? 'Editar producto' : 'Personaliza tu pedido'}
+				</h2>
+				<Button onclick={onclose} variant="ghost" size="icon-sm" class="rounded-full">
+					<Icon name="close" size={16} />
+				</Button>
 			</div>
 
-			<!-- Modificadores -->
-			{#each (producto.modifiers ?? []) as mod}
-				<div>
-					<div class="flex items-center gap-2 mb-2.5">
-						<span class="font-display text-[13px] font-bold">{mod.nombre}</span>
-						{#if mod.requerido}
-							<span class="text-[10px] font-bold px-2 py-0.5 rounded-full" style="background:var(--c-error-light);color:var(--c-error)">Requerido</span>
-						{:else}
-							<span class="text-[10px] font-bold px-2 py-0.5 rounded-full" style="background:var(--c-bg-secondary);color:var(--c-text-muted)">Opcional</span>
-						{/if}
-						{#if mod.max && mod.tipo !== 'single'}
-							<span class="ml-auto text-[11px]" style="color:var(--c-text-muted)">máx {mod.max}</span>
-						{/if}
+			<div class="flex flex-1 flex-col gap-4 overflow-y-auto px-5 pb-4">
+				<!-- Product header -->
+				<div
+					class="flex items-center gap-3 rounded-2xl p-3.5"
+					style="background:var(--c-bg-secondary)"
+				>
+					<div
+						class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl text-3xl"
+						style="background:var(--c-bg-card)"
+					>
+						{producto.emoji}
 					</div>
-
-					{#if mod.tipo === 'single'}
-						<RadioGroup.Root
-							value={(selections[mod.id] as string) ?? ''}
-							onValueChange={(v) => setSingle(mod, v)}
-							class="flex flex-col gap-1.5"
-						>
-							{#each mod.opciones as op}
-								{@const sel = isSelected(mod, op.id)}
-								{@const rowId = `${mod.id}-${op.id}`}
-								<Label for={rowId}
-									class="flex items-center gap-3 px-3 py-2.5 rounded-[10px] transition-all w-full border-[1.5px] cursor-pointer"
-									style="background:{sel ? 'var(--c-brand-light)' : 'var(--c-bg-secondary)'};border-color:{sel ? 'var(--c-brand)' : 'transparent'}">
-									<RadioGroup.Item value={op.id} id={rowId}/>
-									<span class="flex-1 text-[14px]" style="font-weight:{sel ? 600 : 500}">{op.nombre}</span>
-									{#if op.extra > 0}
-										<span class="font-mono text-[12px] font-bold" style="color:{sel ? 'var(--c-brand)' : 'var(--c-text-muted)'}">+{fmtCOP(op.extra)}</span>
-									{/if}
-								</Label>
-							{/each}
-						</RadioGroup.Root>
-					{:else}
-						<div class="flex flex-col gap-1.5">
-							{#each mod.opciones as op}
-								{@const sel = isChecked(mod, op.id)}
-								{@const rowId = `${mod.id}-${op.id}`}
-								<Label for={rowId}
-									class="flex items-center gap-3 px-3 py-2.5 rounded-[10px] transition-all w-full border-[1.5px] cursor-pointer"
-									style="background:{sel ? 'var(--c-brand-light)' : 'var(--c-bg-secondary)'};border-color:{sel ? 'var(--c-brand)' : 'transparent'}">
-									<Checkbox checked={sel} onCheckedChange={(v) => toggleMulti(mod, op.id, !!v)} id={rowId}/>
-									<span class="flex-1 text-[14px]" style="font-weight:{sel ? 600 : 500}">{op.nombre}</span>
-									{#if op.extra > 0}
-										<span class="font-mono text-[12px] font-bold" style="color:{sel ? 'var(--c-brand)' : 'var(--c-text-muted)'}">+{fmtCOP(op.extra)}</span>
-									{/if}
-								</Label>
-							{/each}
+					<div class="min-w-0 flex-1">
+						<div class="font-display text-[15px] leading-tight font-bold">{producto.name}</div>
+						<div class="mt-0.5 text-[12px] leading-snug" style="color:var(--c-text-muted)">
+							{producto.description}
 						</div>
-					{/if}
+						<div class="mt-1 font-mono text-[13px] font-bold" style="color:var(--c-brand)">
+							{fmtCOP(basePrice)}
+							{#if oferta}
+								<span
+									class="ml-2 text-[11px] font-normal line-through"
+									style="color:var(--c-text-muted)">{fmtCOP(oferta.originalPrice)}</span
+								>
+							{/if}
+						</div>
+					</div>
 				</div>
-			{/each}
 
-			<!-- Notas -->
-			<div>
-				<div class="text-[12px] font-bold mb-1.5" style="color:var(--c-text-muted)">Notas para la cocina (opcional)</div>
-				<Textarea
-					aria-label="Notas para la cocina"
-					bind:value={notes}
-					placeholder="Ej: bien picante, sin sal, etc."
-					rows={2}
-					class="w-full resize-none"
-				/>
+				<!-- Modificadores -->
+				{#each producto.modifiers ?? [] as mod}
+					<div>
+						<div class="mb-2.5 flex items-center gap-2">
+							<span class="font-display text-[13px] font-bold">{mod.nombre}</span>
+							{#if mod.requerido}
+								<span
+									class="rounded-full px-2 py-0.5 text-[10px] font-bold"
+									style="background:var(--c-error-light);color:var(--c-error)">Requerido</span
+								>
+							{:else}
+								<span
+									class="rounded-full px-2 py-0.5 text-[10px] font-bold"
+									style="background:var(--c-bg-secondary);color:var(--c-text-muted)">Opcional</span
+								>
+							{/if}
+							{#if mod.max && mod.tipo !== 'single'}
+								<span class="ml-auto text-[11px]" style="color:var(--c-text-muted)"
+									>máx {mod.max}</span
+								>
+							{/if}
+						</div>
+
+						{#if mod.tipo === 'single'}
+							<RadioGroup.Root
+								value={(selections[mod.id] as string) ?? ''}
+								onValueChange={(v) => setSingle(mod, v)}
+								class="flex flex-col gap-1.5"
+							>
+								{#each mod.opciones as op}
+									{@const sel = isSelected(mod, op.id)}
+									{@const rowId = `${mod.id}-${op.id}`}
+									<Label
+										for={rowId}
+										class="flex w-full cursor-pointer items-center gap-3 rounded-[10px] border-[1.5px] px-3 py-2.5 transition-all"
+										style="background:{sel
+											? 'var(--c-brand-light)'
+											: 'var(--c-bg-secondary)'};border-color:{sel
+											? 'var(--c-brand)'
+											: 'transparent'}"
+									>
+										<RadioGroup.Item value={op.id} id={rowId} />
+										<span class="flex-1 text-[14px]" style="font-weight:{sel ? 600 : 500}"
+											>{op.nombre}</span
+										>
+										{#if op.extra > 0}
+											<span
+												class="font-mono text-[12px] font-bold"
+												style="color:{sel ? 'var(--c-brand)' : 'var(--c-text-muted)'}"
+												>+{fmtCOP(op.extra)}</span
+											>
+										{/if}
+									</Label>
+								{/each}
+							</RadioGroup.Root>
+						{:else}
+							<div class="flex flex-col gap-1.5">
+								{#each mod.opciones as op}
+									{@const sel = isChecked(mod, op.id)}
+									{@const rowId = `${mod.id}-${op.id}`}
+									<Label
+										for={rowId}
+										class="flex w-full cursor-pointer items-center gap-3 rounded-[10px] border-[1.5px] px-3 py-2.5 transition-all"
+										style="background:{sel
+											? 'var(--c-brand-light)'
+											: 'var(--c-bg-secondary)'};border-color:{sel
+											? 'var(--c-brand)'
+											: 'transparent'}"
+									>
+										<Checkbox
+											checked={sel}
+											onCheckedChange={(v) => toggleMulti(mod, op.id, !!v)}
+											id={rowId}
+										/>
+										<span class="flex-1 text-[14px]" style="font-weight:{sel ? 600 : 500}"
+											>{op.nombre}</span
+										>
+										{#if op.extra > 0}
+											<span
+												class="font-mono text-[12px] font-bold"
+												style="color:{sel ? 'var(--c-brand)' : 'var(--c-text-muted)'}"
+												>+{fmtCOP(op.extra)}</span
+											>
+										{/if}
+									</Label>
+								{/each}
+							</div>
+						{/if}
+					</div>
+				{/each}
+
+				<!-- Notas -->
+				<div>
+					<div class="mb-1.5 text-[12px] font-bold" style="color:var(--c-text-muted)">
+						Notas para la cocina (opcional)
+					</div>
+					<Textarea
+						aria-label="Notas para la cocina"
+						bind:value={notes}
+						placeholder="Ej: bien picante, sin sal, etc."
+						rows={2}
+						class="w-full resize-none"
+					/>
+				</div>
+
+				<!-- Cantidad + total -->
+				<div
+					class="flex items-center gap-3 rounded-xl p-3.5"
+					style="background:var(--c-bg-secondary)"
+				>
+					<span class="text-[13px] font-bold">Cantidad</span>
+					<div class="flex items-center gap-2">
+						<Button
+							onclick={() => (quantity = Math.max(1, quantity - 1))}
+							variant="outline"
+							size="icon-sm"
+							class="rounded-full"
+						>
+							<Icon name="minus" size={16} />
+						</Button>
+						<span class="min-w-6 text-center font-mono text-[17px] font-bold">{quantity}</span>
+						<Button
+							onclick={() => (quantity += 1)}
+							variant="brand"
+							size="icon-sm"
+							class="rounded-full"
+						>
+							<Icon name="plus" size={16} />
+						</Button>
+					</div>
+					<div class="ml-auto text-right">
+						<div class="text-[11px]" style="color:var(--c-text-muted)">Total</div>
+						<div class="font-display text-[18px] font-extrabold" style="color:var(--c-brand)">
+							{fmtCOP(total)}
+						</div>
+					</div>
+				</div>
+
+				<!-- Errores -->
+				{#if !isValid}
+					<div
+						class="flex items-center gap-2 rounded-xl px-3 py-2.5 text-[12px] font-semibold"
+						style="background:var(--c-error-light);color:var(--c-error)"
+					>
+						<Icon name="alert" size={14} />
+						Faltan: {errores.join(', ')}
+					</div>
+				{/if}
 			</div>
 
-			<!-- Cantidad + total -->
-			<div class="flex items-center gap-3 p-3.5 rounded-xl" style="background:var(--c-bg-secondary)">
-				<span class="text-[13px] font-bold">Cantidad</span>
-				<div class="flex items-center gap-2">
-					<Button onclick={() => (quantity = Math.max(1, quantity - 1))}
-						variant="outline" size="icon-sm" class="rounded-full">
-						<Icon name="minus" size={16}/>
-					</Button>
-					<span class="font-mono text-[17px] font-bold min-w-6 text-center">{quantity}</span>
-					<Button onclick={() => (quantity += 1)}
-						variant="brand" size="icon-sm" class="rounded-full">
-						<Icon name="plus" size={16}/>
-					</Button>
-				</div>
-				<div class="ml-auto text-right">
-					<div class="text-[11px]" style="color:var(--c-text-muted)">Total</div>
-					<div class="font-display font-extrabold text-[18px]" style="color:var(--c-brand)">{fmtCOP(total)}</div>
-				</div>
+			<!-- Footer -->
+			<div class="flex shrink-0 gap-3 border-t border-[var(--c-border-soft)] px-5 py-4">
+				<Button onclick={onclose} variant="outline">Cancelar</Button>
+				<Button onclick={confirm} disabled={!isValid} variant="brand" fullWidth>
+					<Icon name={initial ? 'check' : 'cart'} size={15} />
+					{initial ? 'Guardar cambios' : 'Agregar'} · {fmtCOP(total)}
+				</Button>
 			</div>
-
-			<!-- Errores -->
-			{#if !isValid}
-				<div class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-[12px] font-semibold"
-					style="background:var(--c-error-light);color:var(--c-error)">
-					<Icon name="alert" size={14}/>
-					Faltan: {errores.join(', ')}
-				</div>
-			{/if}
-		</div>
-
-		<!-- Footer -->
-		<div class="px-5 py-4 border-t border-[var(--c-border-soft)] flex gap-3 shrink-0">
-			<Button onclick={onclose} variant="outline">Cancelar</Button>
-			<Button onclick={confirm} disabled={!isValid} variant="brand" fullWidth>
-				<Icon name={initial ? 'check' : 'cart'} size={15}/>
-				{initial ? 'Guardar cambios' : 'Agregar'} · {fmtCOP(total)}
-			</Button>
-		</div>
-	{/if}
+		{/if}
 	</Dialog.Content>
 </Dialog.Root>

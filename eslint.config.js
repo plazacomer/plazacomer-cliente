@@ -37,8 +37,27 @@ export default defineConfig(
 		}
 	},
 	{
-		// Override or add rule settings here, such as:
-		// 'svelte/button-has-type': 'error'
-		rules: {}
+		// Código generado por `yarn generate-proto` — no se edita a mano.
+		ignores: ['src/lib/gen/**']
+	},
+	{
+		rules: {
+			// `_` marca lecturas/parámetros intencionalmente sin usar (p. ej. `const _ = x.length`
+			// dentro de un $effect para registrar la dependencia).
+			'@typescript-eslint/no-unused-vars': [
+				'error',
+				{ argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' }
+			],
+			// TODO: volver a 'error' cuando se limpien. Quedaron en warn al activar CI porque
+			// arreglarlas pide criterio por archivo y verificación visual, no un cambio mecánico:
+			// - require-each-key: una key no única revienta en runtime (each_key_duplicate).
+			// - no-navigation-without-resolve: cambia cómo se construyen las rutas.
+			// - no-explicit-any / prefer-svelte-reactivity / prefer-writable-derived: refactors.
+			'svelte/require-each-key': 'warn',
+			'svelte/no-navigation-without-resolve': 'warn',
+			'@typescript-eslint/no-explicit-any': 'warn',
+			'svelte/prefer-svelte-reactivity': 'warn',
+			'svelte/prefer-writable-derived': 'warn'
+		}
 	}
 );

@@ -7,7 +7,7 @@
 	import Icon from '$lib/components/ui/Icon.svelte';
 	import TiendaLogo from '$lib/components/TiendaLogo.svelte';
 
-	const tiendaId = $derived($page.params.storeId);
+	const tiendaId = $derived($page.params.storeId ?? '');
 	const tienda = $derived(getStore(tiendaId));
 	const conv = $derived(messages.getConversation(tiendaId));
 	const msgs = $derived(conv?.messages ?? []);
@@ -52,34 +52,34 @@
 </script>
 
 {#if !tienda}
-	<div class="max-w-lg mx-auto px-5 pt-16 text-center">
-		<div class="text-6xl mb-4">💬</div>
-		<h2 class="font-display text-xl font-bold mb-2">Conversación no encontrada</h2>
+	<div class="mx-auto max-w-lg px-5 pt-16 text-center">
+		<div class="mb-4 text-6xl">💬</div>
+		<h2 class="mb-2 font-display text-xl font-bold">Conversación no encontrada</h2>
 		<button onclick={() => goto('/app/messages')} class="text-sm" style="color:var(--c-brand)">
 			← Volver a mensajes
 		</button>
 	</div>
 {:else}
 	<div
-		class="max-w-[700px] mx-auto flex flex-col"
+		class="mx-auto flex max-w-[700px] flex-col"
 		style="height:calc(100dvh - 60px);padding-bottom:max(0px, env(safe-area-inset-bottom))"
 	>
 		<!-- Header -->
 		<div
-			class="flex items-center gap-3 px-4 py-3 border-b sticky top-0 z-10 shrink-0"
+			class="sticky top-0 z-10 flex shrink-0 items-center gap-3 border-b px-4 py-3"
 			style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 		>
 			<button
 				onclick={() => goto('/app/messages')}
-				class="w-9 h-9 rounded-[10px] flex items-center justify-center transition-colors hover:bg-[var(--c-bg-secondary)]"
+				class="flex h-9 w-9 items-center justify-center rounded-[10px] transition-colors hover:bg-[var(--c-bg-secondary)]"
 			>
 				<Icon name="arrowLeft" size={18} />
 			</button>
-			<TiendaLogo tienda={tienda} size={40} />
-			<div class="flex-1 min-w-0">
-				<div class="font-display text-sm font-bold truncate">{tienda.name}</div>
+			<TiendaLogo {tienda} size={40} />
+			<div class="min-w-0 flex-1">
+				<div class="truncate font-display text-sm font-bold">{tienda.name}</div>
 				<div class="flex items-center gap-1.5 text-[11px]" style="color:var(--c-success)">
-					<span class="w-1.5 h-1.5 rounded-full" style="background:var(--c-success)"></span>
+					<span class="h-1.5 w-1.5 rounded-full" style="background:var(--c-success)"></span>
 					En línea
 				</div>
 			</div>
@@ -88,23 +88,22 @@
 		<!-- Messages -->
 		<div
 			bind:this={scrollEl}
-			class="flex-1 overflow-y-auto px-4 py-5 flex flex-col gap-2.5"
+			class="flex flex-1 flex-col gap-2.5 overflow-y-auto px-4 py-5"
 			style="background:var(--c-bg-primary)"
 		>
 			{#if msgs.length === 0}
-				<div class="text-center py-8">
-					<TiendaLogo tienda={tienda} size={56} />
-					<div class="font-display text-sm font-bold mt-3 mb-1">{tienda.name}</div>
+				<div class="py-8 text-center">
+					<TiendaLogo {tienda} size={56} />
+					<div class="mt-3 mb-1 font-display text-sm font-bold">{tienda.name}</div>
 					<p class="text-xs" style="color:var(--c-text-muted)">
 						Escribe el primer mensaje para iniciar la conversación
 					</p>
 				</div>
 			{:else}
-				{#each msgs as msg, i}
+				{#each msgs as msg}
 					{@const isCliente = msg.author === 'customer'}
-					{@const isFirst = i === 0 || msgs[i - 1].author !== msg.author}
 					<div
-						class="flex animate-fade-in"
+						class="animate-fade-in flex"
 						style="justify-content:{isCliente ? 'flex-end' : 'flex-start'}"
 					>
 						<div style="max-width:75%">
@@ -121,7 +120,7 @@
 								{msg.text}
 							</div>
 							<div
-								class="text-[10px] mt-1 px-1"
+								class="mt-1 px-1 text-[10px]"
 								style="color:var(--c-text-muted);text-align:{isCliente ? 'right' : 'left'}"
 							>
 								{msg.time}
@@ -133,12 +132,12 @@
 				{#if sending}
 					<div class="flex" style="justify-content:flex-start">
 						<div
-							class="px-4 py-3 rounded-[16px_16px_16px_4px] border flex items-center gap-1.5"
+							class="flex items-center gap-1.5 rounded-[16px_16px_16px_4px] border px-4 py-3"
 							style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 						>
 							{#each [0, 1, 2] as i}
 								<span
-									class="w-1.5 h-1.5 rounded-full"
+									class="h-1.5 w-1.5 rounded-full"
 									style="background:var(--c-text-muted);animation:bounce 1.2s {i * 0.2}s infinite"
 								></span>
 							{/each}
@@ -150,20 +149,20 @@
 
 		<!-- Input bar -->
 		<div
-			class="flex items-center gap-2.5 px-3 py-3 border-t shrink-0"
+			class="flex shrink-0 items-center gap-2.5 border-t px-3 py-3"
 			style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 		>
 			<input
 				bind:value={input}
 				onkeydown={handleKeydown}
 				placeholder="Escribe un mensaje..."
-				class="flex-1 px-4 py-2.5 rounded-full text-sm outline-none"
+				class="flex-1 rounded-full px-4 py-2.5 text-sm outline-none"
 				style="background:var(--c-bg-secondary);color:var(--c-text-primary)"
 			/>
 			<button
 				onclick={send}
 				disabled={!input.trim() || sending}
-				class="w-11 h-11 rounded-full flex items-center justify-center shrink-0 transition-all"
+				class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-all"
 				style="
 					background:{input.trim() ? 'var(--c-brand)' : 'var(--c-bg-secondary)'};
 					color:{input.trim() ? '#fff' : 'var(--c-text-muted)'};
@@ -178,7 +177,13 @@
 
 <style>
 	@keyframes bounce {
-		0%, 80%, 100% { transform: translateY(0); }
-		40%           { transform: translateY(-5px); }
+		0%,
+		80%,
+		100% {
+			transform: translateY(0);
+		}
+		40% {
+			transform: translateY(-5px);
+		}
 	}
 </style>

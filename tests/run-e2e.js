@@ -23,8 +23,15 @@ const cargoEnv = {
 	PATH: `/Users/christian.cabrera/.cargo/bin:${process.env.PATH}`
 };
 
+/** @type {{ name: string, proc: import('node:child_process').ChildProcess }[]} */
 const servers = [];
 
+/**
+ * @param {string} bin
+ * @param {string[]} args
+ * @param {import('node:child_process').SpawnOptions} opts
+ * @returns {Promise<number>}
+ */
 function runToCompletion(bin, args, opts) {
 	return new Promise((resolve, reject) => {
 		const child = spawn(bin, args, { stdio: 'inherit', ...opts });
@@ -35,6 +42,7 @@ function runToCompletion(bin, args, opts) {
 
 // Each domain has its own D1 (plazacomer_co_users / plazacomer_co_catalog), so
 // each gets its own schema applied from a worker that owns that domain.
+/** @param {{ domain: string, workerDir: string, schemaFile: string }} opts */
 async function applyExecFile({ domain, workerDir, schemaFile }) {
 	console.log(`[test:api] applying tests/${schemaFile} to the fresh temp ${domain} DB...`);
 	const code = await runToCompletion(
@@ -59,16 +67,25 @@ async function applyExecFile({ domain, workerDir, schemaFile }) {
 // Users domain has real versioned migrations (worker-user/migrations/*.sql) --
 // this applies them the same way a real deploy would, instead of a hand-rolled
 // DROP+CREATE script.
+/** @param {{ domain: string, workerDir: string }} opts */
 async function applyMigrations({ domain, workerDir }) {
 	console.log(`[test:api] applying ${workerDir}/migrations to the fresh temp ${domain} DB...`);
 	const code = await runToCompletion(
 		WRANGLER_BIN,
 		['d1', 'migrations', 'apply', 'DB', '--local', '--env', 'co', '--persist-to', persistTo],
-		{ cwd: path.join(CLOUDFLARE_DIR, workerDir), env: process.env, stdio: ['ignore', 'inherit', 'inherit'] }
+		{
+			cwd: path.join(CLOUDFLARE_DIR, workerDir),
+			env: process.env,
+			stdio: ['ignore', 'inherit', 'inherit']
+		}
 	);
 	if (code !== 0) throw new Error(`migrations apply (${domain}) failed with exit code ${code}`);
 }
 
+/**
+ * @param {{ name: string, dir: string, port: number, inspectorPort: number, delayMs: number }} opts
+ * @returns {Promise<void>}
+ */
 function startServer({ name, dir, port, inspectorPort, delayMs }) {
 	return new Promise((resolve) => {
 		setTimeout(() => {
@@ -89,7 +106,7 @@ function startServer({ name, dir, port, inspectorPort, delayMs }) {
 				{ cwd: path.join(CLOUDFLARE_DIR, dir), env: cargoEnv, stdio: 'inherit', detached: true }
 			);
 			servers.push({ name, proc });
-			resolve();
+			resolve(undefined);
 		}, delayMs);
 	});
 }
@@ -131,12 +148,12 @@ function killServers() {
 		servers.map(
 			({ proc }) =>
 				new Promise((resolve) => {
-					if (proc.exitCode !== null || proc.signalCode !== null) return resolve();
+					if (proc.exitCode !== null || proc.signalCode !== null) return resolve(undefined);
 					proc.once('exit', resolve);
 					try {
-						process.kill(-proc.pid, 'SIGTERM');
+						process.kill(-(/** @type {number} */ (proc.pid)), 'SIGTERM');
 					} catch {
-						resolve();
+						resolve(undefined);
 					}
 				})
 		)
@@ -144,6 +161,7 @@ function killServers() {
 }
 
 let cleanedUp = false;
+/** @param {number} code */
 async function cleanupAndExit(code) {
 	if (cleanedUp) return;
 	cleanedUp = true;
@@ -152,7 +170,9 @@ async function cleanupAndExit(code) {
 		fs.rmSync(persistTo, { recursive: true, force: true });
 		console.log(`[test:api] all tests passed -- deleted temp DB at ${persistTo}`);
 	} else {
-		console.log(`[test:api] tests failed (or setup errored) -- keeping temp DB for inspection: ${persistTo}`);
+		console.log(
+			`[test:api] tests failed (or setup errored) -- keeping temp DB for inspection: ${persistTo}`
+		);
 	}
 	process.exit(code);
 }
@@ -164,10 +184,30 @@ async function main() {
 	fs.mkdirSync(persistTo, { recursive: true });
 	console.log(`[test:api] temp D1 dir: ${persistTo}`);
 	await applyMigrations({ domain: 'users', workerDir: 'worker-user' });
-	await applyExecFile({ domain: 'users (test fixture)', workerDir: 'worker-user', schemaFile: 'seed-admin.sql' });
-	await applyExecFile({ domain: 'catalog', workerDir: 'worker-catalog', schemaFile: 'init-catalog.sql' });
-	await startServer({ name: 'worker-user', dir: 'worker-user', port: 8787, inspectorPort: 9229, delayMs: 0 });
-	await startServer({ name: 'worker-catalog', dir: 'worker-catalog', port: 8788, inspectorPort: 9230, delayMs: 3000 });
+	await applyExecFile({
+		domain: 'users (test fixture)',
+		workerDir: 'worker-user',
+		schemaFile: 'seed-admin.sql'
+	});
+	await applyExecFile({
+		domain: 'catalog',
+		workerDir: 'worker-catalog',
+		schemaFile: 'init-catalog.sql'
+	});
+	await startServer({
+		name: 'worker-user',
+		dir: 'worker-user',
+		port: 8787,
+		inspectorPort: 9229,
+		delayMs: 0
+	});
+	await startServer({
+		name: 'worker-catalog',
+		dir: 'worker-catalog',
+		port: 8788,
+		inspectorPort: 9230,
+		delayMs: 3000
+	});
 	await startServer({
 		name: 'worker-catalog-admin',
 		dir: 'worker-catalog-admin',

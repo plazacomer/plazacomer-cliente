@@ -46,7 +46,7 @@ export function rewardLabel(cfg: LoyaltyCardConfig): string {
 }
 
 function createLoyalty() {
-	let configs = $state<LoyaltyCardConfig[]>(LOYALTY_CARDS);
+	const configs = $state<LoyaltyCardConfig[]>(LOYALTY_CARDS);
 	let claimed = $state<Record<string, number>>(readClaims());
 
 	$effect.root(() => {
@@ -62,14 +62,16 @@ function createLoyalty() {
 	function progress(storeId: string): LoyaltyProgress | null {
 		const cfg = config(storeId);
 		if (!cfg) return null;
-		const qualifyingCount = orders.items.filter((p) => p.storeId === storeId && qualifies(p, cfg)).length;
+		const qualifyingCount = orders.items.filter(
+			(p) => p.storeId === storeId && qualifies(p, cfg)
+		).length;
 		const claimedCount = claimed[storeId] ?? 0;
 		const sinceLastClaim = qualifyingCount - claimedCount * cfg.threshold;
 		return {
 			config: cfg,
 			stamps: Math.min(Math.max(sinceLastClaim, 0), cfg.threshold),
 			hasRewardAvailable: sinceLastClaim >= cfg.threshold,
-			rewardLabel: rewardLabel(cfg),
+			rewardLabel: rewardLabel(cfg)
 		};
 	}
 
@@ -90,7 +92,7 @@ function createLoyalty() {
 					threshold: 5,
 					countingMode: 'all',
 					rewardType: 'free_shipping',
-					...patch,
+					...patch
 				});
 			}
 		},
@@ -105,7 +107,7 @@ function createLoyalty() {
 			} else {
 				toast.show(`🎁 Premio reclamado · ${p.rewardLabel} se aplicará en tu próxima compra`);
 			}
-		},
+		}
 	};
 }
 

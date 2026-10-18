@@ -80,7 +80,7 @@ export async function apiFetch<T = unknown>(
 	const res = await fetch(`${baseUrl}${path}`, {
 		method,
 		headers,
-		body: body !== undefined ? JSON.stringify(toSnakeCase(body)) : undefined,
+		body: body !== undefined ? JSON.stringify(toSnakeCase(body)) : undefined
 	});
 
 	if (res.status === 204) return undefined as T;
@@ -88,8 +88,14 @@ export async function apiFetch<T = unknown>(
 	const raw: unknown = await res.json().catch(() => null);
 
 	if (!res.ok) {
-		const err = isPlainObject(raw) ? (raw.error as { code?: string; message?: string } | undefined) : undefined;
-		throw new ApiError(err?.code ?? 'INTERNAL_ERROR', err?.message ?? 'Error inesperado', res.status);
+		const err = isPlainObject(raw)
+			? (raw.error as { code?: string; message?: string } | undefined)
+			: undefined;
+		throw new ApiError(
+			err?.code ?? 'INTERNAL_ERROR',
+			err?.message ?? 'Error inesperado',
+			res.status
+		);
 	}
 
 	return toCamelCase<T>(raw);
