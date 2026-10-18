@@ -1,8 +1,8 @@
 // Orchestrates test:api: spins up two isolated, per-domain local D1s (users,
 // catalog -- see plazacomer_co_users / plazacomer_co_catalog in each worker's
-// wrangler.toml), applies fresh schema to each (real `wrangler d1 migrations`
-// for the users domain, plus a test-only admin-seed fixture; a plain SQL file
-// for the catalog domain, which has no migrations dir yet), runs vitest against
+// wrangler.toml), applies fresh schema to each via the real `wrangler d1
+// migrations` of the worker that owns the domain (plus a test-only admin-seed
+// fixture for users), runs vitest against
 // the four Rust workers under test (worker-user, worker-catalog,
 // worker-catalog-admin, worker-user-admin), and only deletes the temp DBs if
 // every test passed. A failed run keeps them in place so it can be inspected.
@@ -40,8 +40,8 @@ function runToCompletion(bin, args, opts) {
 	});
 }
 
-// Each domain has its own D1 (plazacomer_co_users / plazacomer_co_catalog), so
-// each gets its own schema applied from a worker that owns that domain.
+// Test-only fixtures (e.g. seed-admin.sql) that must never be part of a real
+// migration, applied with `d1 execute` on top of the migrated schema.
 /** @param {{ domain: string, workerDir: string, schemaFile: string }} opts */
 async function applyExecFile({ domain, workerDir, schemaFile }) {
 	console.log(`[test:api] applying tests/${schemaFile} to the fresh temp ${domain} DB...`);
@@ -64,9 +64,10 @@ async function applyExecFile({ domain, workerDir, schemaFile }) {
 	if (code !== 0) throw new Error(`db init (${domain}) failed with exit code ${code}`);
 }
 
-// Users domain has real versioned migrations (worker-user/migrations/*.sql) --
-// this applies them the same way a real deploy would, instead of a hand-rolled
-// DROP+CREATE script.
+// Each domain has its own D1 (plazacomer_co_users / plazacomer_co_catalog) with
+// real versioned migrations in the worker that owns it (worker-user/migrations,
+// worker-catalog-admin/migrations) -- applied the same way a real deploy would,
+// so the test schema can't drift from production the way a hand-rolled copy did.
 /** @param {{ domain: string, workerDir: string }} opts */
 async function applyMigrations({ domain, workerDir }) {
 	console.log(`[test:api] applying ${workerDir}/migrations to the fresh temp ${domain} DB...`);
@@ -189,11 +190,7 @@ async function main() {
 		workerDir: 'worker-user',
 		schemaFile: 'seed-admin.sql'
 	});
-	await applyExecFile({
-		domain: 'catalog',
-		workerDir: 'worker-catalog',
-		schemaFile: 'init-catalog.sql'
-	});
+	await applyMigrations({ domain: 'catalog', workerDir: 'worker-catalog-admin' });
 	await startServer({
 		name: 'worker-user',
 		dir: 'worker-user',

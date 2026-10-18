@@ -56,14 +56,14 @@ Rust que hablan exclusivamente Protobuf.
   `worker-user-admin` apuntando a esa base temporal, y corre `vitest run`.
   - Dominio `users` (`plazacomer_co_users`): esquema real vía
     **`wrangler d1 migrations apply`** contra `worker-user/migrations/*.sql` — el mismo mecanismo
-    que se usaría en un deploy real, no un script ad-hoc. `worker-user` es el único de los cuatro
-    Workers con `migrations_dir` configurado (los otros tres comparten la misma base D1, no
-    necesitan su propio migrations_dir). Después se aplica `tests/seed-admin.sql` (fixture de
+    que se usaría en un deploy real, no un script ad-hoc. Después se aplica `tests/seed-admin.sql` (fixture de
     solo test: un usuario admin ya sembrado, con `d1 execute`, nunca parte de la migración misma
     — sembrar una cuenta admin con ID conocido en una migración real sería un riesgo de seguridad).
-  - Dominio `catalog` (`plazacomer_co_catalog`): sigue vía `tests/init-catalog.sql` con
-    `d1 execute` — ese Worker todavía no tiene `migrations_dir` propio (ver ADR-005 en
-    `arquitectura_applicacion/plazacomer-cloudflare/ADR.md`).
+  - Dominio `catalog` (`plazacomer_co_catalog`): igual, `wrangler d1 migrations apply` contra
+    `worker-catalog-admin/migrations/*.sql` (el dueño del esquema; `worker-catalog` comparte la
+    misma base D1 y no tiene `migrations_dir` propio). Antes se usaba una copia a mano
+    (`tests/init-catalog.sql`) que se quedó sin la migración `0002_generic_products` (ADR-007)
+    y rompió 4 tests de catálogo con un 500 — por eso nunca se mantiene una copia paralela.
 - **Si todos los tests pasan**, borra el directorio temporal completo. **Si algún test falla**, lo
   deja intacto y muestra su ruta por consola para poder inspeccionar el estado exacto en el que
   falló — nunca lo borra en ese caso.

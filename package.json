@@ -14,7 +14,7 @@
 		"format": "prettier --write .",
 		"generate-proto": "protoc -I=../plazacomer-cloudflare/shared/proto --es_out=./src/lib/gen --es_opt=target=ts ../plazacomer-cloudflare/shared/proto/*.proto",
 		"db:init:users": "cd ../plazacomer-cloudflare/worker-user && /Users/christian.cabrera/Documents/Emprendimientos/plazacomer/plazacomer-client/node_modules/.bin/wrangler d1 migrations apply DB --local --env co --persist-to ../../.wrangler",
-		"db:init:catalog": "cd ../plazacomer-cloudflare/worker-catalog && /Users/christian.cabrera/Documents/Emprendimientos/plazacomer/plazacomer-client/node_modules/.bin/wrangler d1 execute DB --local --env co --persist-to ../../.wrangler --file ../../plazacomer-client/tests/init-catalog.sql",
+		"db:init:catalog": "cd ../plazacomer-cloudflare/worker-catalog-admin && /Users/christian.cabrera/Documents/Emprendimientos/plazacomer/plazacomer-client/node_modules/.bin/wrangler d1 migrations apply DB --local --env co --persist-to ../../.wrangler",
 		"db:init": "yarn db:init:users && yarn db:init:catalog",
 		"wrangler:user": "RUSTC=\"/Users/christian.cabrera/.cargo/bin/rustc\" PATH=\"/Users/christian.cabrera/.cargo/bin:$PATH\" cd ../plazacomer-cloudflare/worker-user && /Users/christian.cabrera/Documents/Emprendimientos/plazacomer/plazacomer-client/node_modules/.bin/wrangler dev --local --env co --port 8787 --persist-to ../../.wrangler --inspector-port 9229",
 		"wrangler:catalog": "RUSTC=\"/Users/christian.cabrera/.cargo/bin/rustc\" PATH=\"/Users/christian.cabrera/.cargo/bin:$PATH\" cd ../plazacomer-cloudflare/worker-catalog && /Users/christian.cabrera/Documents/Emprendimientos/plazacomer/plazacomer-client/node_modules/.bin/wrangler dev --local --env co --port 8788 --persist-to ../../.wrangler --inspector-port 9230",
