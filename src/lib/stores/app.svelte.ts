@@ -54,9 +54,15 @@ function createCart() {
 	});
 
 	return {
-		get items() { return items; },
-		get count() { return items.reduce((s, i) => s + i.quantity, 0); },
-		get total() { return items.reduce((s, i) => s + i.price * i.quantity, 0); },
+		get items() {
+			return items;
+		},
+		get count() {
+			return items.reduce((s, i) => s + i.quantity, 0);
+		},
+		get total() {
+			return items.reduce((s, i) => s + i.price * i.quantity, 0);
+		},
 		add(item: Omit<CartItem, 'quantity'> & { quantity?: number }) {
 			const qty = item.quantity ?? 1;
 			const hasSelections = item.selections && Object.keys(item.selections).length > 0;
@@ -70,7 +76,14 @@ function createCart() {
 				if (existing) {
 					existing.quantity += qty;
 				} else {
-					items.push({ productId: item.productId, storeId: item.storeId, price: item.price, isDeal: item.isDeal, notes: item.notes, quantity: qty });
+					items.push({
+						productId: item.productId,
+						storeId: item.storeId,
+						price: item.price,
+						isDeal: item.isDeal,
+						notes: item.notes,
+						quantity: qty
+					});
 				}
 			}
 		},
@@ -90,7 +103,7 @@ function createCart() {
 		},
 		clear() {
 			items.length = 0;
-		},
+		}
 	};
 }
 
@@ -107,8 +120,12 @@ function createDarkMode() {
 	});
 
 	return {
-		get value() { return dark; },
-		toggle() { dark = !dark; },
+		get value() {
+			return dark;
+		},
+		toggle() {
+			dark = !dark;
+		}
 	};
 }
 
@@ -122,7 +139,7 @@ const MOCK_ORDERS: Order[] = [
 		storeId: 't1',
 		items: [
 			{ productId: 'p1', quantity: 1, price: 28000 },
-			{ productId: 'p3', quantity: 2, price: 12000 },
+			{ productId: 'p3', quantity: 2, price: 12000 }
 		],
 		status: 'shipping',
 		date: '18 may. 2026, 12:34',
@@ -133,9 +150,9 @@ const MOCK_ORDERS: Order[] = [
 			{ label: 'Pedido confirmado', time: '12:34', done: true, active: false },
 			{ label: 'Tienda preparando', time: '12:38', done: true, active: false },
 			{ label: 'Repartidor en camino', time: '12:55', done: true, active: true },
-			{ label: 'Entregado', time: '', done: false, active: false },
+			{ label: 'Entregado', time: '', done: false, active: false }
 		],
-		reviewPromptPending: false,
+		reviewPromptPending: false
 	},
 	{
 		id: 'pm2',
@@ -151,9 +168,9 @@ const MOCK_ORDERS: Order[] = [
 			{ label: 'Pedido confirmado', time: '10:15', done: true, active: false },
 			{ label: 'Tienda preparando', time: '10:20', done: true, active: false },
 			{ label: 'Repartidor en camino', time: '10:42', done: true, active: false },
-			{ label: 'Entregado', time: '11:05', done: true, active: false },
+			{ label: 'Entregado', time: '11:05', done: true, active: false }
 		],
-		reviewPromptPending: true,
+		reviewPromptPending: true
 	},
 	{
 		id: 'pm3',
@@ -169,10 +186,10 @@ const MOCK_ORDERS: Order[] = [
 			{ label: 'Pedido confirmado', time: '13:05', done: true, active: true },
 			{ label: 'Tienda preparando', time: '', done: false, active: false },
 			{ label: 'Repartidor en camino', time: '', done: false, active: false },
-			{ label: 'Entregado', time: '', done: false, active: false },
+			{ label: 'Entregado', time: '', done: false, active: false }
 		],
-		reviewPromptPending: false,
-	},
+		reviewPromptPending: false
+	}
 ];
 
 function createOrders() {
@@ -187,13 +204,20 @@ function createOrders() {
 	});
 
 	return {
-		get items() { return items; },
-		get count() { return items.length; },
+		get items() {
+			return items;
+		},
+		get count() {
+			return items.length;
+		},
 		get activeCount() {
 			return items.filter((o) => ['confirmed', 'preparing', 'shipping'].includes(o.status)).length;
 		},
 		add(order: Omit<Order, 'id'>) {
-			items.push({ ...order, id: 'p-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6) });
+			items.push({
+				...order,
+				id: 'p-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6)
+			});
 		},
 		cancel(id: string) {
 			const o = items.find((o) => o.id === id);
@@ -208,7 +232,7 @@ function createOrders() {
 		},
 		get(id: string) {
 			return items.find((o) => o.id === id) ?? null;
-		},
+		}
 	};
 }
 
@@ -237,12 +261,20 @@ const MOCK_CONVERSATIONS: Conversation[] = [
 		timeAgo: '5 min',
 		lastMessage: '¿Quieres agregar algo más a tu pedido? 😊',
 		messages: [
-			{ author: 'customer', text: 'Hola, ¿tienen bandeja paisa disponible para hoy?', time: '12:10' },
-			{ author: 'store', text: '¡Hola! Sí, tenemos disponibilidad hasta las 8 pm 🍲', time: '12:12' },
+			{
+				author: 'customer',
+				text: 'Hola, ¿tienen bandeja paisa disponible para hoy?',
+				time: '12:10'
+			},
+			{
+				author: 'store',
+				text: '¡Hola! Sí, tenemos disponibilidad hasta las 8 pm 🍲',
+				time: '12:12'
+			},
 			{ author: 'customer', text: 'Perfecto, acabo de hacer el pedido', time: '12:15' },
 			{ author: 'store', text: '¡Lo recibimos! Tiempo estimado: 35 min 🛵', time: '12:16' },
-			{ author: 'store', text: '¿Quieres agregar algo más a tu pedido? 😊', time: '12:18' },
-		],
+			{ author: 'store', text: '¿Quieres agregar algo más a tu pedido? 😊', time: '12:18' }
+		]
 	},
 	{
 		storeId: 't2',
@@ -253,8 +285,8 @@ const MOCK_CONVERSATIONS: Conversation[] = [
 			{ author: 'customer', text: '¿Tienen aguacates Hass frescos hoy?', time: '10:00' },
 			{ author: 'store', text: '¡Sí! Llegaron esta mañana del campo 🥑', time: '10:03' },
 			{ author: 'customer', text: 'Genial, voy a pedir 3 y la canasta semanal', time: '10:05' },
-			{ author: 'store', text: 'Tu canasta está lista para entrega ✅', time: '10:20' },
-		],
+			{ author: 'store', text: 'Tu canasta está lista para entrega ✅', time: '10:20' }
+		]
 	},
 	{
 		storeId: 't4',
@@ -262,16 +294,30 @@ const MOCK_CONVERSATIONS: Conversation[] = [
 		timeAgo: 'ayer',
 		lastMessage: 'El Hub USB-C que pediste tiene garantía de 1 año 🔧',
 		messages: [
-			{ author: 'customer', text: '¿El hub USB-C es compatible con MacBook Pro M3?', time: 'ayer 15:30' },
-			{ author: 'store', text: '¡Sí! Funciona perfecto con todos los MacBook desde 2020 💻', time: 'ayer 15:35' },
-			{ author: 'store', text: 'El Hub USB-C que pediste tiene garantía de 1 año 🔧', time: 'ayer 15:36' },
-		],
-	},
+			{
+				author: 'customer',
+				text: '¿El hub USB-C es compatible con MacBook Pro M3?',
+				time: 'ayer 15:30'
+			},
+			{
+				author: 'store',
+				text: '¡Sí! Funciona perfecto con todos los MacBook desde 2020 💻',
+				time: 'ayer 15:35'
+			},
+			{
+				author: 'store',
+				text: 'El Hub USB-C que pediste tiene garantía de 1 año 🔧',
+				time: 'ayer 15:36'
+			}
+		]
+	}
 ];
 
 function createMessages() {
 	let convs = $state<Conversation[]>(
-		browser ? (JSON.parse(localStorage.getItem('pc_messages') ?? 'null') ?? MOCK_CONVERSATIONS) : MOCK_CONVERSATIONS
+		browser
+			? (JSON.parse(localStorage.getItem('pc_messages') ?? 'null') ?? MOCK_CONVERSATIONS)
+			: MOCK_CONVERSATIONS
 	);
 
 	$effect.root(() => {
@@ -281,8 +327,12 @@ function createMessages() {
 	});
 
 	return {
-		get conversations() { return convs; },
-		get totalUnread() { return convs.reduce((s, c) => s + c.unreadCount, 0); },
+		get conversations() {
+			return convs;
+		},
+		get totalUnread() {
+			return convs.reduce((s, c) => s + c.unreadCount, 0);
+		},
 		getConversation(storeId: string) {
 			return convs.find((c) => c.storeId === storeId) ?? null;
 		},
@@ -298,7 +348,7 @@ function createMessages() {
 					unreadCount: 0,
 					timeAgo: 'ahora',
 					lastMessage: text,
-					messages: [],
+					messages: []
 				};
 				convs.unshift(newConv);
 				c = convs[0];
@@ -317,7 +367,7 @@ function createMessages() {
 			c.messages.push({ author: 'store', text: reply, time });
 			c.lastMessage = reply;
 			c.timeAgo = 'ahora';
-		},
+		}
 	};
 }
 
@@ -327,10 +377,14 @@ let toastMsg = $state<string | null>(null);
 let toastTimer: ReturnType<typeof setTimeout> | null = null;
 
 export const toast = {
-	get message() { return toastMsg; },
+	get message() {
+		return toastMsg;
+	},
 	show(msg: string) {
 		toastMsg = msg;
 		if (toastTimer) clearTimeout(toastTimer);
-		toastTimer = setTimeout(() => { toastMsg = null; }, 2400);
-	},
+		toastTimer = setTimeout(() => {
+			toastMsg = null;
+		}, 2400);
+	}
 };

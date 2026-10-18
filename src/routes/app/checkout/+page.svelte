@@ -31,7 +31,7 @@
 	let form = $state({
 		address: 'Cra 10 #45-23, El Poblado, Medellín',
 		telefono: '+57 320 456 7890',
-		notas: '',
+		notas: ''
 	});
 	let errors = $state<Record<string, string>>({});
 	let entregaModo = $state<'ahora' | 'programado'>('ahora');
@@ -48,30 +48,37 @@
 	let paymentPhase = $state<'methods' | 'processing' | 'approved' | 'rejected'>('methods');
 	let paymentMethod = $state('tarjeta');
 	let paymentAttempt = $state(0);
-	let comprobantes = $state<Array<{ storeId: string; metodo: string; total: number; ref: string }>>([]);
+	let comprobantes = $state<Array<{ storeId: string; metodo: string; total: number; ref: string }>>(
+		[]
+	);
 
 	const currentStoreId = $derived(storeIds[step] ?? null);
 	const currentTienda = $derived(currentStoreId ? getStore(currentStoreId) : null);
 	const currentItems = $derived(currentStoreId ? (groups[currentStoreId] ?? []) : []);
 	const currentSubtotal = $derived(currentItems.reduce((s, i) => s + i.price * i.quantity, 0));
 	const cuponActivoId = $derived(currentStoreId ? (cuponPorTienda[currentStoreId] ?? null) : null);
-	const cuponActivo = $derived(cuponActivoId ? (COUPONS.find(c => c.id === cuponActivoId) ?? null) : null);
+	const cuponActivo = $derived(
+		cuponActivoId ? (COUPONS.find((c) => c.id === cuponActivoId) ?? null) : null
+	);
 	const descuento = $derived(
-		!cuponActivo ? 0
-		: cuponActivo.type === 'percentage' ? Math.round(currentSubtotal * cuponActivo.value / 100)
-		: cuponActivo.type === 'fixed' ? cuponActivo.value
-		: 0
+		!cuponActivo
+			? 0
+			: cuponActivo.type === 'percentage'
+				? Math.round((currentSubtotal * cuponActivo.value) / 100)
+				: cuponActivo.type === 'fixed'
+					? cuponActivo.value
+					: 0
 	);
 	const envio = $derived(cuponActivo?.type === 'shipping' ? 0 : 4000);
 	const currentTotal = $derived(Math.max(0, currentSubtotal + envio - descuento));
 	const allDone = $derived(mounted && storeIds.length > 0 && step >= storeIds.length);
 
 	const PAYMENT_METHODS = [
-		{ id: 'nequi',     label: 'Nequi',         emoji: '💜', bg: '#7C3AED' },
-		{ id: 'daviplata', label: 'Daviplata',      emoji: '❤️', bg: '#DC2626' },
-		{ id: 'pse',       label: 'PSE',            emoji: '🏦', bg: '#0EA5E9' },
-		{ id: 'tarjeta',   label: 'Tarjeta',        emoji: '💳', bg: '#1F2937' },
-		{ id: 'efectivo',  label: 'Contraentrega',  emoji: '💵', bg: '#16A34A' },
+		{ id: 'nequi', label: 'Nequi', emoji: '💜', bg: '#7C3AED' },
+		{ id: 'daviplata', label: 'Daviplata', emoji: '❤️', bg: '#DC2626' },
+		{ id: 'pse', label: 'PSE', emoji: '🏦', bg: '#0EA5E9' },
+		{ id: 'tarjeta', label: 'Tarjeta', emoji: '💳', bg: '#1F2937' },
+		{ id: 'efectivo', label: 'Contraentrega', emoji: '💵', bg: '#16A34A' }
 	];
 
 	const currentMethodInfo = $derived(
@@ -98,14 +105,15 @@
 
 	$effect(() => {
 		if (selectedDireccionId) {
-			const dir = ADDRESSES.find(d => d.id === selectedDireccionId);
+			const dir = ADDRESSES.find((d) => d.id === selectedDireccionId);
 			if (dir) form.address = `${dir.address}, ${dir.neighborhood}, ${dir.city}`;
 		}
 	});
 
 	function validate(): boolean {
 		const e: Record<string, string> = {};
-		if (!selectedDireccionId && !form.address.trim()) e.direccion = 'Selecciona o ingresa una dirección de entrega';
+		if (!selectedDireccionId && !form.address.trim())
+			e.direccion = 'Selecciona o ingresa una dirección de entrega';
 		if (!form.telefono.trim()) e.telefono = 'Teléfono requerido';
 		else if (!/^[+\d\s()-]{7,}$/.test(form.telefono)) e.telefono = 'Teléfono inválido';
 		if (!selectedPago) e.pago = 'Selecciona un método de pago';
@@ -119,14 +127,22 @@
 	function aplicarCupon() {
 		cuponError = '';
 		const code = cuponInput.trim().toUpperCase();
-		if (!code) { cuponError = 'Ingresa un código de cupón'; return; }
-		const cupon = COUPONS.find(c => c.code === code && c.active);
-		if (!cupon) { cuponError = 'Cupón inválido o expirado'; return; }
+		if (!code) {
+			cuponError = 'Ingresa un código de cupón';
+			return;
+		}
+		const cupon = COUPONS.find((c) => c.code === code && c.active);
+		if (!cupon) {
+			cuponError = 'Cupón inválido o expirado';
+			return;
+		}
 		if (cupon.storeId && cupon.storeId !== currentStoreId) {
-			cuponError = 'Este cupón no aplica para esta tienda'; return;
+			cuponError = 'Este cupón no aplica para esta tienda';
+			return;
 		}
 		if (currentSubtotal < cupon.minimum) {
-			cuponError = `Monto mínimo: ${fmtCOP(cupon.minimum)}`; return;
+			cuponError = `Monto mínimo: ${fmtCOP(cupon.minimum)}`;
+			return;
 		}
 		if (currentStoreId) cuponPorTienda[currentStoreId] = cupon.id;
 		cuponInput = '';
@@ -159,7 +175,7 @@
 			storeId: currentStoreId!,
 			metodo: currentMethodInfo.label,
 			total: currentTotal,
-			ref,
+			ref
 		});
 		processed.push(currentStoreId!);
 		paymentOpen = false;
@@ -188,7 +204,7 @@
 				items: storeItems.map((i) => ({
 					productId: i.productId,
 					quantity: i.quantity,
-					price: i.price,
+					price: i.price
 				})),
 				status: 'confirmed',
 				date: dateStr,
@@ -200,9 +216,9 @@
 					{ label: 'Pedido confirmado', time: timeStr, done: true, active: true },
 					{ label: 'Tienda preparando', time: '', done: false, active: false },
 					{ label: 'Repartidor en camino', time: '', done: false, active: false },
-					{ label: 'Entregado', time: '', done: false, active: false },
+					{ label: 'Entregado', time: '', done: false, active: false }
 				],
-				reviewPromptPending: false,
+				reviewPromptPending: false
 			});
 		});
 		cart.clear();
@@ -215,21 +231,21 @@
 		}
 		snapshot = [...cart.items];
 		mounted = true;
-		selectedDireccionId = ADDRESSES.find(d => d.isPrimary)?.id ?? ADDRESSES[0]?.id ?? null;
+		selectedDireccionId = ADDRESSES.find((d) => d.isPrimary)?.id ?? ADDRESSES[0]?.id ?? null;
 	});
 </script>
 
 <!-- ── SUCCESS SCREEN ── -->
 {#if allDone}
-	<div class="max-w-lg mx-auto px-5 py-10 animate-fade-in">
-		<div class="text-center mb-6">
+	<div class="animate-fade-in mx-auto max-w-lg px-5 py-10">
+		<div class="mb-6 text-center">
 			<div
-				class="w-24 h-24 rounded-full flex items-center justify-center text-5xl mx-auto mb-4"
+				class="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full text-5xl"
 				style="background:var(--c-success-light);color:var(--c-success)"
 			>
 				✓
 			</div>
-			<h2 class="font-display text-2xl font-extrabold mb-2">¡Pedidos confirmados!</h2>
+			<h2 class="mb-2 font-display text-2xl font-extrabold">¡Pedidos confirmados!</h2>
 			<p class="text-sm leading-relaxed" style="color:var(--c-text-secondary)">
 				{#if entregaModo === 'programado' && fechaProgramada && horaProgramada}
 					📅 Programado para el
@@ -239,7 +255,7 @@
 							day: 'numeric',
 							month: 'long',
 							hour: 'numeric',
-							minute: '2-digit',
+							minute: '2-digit'
 						})}
 					</strong>
 				{:else}
@@ -249,11 +265,11 @@
 		</div>
 
 		<div
-			class="rounded-[18px] border p-4 mb-4"
+			class="mb-4 rounded-[18px] border p-4"
 			style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 		>
 			<div
-				class="text-[11px] font-bold uppercase tracking-widest mb-3"
+				class="mb-3 text-[11px] font-bold tracking-widest uppercase"
 				style="color:var(--c-text-muted)"
 			>
 				Comprobantes
@@ -265,7 +281,7 @@
 					style="border-top:{i > 0 ? '1px solid var(--c-border-soft)' : 'none'}"
 				>
 					<TiendaLogo tienda={t} size={36} />
-					<div class="flex-1 min-w-0">
+					<div class="min-w-0 flex-1">
 						<div class="text-sm font-semibold">{t.name}</div>
 						<div class="font-mono text-[11px]" style="color:var(--c-text-muted)">
 							{comp.ref} · {comp.metodo}
@@ -275,7 +291,7 @@
 				</div>
 			{/each}
 			<div
-				class="flex justify-between items-center mt-2 pt-3"
+				class="mt-2 flex items-center justify-between pt-3"
 				style="border-top:2px solid var(--c-border-soft)"
 			>
 				<span class="text-sm font-bold">Total pagado</span>
@@ -291,14 +307,14 @@
 		</Button>
 	</div>
 
-<!-- ── CHECKOUT FORM ── -->
+	<!-- ── CHECKOUT FORM ── -->
 {:else if mounted && currentTienda}
-	<div class="max-w-[900px] mx-auto px-4 pt-5 pb-12">
+	<div class="mx-auto max-w-[900px] px-4 pt-5 pb-12">
 		<!-- Header -->
-		<div class="flex items-center gap-3 mb-4">
+		<div class="mb-4 flex items-center gap-3">
 			<button
 				onclick={() => goto('/app/cart')}
-				class="w-9 h-9 rounded-[10px] flex items-center justify-center border border-[var(--c-border-soft)]"
+				class="flex h-9 w-9 items-center justify-center rounded-[10px] border border-[var(--c-border-soft)]"
 				style="background:var(--c-bg-card)"
 			>
 				<Icon name="arrowLeft" size={18} />
@@ -309,11 +325,11 @@
 		<!-- Multi-store progress -->
 		{#if storeIds.length > 1}
 			<div
-				class="rounded-2xl border p-3.5 mb-5"
+				class="mb-5 rounded-2xl border p-3.5"
 				style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 			>
 				<div
-					class="text-[11px] font-bold uppercase tracking-wider mb-2.5"
+					class="mb-2.5 text-[11px] font-bold tracking-wider uppercase"
 					style="color:var(--c-text-muted)"
 				>
 					Paso {step + 1} de {storeIds.length} — Paga cada tienda por separado
@@ -324,15 +340,23 @@
 						{@const isDone = processed.includes(tid)}
 						{@const isCurrent = i === step}
 						<div
-							class="flex-1 flex items-center gap-2 p-2.5 rounded-xl min-w-0 border-[1.5px] transition-colors"
+							class="flex min-w-0 flex-1 items-center gap-2 rounded-xl border-[1.5px] p-2.5 transition-colors"
 							style="
-								background:{isDone ? 'var(--c-success-light)' : isCurrent ? 'var(--c-brand-light)' : 'var(--c-bg-secondary)'};
+								background:{isDone
+								? 'var(--c-success-light)'
+								: isCurrent
+									? 'var(--c-brand-light)'
+									: 'var(--c-bg-secondary)'};
 								border-color:{isCurrent ? 'var(--c-brand)' : 'transparent'}
 							"
 						>
 							<div
-								class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
-								style="background:{isDone ? 'var(--c-success)' : isCurrent ? 'var(--c-brand)' : 'var(--c-border)'}"
+								class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
+								style="background:{isDone
+									? 'var(--c-success)'
+									: isCurrent
+										? 'var(--c-brand)'
+										: 'var(--c-border)'}"
 							>
 								{#if isDone}
 									<Icon name="check" size={13} strokeWidth={3} />
@@ -341,8 +365,12 @@
 								{/if}
 							</div>
 							<span
-								class="text-[11px] font-semibold truncate"
-								style="color:{isDone ? 'var(--c-success)' : isCurrent ? 'var(--c-brand)' : 'var(--c-text-muted)'}"
+								class="truncate text-[11px] font-semibold"
+								style="color:{isDone
+									? 'var(--c-success)'
+									: isCurrent
+										? 'var(--c-brand)'
+										: 'var(--c-text-muted)'}"
 							>
 								{t.name}
 							</span>
@@ -360,7 +388,7 @@
 					class="rounded-[18px] border p-5"
 					style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 				>
-					<div class="flex items-center gap-3 mb-5">
+					<div class="mb-5 flex items-center gap-3">
 						<TiendaLogo tienda={currentTienda} size={48} />
 						<div>
 							<div class="font-display text-[17px] font-bold">{currentTienda.name}</div>
@@ -371,30 +399,45 @@
 					<div class="flex flex-col gap-4">
 						<!-- Address -->
 						<div>
-							<div class="text-xs font-semibold mb-1.5" style="color:var(--c-text-secondary)">
+							<div class="mb-1.5 text-xs font-semibold" style="color:var(--c-text-secondary)">
 								Dirección de entrega
 							</div>
-							<div class="flex flex-col gap-1.5 mb-2">
+							<div class="mb-2 flex flex-col gap-1.5">
 								{#each ADDRESSES as dir}
 									{@const isSelected = selectedDireccionId === dir.id}
 									<button
 										type="button"
-										onclick={() => { selectedDireccionId = dir.id; }}
-										class="flex items-center gap-2.5 p-2.5 rounded-xl border-[1.5px] text-left transition-all w-full"
-										style="border-color:{isSelected ? 'var(--c-brand)' : 'var(--c-border)'};background:{isSelected ? 'var(--c-brand-light)' : 'transparent'}"
+										onclick={() => {
+											selectedDireccionId = dir.id;
+										}}
+										class="flex w-full items-center gap-2.5 rounded-xl border-[1.5px] p-2.5 text-left transition-all"
+										style="border-color:{isSelected
+											? 'var(--c-brand)'
+											: 'var(--c-border)'};background:{isSelected
+											? 'var(--c-brand-light)'
+											: 'transparent'}"
 									>
 										<div
-											class="w-8 h-8 rounded-[8px] flex items-center justify-center shrink-0"
+											class="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px]"
 											style="background:var(--c-bg-secondary)"
 										>
-											<Icon name="location" size={15} color={isSelected ? 'var(--c-brand)' : 'var(--c-text-muted)'} />
+											<Icon
+												name="location"
+												size={15}
+												color={isSelected ? 'var(--c-brand)' : 'var(--c-text-muted)'}
+											/>
 										</div>
-										<div class="flex-1 min-w-0">
+										<div class="min-w-0 flex-1">
 											<div class="text-xs font-bold">{dir.label}</div>
-											<div class="text-[11px] truncate" style="color:var(--c-text-muted)">{dir.address}, {dir.neighborhood}</div>
+											<div class="truncate text-[11px]" style="color:var(--c-text-muted)">
+												{dir.address}, {dir.neighborhood}
+											</div>
 										</div>
 										{#if dir.isPrimary}
-											<span class="text-[10px] px-1.5 py-0.5 rounded-full font-semibold" style="background:var(--c-brand-light);color:var(--c-brand)">Principal</span>
+											<span
+												class="rounded-full px-1.5 py-0.5 text-[10px] font-semibold"
+												style="background:var(--c-brand-light);color:var(--c-brand)">Principal</span
+											>
 										{/if}
 										{#if isSelected}
 											<Icon name="check" size={14} color="var(--c-brand)" />
@@ -403,9 +446,17 @@
 								{/each}
 								<button
 									type="button"
-									onclick={() => { selectedDireccionId = null; }}
-									class="flex items-center gap-2 px-3 py-2.5 rounded-xl border text-left w-full"
-									style="border-color:{!selectedDireccionId ? 'var(--c-brand)' : 'var(--c-border-soft)'};background:{!selectedDireccionId ? 'var(--c-brand-light)' : 'transparent'};color:{!selectedDireccionId ? 'var(--c-brand)' : 'var(--c-text-muted)'}"
+									onclick={() => {
+										selectedDireccionId = null;
+									}}
+									class="flex w-full items-center gap-2 rounded-xl border px-3 py-2.5 text-left"
+									style="border-color:{!selectedDireccionId
+										? 'var(--c-brand)'
+										: 'var(--c-border-soft)'};background:{!selectedDireccionId
+										? 'var(--c-brand-light)'
+										: 'transparent'};color:{!selectedDireccionId
+										? 'var(--c-brand)'
+										: 'var(--c-text-muted)'}"
 								>
 									<Icon name="plus" size={13} />
 									<span class="text-xs font-medium">Otra dirección</span>
@@ -415,41 +466,45 @@
 								<input
 									bind:value={form.address}
 									placeholder="Calle, número, barrio, ciudad"
-									class="w-full px-3.5 py-2.5 rounded-[10px] text-sm border transition-colors outline-none"
-									style="background:var(--c-bg-primary);border-color:{errors.direccion ? 'var(--c-error)' : 'var(--c-border)'};"
+									class="w-full rounded-[10px] border px-3.5 py-2.5 text-sm transition-colors outline-none"
+									style="background:var(--c-bg-primary);border-color:{errors.direccion
+										? 'var(--c-error)'
+										: 'var(--c-border)'};"
 								/>
 							{/if}
 							{#if errors.direccion}
-								<p class="text-xs mt-1" style="color:var(--c-error)">{errors.direccion}</p>
+								<p class="mt-1 text-xs" style="color:var(--c-error)">{errors.direccion}</p>
 							{/if}
 						</div>
 
 						<!-- Phone -->
 						<label class="block">
-							<div class="text-xs font-semibold mb-1.5" style="color:var(--c-text-secondary)">
+							<div class="mb-1.5 text-xs font-semibold" style="color:var(--c-text-secondary)">
 								Teléfono de contacto
 							</div>
 							<input
 								bind:value={form.telefono}
 								placeholder="+57 ..."
-								class="w-full px-3.5 py-2.5 rounded-[10px] text-sm border transition-colors outline-none"
-								style="background:var(--c-bg-primary);border-color:{errors.telefono ? 'var(--c-error)' : 'var(--c-border)'};"
+								class="w-full rounded-[10px] border px-3.5 py-2.5 text-sm transition-colors outline-none"
+								style="background:var(--c-bg-primary);border-color:{errors.telefono
+									? 'var(--c-error)'
+									: 'var(--c-border)'};"
 							/>
 							{#if errors.telefono}
-								<p class="text-xs mt-1" style="color:var(--c-error)">{errors.telefono}</p>
+								<p class="mt-1 text-xs" style="color:var(--c-error)">{errors.telefono}</p>
 							{/if}
 						</label>
 
 						<!-- Notes -->
 						<label class="block">
-							<div class="text-xs font-semibold mb-1.5" style="color:var(--c-text-secondary)">
+							<div class="mb-1.5 text-xs font-semibold" style="color:var(--c-text-secondary)">
 								Notas para la tienda <span style="color:var(--c-text-muted)">(opcional)</span>
 							</div>
 							<textarea
 								bind:value={form.notas}
 								rows={2}
 								placeholder="Instrucciones especiales, timbre, piso..."
-								class="w-full px-3.5 py-2.5 rounded-[10px] text-sm border resize-none transition-colors outline-none"
+								class="w-full resize-none rounded-[10px] border px-3.5 py-2.5 text-sm transition-colors outline-none"
 								style="background:var(--c-bg-primary);border-color:var(--c-border)"
 							></textarea>
 						</label>
@@ -461,21 +516,25 @@
 					class="rounded-[18px] border p-5"
 					style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 				>
-					<h3 class="font-display text-[15px] font-bold mb-3">🎟️ ¿Tienes un cupón?</h3>
+					<h3 class="mb-3 font-display text-[15px] font-bold">🎟️ ¿Tienes un cupón?</h3>
 					{#if cuponActivo}
 						<div
-							class="flex items-center gap-2.5 p-3 rounded-xl border"
+							class="flex items-center gap-2.5 rounded-xl border p-3"
 							style="background:var(--c-success-light);border-color:var(--c-success)"
 						>
 							<Icon name="tag" size={16} color="var(--c-success)" />
-							<div class="flex-1 min-w-0">
-								<div class="text-xs font-bold" style="color:var(--c-success)">{cuponActivo.code}</div>
-								<div class="text-[11px]" style="color:var(--c-success)">{cuponActivo.description}</div>
+							<div class="min-w-0 flex-1">
+								<div class="text-xs font-bold" style="color:var(--c-success)">
+									{cuponActivo.code}
+								</div>
+								<div class="text-[11px]" style="color:var(--c-success)">
+									{cuponActivo.description}
+								</div>
 							</div>
 							<button
 								type="button"
 								onclick={quitarCupon}
-								class="p-1.5 rounded-lg"
+								class="rounded-lg p-1.5"
 								style="color:var(--c-success)"
 								title="Quitar cupón"
 							>
@@ -488,22 +547,24 @@
 								bind:value={cuponInput}
 								placeholder="Código de cupón"
 								onkeydown={(e) => e.key === 'Enter' && aplicarCupon()}
-								class="flex-1 px-3.5 py-2.5 rounded-[10px] text-sm border outline-none"
-								style="background:var(--c-bg-primary);border-color:{cuponError ? 'var(--c-error)' : 'var(--c-border)'};text-transform:uppercase"
+								class="flex-1 rounded-[10px] border px-3.5 py-2.5 text-sm outline-none"
+								style="background:var(--c-bg-primary);border-color:{cuponError
+									? 'var(--c-error)'
+									: 'var(--c-border)'};text-transform:uppercase"
 							/>
 							<button
 								type="button"
 								onclick={aplicarCupon}
-								class="px-4 py-2.5 rounded-[10px] text-sm font-bold shrink-0"
+								class="shrink-0 rounded-[10px] px-4 py-2.5 text-sm font-bold"
 								style="background:var(--c-brand);color:#fff"
 							>
 								Aplicar
 							</button>
 						</div>
 						{#if cuponError}
-							<p class="text-xs mt-1.5" style="color:var(--c-error)">{cuponError}</p>
+							<p class="mt-1.5 text-xs" style="color:var(--c-error)">{cuponError}</p>
 						{/if}
-						<p class="text-[11px] mt-2" style="color:var(--c-text-muted)">
+						<p class="mt-2 text-[11px]" style="color:var(--c-text-muted)">
 							Prueba: BIENVENIDO10, ENVIOGRATIS, DESCUENTO5, CASERO20
 						</p>
 					{/if}
@@ -514,11 +575,11 @@
 					class="rounded-[18px] border p-5"
 					style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 				>
-					<h3 class="font-display text-[15px] font-bold mb-3">¿Cuándo lo quieres?</h3>
-					<div class="grid grid-cols-2 gap-2 mb-3">
+					<h3 class="mb-3 font-display text-[15px] font-bold">¿Cuándo lo quieres?</h3>
+					<div class="mb-3 grid grid-cols-2 gap-2">
 						<button
 							onclick={() => (entregaModo = 'ahora')}
-							class="flex flex-col items-center gap-1 p-3 rounded-xl border-2 transition-all"
+							class="flex flex-col items-center gap-1 rounded-xl border-2 p-3 transition-all"
 							style="
 								background:{entregaModo === 'ahora' ? 'var(--c-brand)' : 'var(--c-bg-secondary)'};
 								border-color:{entregaModo === 'ahora' ? 'var(--c-brand)' : 'transparent'};
@@ -531,7 +592,7 @@
 						</button>
 						<button
 							onclick={() => (entregaModo = 'programado')}
-							class="flex flex-col items-center gap-1 p-3 rounded-xl border-2 transition-all"
+							class="flex flex-col items-center gap-1 rounded-xl border-2 p-3 transition-all"
 							style="
 								background:{entregaModo === 'programado' ? 'var(--c-brand)' : 'var(--c-bg-secondary)'};
 								border-color:{entregaModo === 'programado' ? 'var(--c-brand)' : 'transparent'};
@@ -546,31 +607,31 @@
 					{#if entregaModo === 'programado'}
 						<div class="grid grid-cols-2 gap-3">
 							<label class="block">
-								<div class="text-xs font-semibold mb-1.5" style="color:var(--c-text-secondary)">
+								<div class="mb-1.5 text-xs font-semibold" style="color:var(--c-text-secondary)">
 									Fecha
 								</div>
 								<input
 									type="date"
 									bind:value={fechaProgramada}
 									min={new Date().toISOString().slice(0, 10)}
-									class="w-full px-3 py-2.5 rounded-[10px] text-sm border outline-none"
+									class="w-full rounded-[10px] border px-3 py-2.5 text-sm outline-none"
 									style="background:var(--c-bg-primary);border-color:var(--c-border)"
 								/>
 							</label>
 							<label class="block">
-								<div class="text-xs font-semibold mb-1.5" style="color:var(--c-text-secondary)">
+								<div class="mb-1.5 text-xs font-semibold" style="color:var(--c-text-secondary)">
 									Hora
 								</div>
 								<input
 									type="time"
 									bind:value={horaProgramada}
-									class="w-full px-3 py-2.5 rounded-[10px] text-sm border outline-none"
+									class="w-full rounded-[10px] border px-3 py-2.5 text-sm outline-none"
 									style="background:var(--c-bg-primary);border-color:var(--c-border)"
 								/>
 							</label>
 						</div>
 						{#if errors.entrega}
-							<p class="text-xs mt-2" style="color:var(--c-error)">{errors.entrega}</p>
+							<p class="mt-2 text-xs" style="color:var(--c-error)">{errors.entrega}</p>
 						{/if}
 					{/if}
 				</div>
@@ -580,15 +641,15 @@
 					class="rounded-[18px] border p-5"
 					style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 				>
-					<h3 class="font-display text-[15px] font-bold mb-1">Método de pago</h3>
-					<p class="text-xs mb-3.5" style="color:var(--c-text-muted)">
+					<h3 class="mb-1 font-display text-[15px] font-bold">Método de pago</h3>
+					<p class="mb-3.5 text-xs" style="color:var(--c-text-muted)">
 						{currentTienda.name} acepta:
 					</p>
 					<div class="flex flex-col gap-2">
 						{#each currentTienda.paymentMethods as pago}
 							{@const isSelected = selectedPago === pago}
 							<label
-								class="flex items-center gap-3 p-3 rounded-xl cursor-pointer border-[1.5px] transition-all"
+								class="flex cursor-pointer items-center gap-3 rounded-xl border-[1.5px] p-3 transition-all"
 								style="
 									border-color:{isSelected ? 'var(--c-brand)' : 'var(--c-border)'};
 									background:{isSelected ? 'var(--c-brand-light)' : 'transparent'}
@@ -602,17 +663,14 @@
 									class="hidden"
 								/>
 								<div
-									class="w-[18px] h-[18px] rounded-full border-2 flex items-center justify-center shrink-0"
+									class="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border-2"
 									style="border-color:{isSelected ? 'var(--c-brand)' : 'var(--c-border)'}"
 								>
 									{#if isSelected}
-										<div
-											class="w-2.5 h-2.5 rounded-full"
-											style="background:var(--c-brand)"
-										></div>
+										<div class="h-2.5 w-2.5 rounded-full" style="background:var(--c-brand)"></div>
 									{/if}
 								</div>
-								<span class="text-sm font-semibold flex-1">{pago}</span>
+								<span class="flex-1 text-sm font-semibold">{pago}</span>
 								<span class="text-[11px]" style="color:var(--c-text-muted)">
 									{pago === 'ePayco'
 										? '💳 Tarjeta / PSE'
@@ -630,7 +688,7 @@
 						{/each}
 					</div>
 					{#if errors.pago}
-						<p class="text-xs mt-2" style="color:var(--c-error)">{errors.pago}</p>
+						<p class="mt-2 text-xs" style="color:var(--c-error)">{errors.pago}</p>
 					{/if}
 				</div>
 			</div>
@@ -640,19 +698,19 @@
 				class="rounded-[18px] border p-5 lg:sticky lg:top-5"
 				style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 			>
-				<h3 class="font-display text-base font-bold mb-3.5">Tu pedido</h3>
-				<div class="flex flex-col gap-2.5 mb-3.5">
+				<h3 class="mb-3.5 font-display text-base font-bold">Tu pedido</h3>
+				<div class="mb-3.5 flex flex-col gap-2.5">
 					{#each currentItems as item}
 						{@const p = getProduct(item.productId)}
 						<div class="flex items-center gap-2.5">
 							<div
-								class="w-9 h-9 rounded-lg flex items-center justify-center text-xl shrink-0"
+								class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xl"
 								style="background:{currentTienda.bannerGradient}"
 							>
 								{p.emoji}
 							</div>
-							<div class="flex-1 min-w-0">
-								<div class="text-xs font-semibold truncate">{p.name}</div>
+							<div class="min-w-0 flex-1">
+								<div class="truncate text-xs font-semibold">{p.name}</div>
 								<div class="text-[11px]" style="color:var(--c-text-muted)">x{item.quantity}</div>
 							</div>
 							<span class="font-mono text-xs font-medium">
@@ -662,25 +720,25 @@
 					{/each}
 				</div>
 
-				<div class="h-px mb-3" style="background:var(--c-border-soft)"></div>
-				<div class="flex justify-between text-sm mb-2">
+				<div class="mb-3 h-px" style="background:var(--c-border-soft)"></div>
+				<div class="mb-2 flex justify-between text-sm">
 					<span style="color:var(--c-text-muted)">Subtotal</span>
 					<span class="font-mono">{fmtCOP(currentSubtotal)}</span>
 				</div>
-				<div class="flex justify-between text-sm mb-2">
+				<div class="mb-2 flex justify-between text-sm">
 					<span style="color:var(--c-text-muted)">Envío</span>
 					<span class="font-mono" style="color:{envio === 0 ? 'var(--c-success)' : 'inherit'}">
 						{envio === 0 ? 'GRATIS' : fmtCOP(envio)}
 					</span>
 				</div>
 				{#if descuento > 0 && cuponActivo}
-					<div class="flex justify-between text-sm mb-2" style="color:var(--c-success)">
+					<div class="mb-2 flex justify-between text-sm" style="color:var(--c-success)">
 						<span>🎟️ {cuponActivo.code}</span>
 						<span class="font-mono">−{fmtCOP(descuento)}</span>
 					</div>
 				{/if}
 				<div
-					class="flex justify-between items-center mb-5 pt-3"
+					class="mb-5 flex items-center justify-between pt-3"
 					style="border-top:2px solid var(--c-border-soft)"
 				>
 					<span class="font-bold">Total</span>
@@ -694,7 +752,7 @@
 				</Button>
 
 				{#if storeIds.length > 1}
-					<p class="text-[11px] text-center mt-2.5" style="color:var(--c-text-muted)">
+					<p class="mt-2.5 text-center text-[11px]" style="color:var(--c-text-muted)">
 						{storeIds.length - step - 1} tienda{storeIds.length - step - 1 !== 1 ? 's' : ''} más por pagar
 					</p>
 				{/if}
@@ -713,119 +771,116 @@
 		class="flex flex-col"
 		style="padding-bottom:max(24px,env(safe-area-inset-bottom))"
 	>
-			{#if paymentPhase === 'methods'}
-				<h2 class="font-display text-xl font-bold mb-1">Elige cómo pagar</h2>
-				<p class="text-sm mb-5" style="color:var(--c-text-muted)">
-					Total:
-					<span class="font-mono font-bold" style="color:var(--c-text-primary)">{fmtCOP(currentTotal)}</span>
-				</p>
-				<div class="flex flex-col gap-2 mb-5">
-					{#each PAYMENT_METHODS as m}
-						{@const isSelected = paymentMethod === m.id}
-						<button
-							onclick={() => (paymentMethod = m.id)}
-							class="flex items-center gap-3 p-3.5 rounded-xl border-[1.5px] transition-all text-left"
-							style="
+		{#if paymentPhase === 'methods'}
+			<h2 class="mb-1 font-display text-xl font-bold">Elige cómo pagar</h2>
+			<p class="mb-5 text-sm" style="color:var(--c-text-muted)">
+				Total:
+				<span class="font-mono font-bold" style="color:var(--c-text-primary)"
+					>{fmtCOP(currentTotal)}</span
+				>
+			</p>
+			<div class="mb-5 flex flex-col gap-2">
+				{#each PAYMENT_METHODS as m}
+					{@const isSelected = paymentMethod === m.id}
+					<button
+						onclick={() => (paymentMethod = m.id)}
+						class="flex items-center gap-3 rounded-xl border-[1.5px] p-3.5 text-left transition-all"
+						style="
 								background:{isSelected ? 'var(--c-brand-light)' : 'var(--c-bg-secondary)'};
 								border-color:{isSelected ? 'var(--c-brand)' : 'transparent'};
 								color:var(--c-text-primary)
 							"
+					>
+						<div
+							class="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] text-xl"
+							style="background:{m.bg}"
 						>
-							<div
-								class="w-10 h-10 rounded-[10px] flex items-center justify-center text-xl shrink-0"
-								style="background:{m.bg}"
-							>
-								{m.emoji}
-							</div>
-							<span class="flex-1 text-sm font-semibold">{m.label}</span>
-							{#if isSelected}
-								<Icon name="check" size={18} color="var(--c-brand)" />
-							{/if}
-						</button>
-					{/each}
-				</div>
-				<Button variant="brand" size="lg" fullWidth onclick={procesarPago}>
-					Pagar {fmtCOP(currentTotal)}
-				</Button>
-				<button
-					onclick={() => (paymentOpen = false)}
-					class="w-full py-3 mt-2 text-sm"
-					style="color:var(--c-text-muted)"
+							{m.emoji}
+						</div>
+						<span class="flex-1 text-sm font-semibold">{m.label}</span>
+						{#if isSelected}
+							<Icon name="check" size={18} color="var(--c-brand)" />
+						{/if}
+					</button>
+				{/each}
+			</div>
+			<Button variant="brand" size="lg" fullWidth onclick={procesarPago}>
+				Pagar {fmtCOP(currentTotal)}
+			</Button>
+			<button
+				onclick={() => (paymentOpen = false)}
+				class="mt-2 w-full py-3 text-sm"
+				style="color:var(--c-text-muted)"
+			>
+				Cancelar
+			</button>
+		{:else if paymentPhase === 'processing'}
+			<div class="py-8 text-center">
+				<div
+					class="mx-auto mb-6 h-16 w-16 animate-spin rounded-full border-4"
+					style="border-color:var(--c-border);border-top-color:var(--c-brand)"
+				></div>
+				<div class="mb-2 font-display text-lg font-bold">Procesando tu pago…</div>
+				<p class="text-sm leading-relaxed" style="color:var(--c-text-muted)">
+					No cierres ni recargues esta ventana.
+				</p>
+				<div
+					class="mt-4 inline-flex items-center gap-2 rounded-[10px] px-3.5 py-2 font-mono text-xs"
+					style="background:var(--c-bg-secondary);color:var(--c-text-muted)"
 				>
-					Cancelar
-				</button>
-
-			{:else if paymentPhase === 'processing'}
-				<div class="text-center py-8">
-					<div
-						class="w-16 h-16 border-4 rounded-full animate-spin mx-auto mb-6"
-						style="border-color:var(--c-border);border-top-color:var(--c-brand)"
-					></div>
-					<div class="font-display text-lg font-bold mb-2">Procesando tu pago…</div>
-					<p class="text-sm leading-relaxed" style="color:var(--c-text-muted)">
-						No cierres ni recargues esta ventana.
-					</p>
-					<div
-						class="inline-flex items-center gap-2 mt-4 px-3.5 py-2 rounded-[10px] text-xs font-mono"
-						style="background:var(--c-bg-secondary);color:var(--c-text-muted)"
-					>
-						🔒 Conexión segura con {currentMethodInfo.label}
+					🔒 Conexión segura con {currentMethodInfo.label}
+				</div>
+			</div>
+		{:else if paymentPhase === 'approved'}
+			<div class="py-4 text-center">
+				<div
+					class="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full text-5xl"
+					style="background:var(--c-success-light);color:var(--c-success)"
+				>
+					✓
+				</div>
+				<div class="mb-2 font-display text-xl font-bold">¡Pago aprobado!</div>
+				<p class="mb-5 text-sm" style="color:var(--c-text-secondary)">
+					Tu pedido se está preparando.
+				</p>
+				<div
+					class="mb-5 grid grid-cols-2 gap-2.5 rounded-xl p-3.5 text-left text-xs"
+					style="background:var(--c-bg-secondary)"
+				>
+					<div>
+						<div style="color:var(--c-text-muted)">Método</div>
+						<div class="mt-0.5 font-semibold">{currentMethodInfo.label}</div>
+					</div>
+					<div>
+						<div style="color:var(--c-text-muted)">Total</div>
+						<div class="mt-0.5 font-mono font-semibold">{fmtCOP(currentTotal)}</div>
 					</div>
 				</div>
-
-			{:else if paymentPhase === 'approved'}
-				<div class="text-center py-4">
-					<div
-						class="w-24 h-24 rounded-full flex items-center justify-center text-5xl mx-auto mb-4"
-						style="background:var(--c-success-light);color:var(--c-success)"
-					>
-						✓
-					</div>
-					<div class="font-display text-xl font-bold mb-2">¡Pago aprobado!</div>
-					<p class="text-sm mb-5" style="color:var(--c-text-secondary)">
-						Tu pedido se está preparando.
-					</p>
-					<div
-						class="grid grid-cols-2 gap-2.5 text-left text-xs rounded-xl p-3.5 mb-5"
-						style="background:var(--c-bg-secondary)"
-					>
-						<div>
-							<div style="color:var(--c-text-muted)">Método</div>
-							<div class="font-semibold mt-0.5">{currentMethodInfo.label}</div>
-						</div>
-						<div>
-							<div style="color:var(--c-text-muted)">Total</div>
-							<div class="font-semibold font-mono mt-0.5">{fmtCOP(currentTotal)}</div>
-						</div>
-					</div>
-					<Button variant="brand" size="lg" fullWidth onclick={handlePaymentSuccess}>
-						{step + 1 < storeIds.length ? 'Siguiente tienda' : 'Ver resumen'}
+				<Button variant="brand" size="lg" fullWidth onclick={handlePaymentSuccess}>
+					{step + 1 < storeIds.length ? 'Siguiente tienda' : 'Ver resumen'}
+				</Button>
+			</div>
+		{:else if paymentPhase === 'rejected'}
+			<div class="py-4 text-center">
+				<div
+					class="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full text-5xl"
+					style="background:var(--c-error-light);color:var(--c-error)"
+				>
+					✕
+				</div>
+				<div class="mb-2 font-display text-xl font-bold">Pago rechazado</div>
+				<p class="mb-5 text-sm leading-relaxed" style="color:var(--c-text-secondary)">
+					Tu banco rechazó la transacción. Puede ser por fondos insuficientes o restricciones de
+					seguridad.
+				</p>
+				<div class="flex flex-col gap-2">
+					<Button variant="brand" fullWidth onclick={procesarPago}>Reintentar pago</Button>
+					<Button variant="ghost" fullWidth onclick={() => (paymentPhase = 'methods')}>
+						Cambiar método
 					</Button>
+					<Button variant="ghost" fullWidth onclick={() => (paymentOpen = false)}>Cancelar</Button>
 				</div>
-
-			{:else if paymentPhase === 'rejected'}
-				<div class="text-center py-4">
-					<div
-						class="w-24 h-24 rounded-full flex items-center justify-center text-5xl mx-auto mb-4"
-						style="background:var(--c-error-light);color:var(--c-error)"
-					>
-						✕
-					</div>
-					<div class="font-display text-xl font-bold mb-2">Pago rechazado</div>
-					<p class="text-sm mb-5 leading-relaxed" style="color:var(--c-text-secondary)">
-						Tu banco rechazó la transacción. Puede ser por fondos insuficientes o restricciones de
-						seguridad.
-					</p>
-					<div class="flex flex-col gap-2">
-						<Button variant="brand" fullWidth onclick={procesarPago}>Reintentar pago</Button>
-						<Button variant="ghost" fullWidth onclick={() => (paymentPhase = 'methods')}>
-							Cambiar método
-						</Button>
-						<Button variant="ghost" fullWidth onclick={() => (paymentOpen = false)}>
-							Cancelar
-						</Button>
-					</div>
-				</div>
-			{/if}
+			</div>
+		{/if}
 	</Dialog.Content>
 </Dialog.Root>

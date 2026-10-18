@@ -2,122 +2,124 @@
 // @generated from file catalog.proto (package catalog, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
-import type { Message } from "@bufbuild/protobuf";
+import type { GenFile, GenMessage } from '@bufbuild/protobuf/codegenv2';
+import { fileDesc, messageDesc } from '@bufbuild/protobuf/codegenv2';
+import type { Message } from '@bufbuild/protobuf';
 
 /**
  * Describes the file catalog.proto.
  */
-export const file_catalog: GenFile = /*@__PURE__*/
-  fileDesc("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X3N1YnR5cGVCCAoGX2Vtb2ppQg0KC19sb2dvX2NvbG9yQhIKEF9iYW5uZXJfZ3JhZGllbnRCDgoMX2Rlc2NyaXB0aW9uQggKBl9ob3Vyc0ILCglfbG9jYXRpb24iIQoRVG9nZ2xlT3BlblJlcXVlc3QSDAoEb3BlbhgBIAEoCCLFAQoUQ3JlYXRlUHJvZHVjdFJlcXVlc3QSDAoEbmFtZRgBIAEoCRINCgVwcmljZRgCIAEoAxIQCghjYXRlZ29yeRgDIAEoCRIYCgtkZXNjcmlwdGlvbhgEIAEoCUgAiAEBEhIKBWVtb2ppGAUgASgJSAGIAQESEgoFc3RvY2sYBiABKANIAogBARIQCgNlYW4YByABKAlIA4gBAUIOCgxfZGVzY3JpcHRpb25CCAoGX2Vtb2ppQggKBl9zdG9ja0IGCgRfZWFuIrwBChRVcGRhdGVQcm9kdWN0UmVxdWVzdBIRCgRuYW1lGAEgASgJSACIAQESGAoLZGVzY3JpcHRpb24YAiABKAlIAYgBARIVCghjYXRlZ29yeRgDIAEoCUgCiAEBEhIKBWVtb2ppGAQgASgJSAOIAQESEgoFcHJpY2UYBSABKANIBIgBAUIHCgVfbmFtZUIOCgxfZGVzY3JpcHRpb25CCwoJX2NhdGVnb3J5QggKBl9lbW9qaUIICgZfcHJpY2UiIwoSVXBkYXRlU3RvY2tSZXF1ZXN0Eg0KBXN0b2NrGAEgASgDIisKFlRvZ2dsZUF2YWlsYWJsZVJlcXVlc3QSEQoJYXZhaWxhYmxlGAEgASgIInEKEUNyZWF0ZURlYWxSZXF1ZXN0EhIKCnByb2R1Y3RfaWQYASABKAMSEgoKZGVhbF9wcmljZRgCIAEoAxISCgpkZWFsX3N0b2NrGAMgASgDEg0KBWxhYmVsGAQgASgJEhEKCWZpbmlzaF9hdBgFIAEoAyIpChdUb2dnbGVEZWFsQWN0aXZlUmVxdWVzdBIOCgZhY3RpdmUYASABKAgiVgoSTGlzdFN0b3Jlc1Jlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIeCgZzdG9yZXMYAyADKAsyDi5jYXRhbG9nLlN0b3JlImUKE1N0b3JlRGV0YWlsUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEiIKBXN0b3JlGAMgASgLMg4uY2F0YWxvZy5TdG9yZUgAiAEBQggKBl9zdG9yZSJcChRMaXN0UHJvZHVjdHNSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSIgoIcHJvZHVjdHMYAyADKAsyEC5jYXRhbG9nLlByb2R1Y3QibQoVUHJvZHVjdERldGFpbFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRImCgdwcm9kdWN0GAMgASgLMhAuY2F0YWxvZy5Qcm9kdWN0SACIAQFCCgoIX3Byb2R1Y3QiUwoRTGlzdERlYWxzUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhwKBWRlYWxzGAMgAygLMg0uY2F0YWxvZy5EZWFsIlkKE0xpc3RSZXZpZXdzUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEiAKB3Jldmlld3MYAyADKAsyDy5jYXRhbG9nLlJldmlldyJSCgxGZWVkUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEiAKBWl0ZW1zGAMgAygLMhEuY2F0YWxvZy5GZWVkSXRlbSJeCghGZWVkSXRlbRIhCgRkZWFsGAEgASgLMhEuY2F0YWxvZy5EZWFsSXRlbUgAEicKB3Byb2R1Y3QYAiABKAsyFC5jYXRhbG9nLlByb2R1Y3RJdGVtSABCBgoEaXRlbSIbCghEZWFsSXRlbRIPCgdkZWFsX2lkGAEgASgDIlEKC1Byb2R1Y3RJdGVtEhIKCnByb2R1Y3RfaWQYASABKAMSEgoFZXh0cmEYAiABKAlIAIgBARIQCgh0aW1lX2FnbxgDIAEoCUIICgZfZXh0cmEidgoOU2VhcmNoUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEh4KBnN0b3JlcxgDIAMoCzIOLmNhdGFsb2cuU3RvcmUSIgoIcHJvZHVjdHMYBCADKAsyEC5jYXRhbG9nLlByb2R1Y3QiPwoPR2VuZXJhbFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIKCgJpZBgDIAEoA2IGcHJvdG8z");
+export const file_catalog: GenFile =
+	/*@__PURE__*/
+	fileDesc(
+		'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X3N1YnR5cGVCCAoGX2Vtb2ppQg0KC19sb2dvX2NvbG9yQhIKEF9iYW5uZXJfZ3JhZGllbnRCDgoMX2Rlc2NyaXB0aW9uQggKBl9ob3Vyc0ILCglfbG9jYXRpb24iIQoRVG9nZ2xlT3BlblJlcXVlc3QSDAoEb3BlbhgBIAEoCCLFAQoUQ3JlYXRlUHJvZHVjdFJlcXVlc3QSDAoEbmFtZRgBIAEoCRINCgVwcmljZRgCIAEoAxIQCghjYXRlZ29yeRgDIAEoCRIYCgtkZXNjcmlwdGlvbhgEIAEoCUgAiAEBEhIKBWVtb2ppGAUgASgJSAGIAQESEgoFc3RvY2sYBiABKANIAogBARIQCgNlYW4YByABKAlIA4gBAUIOCgxfZGVzY3JpcHRpb25CCAoGX2Vtb2ppQggKBl9zdG9ja0IGCgRfZWFuIrwBChRVcGRhdGVQcm9kdWN0UmVxdWVzdBIRCgRuYW1lGAEgASgJSACIAQESGAoLZGVzY3JpcHRpb24YAiABKAlIAYgBARIVCghjYXRlZ29yeRgDIAEoCUgCiAEBEhIKBWVtb2ppGAQgASgJSAOIAQESEgoFcHJpY2UYBSABKANIBIgBAUIHCgVfbmFtZUIOCgxfZGVzY3JpcHRpb25CCwoJX2NhdGVnb3J5QggKBl9lbW9qaUIICgZfcHJpY2UiIwoSVXBkYXRlU3RvY2tSZXF1ZXN0Eg0KBXN0b2NrGAEgASgDIisKFlRvZ2dsZUF2YWlsYWJsZVJlcXVlc3QSEQoJYXZhaWxhYmxlGAEgASgIInEKEUNyZWF0ZURlYWxSZXF1ZXN0EhIKCnByb2R1Y3RfaWQYASABKAMSEgoKZGVhbF9wcmljZRgCIAEoAxISCgpkZWFsX3N0b2NrGAMgASgDEg0KBWxhYmVsGAQgASgJEhEKCWZpbmlzaF9hdBgFIAEoAyIpChdUb2dnbGVEZWFsQWN0aXZlUmVxdWVzdBIOCgZhY3RpdmUYASABKAgiVgoSTGlzdFN0b3Jlc1Jlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIeCgZzdG9yZXMYAyADKAsyDi5jYXRhbG9nLlN0b3JlImUKE1N0b3JlRGV0YWlsUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEiIKBXN0b3JlGAMgASgLMg4uY2F0YWxvZy5TdG9yZUgAiAEBQggKBl9zdG9yZSJcChRMaXN0UHJvZHVjdHNSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSIgoIcHJvZHVjdHMYAyADKAsyEC5jYXRhbG9nLlByb2R1Y3QibQoVUHJvZHVjdERldGFpbFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRImCgdwcm9kdWN0GAMgASgLMhAuY2F0YWxvZy5Qcm9kdWN0SACIAQFCCgoIX3Byb2R1Y3QiUwoRTGlzdERlYWxzUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhwKBWRlYWxzGAMgAygLMg0uY2F0YWxvZy5EZWFsIlkKE0xpc3RSZXZpZXdzUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEiAKB3Jldmlld3MYAyADKAsyDy5jYXRhbG9nLlJldmlldyJSCgxGZWVkUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEiAKBWl0ZW1zGAMgAygLMhEuY2F0YWxvZy5GZWVkSXRlbSJeCghGZWVkSXRlbRIhCgRkZWFsGAEgASgLMhEuY2F0YWxvZy5EZWFsSXRlbUgAEicKB3Byb2R1Y3QYAiABKAsyFC5jYXRhbG9nLlByb2R1Y3RJdGVtSABCBgoEaXRlbSIbCghEZWFsSXRlbRIPCgdkZWFsX2lkGAEgASgDIlEKC1Byb2R1Y3RJdGVtEhIKCnByb2R1Y3RfaWQYASABKAMSEgoFZXh0cmEYAiABKAlIAIgBARIQCgh0aW1lX2FnbxgDIAEoCUIICgZfZXh0cmEidgoOU2VhcmNoUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEh4KBnN0b3JlcxgDIAMoCzIOLmNhdGFsb2cuU3RvcmUSIgoIcHJvZHVjdHMYBCADKAsyEC5jYXRhbG9nLlByb2R1Y3QiPwoPR2VuZXJhbFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIKCgJpZBgDIAEoA2IGcHJvdG8z'
+	);
 
 /**
  * @generated from message catalog.Store
  */
-export type Store = Message<"catalog.Store"> & {
-  /**
-   * @generated from field: int64 id = 1;
-   */
-  id: bigint;
+export type Store = Message<'catalog.Store'> & {
+	/**
+	 * @generated from field: int64 id = 1;
+	 */
+	id: bigint;
 
-  /**
-   * @generated from field: string slug = 2;
-   */
-  slug: string;
+	/**
+	 * @generated from field: string slug = 2;
+	 */
+	slug: string;
 
-  /**
-   * @generated from field: string seller_uid = 3;
-   */
-  sellerUid: string;
+	/**
+	 * @generated from field: string seller_uid = 3;
+	 */
+	sellerUid: string;
 
-  /**
-   * @generated from field: string name = 4;
-   */
-  name: string;
+	/**
+	 * @generated from field: string name = 4;
+	 */
+	name: string;
 
-  /**
-   * @generated from field: string category = 5;
-   */
-  category: string;
+	/**
+	 * @generated from field: string category = 5;
+	 */
+	category: string;
 
-  /**
-   * @generated from field: string kind = 6;
-   */
-  kind: string;
+	/**
+	 * @generated from field: string kind = 6;
+	 */
+	kind: string;
 
-  /**
-   * @generated from field: optional string subtype = 7;
-   */
-  subtype?: string | undefined;
+	/**
+	 * @generated from field: optional string subtype = 7;
+	 */
+	subtype?: string | undefined;
 
-  /**
-   * @generated from field: string emoji = 8;
-   */
-  emoji: string;
+	/**
+	 * @generated from field: string emoji = 8;
+	 */
+	emoji: string;
 
-  /**
-   * @generated from field: string logo_color = 9;
-   */
-  logoColor: string;
+	/**
+	 * @generated from field: string logo_color = 9;
+	 */
+	logoColor: string;
 
-  /**
-   * @generated from field: optional string banner_gradient = 10;
-   */
-  bannerGradient?: string | undefined;
+	/**
+	 * @generated from field: optional string banner_gradient = 10;
+	 */
+	bannerGradient?: string | undefined;
 
-  /**
-   * @generated from field: string description = 11;
-   */
-  description: string;
+	/**
+	 * @generated from field: string description = 11;
+	 */
+	description: string;
 
-  /**
-   * @generated from field: string hours = 12;
-   */
-  hours: string;
+	/**
+	 * @generated from field: string hours = 12;
+	 */
+	hours: string;
 
-  /**
-   * @generated from field: string location = 13;
-   */
-  location: string;
+	/**
+	 * @generated from field: string location = 13;
+	 */
+	location: string;
 
-  /**
-   * @generated from field: optional string logo_key = 14;
-   */
-  logoKey?: string | undefined;
+	/**
+	 * @generated from field: optional string logo_key = 14;
+	 */
+	logoKey?: string | undefined;
 
-  /**
-   * @generated from field: optional string banner_key = 15;
-   */
-  bannerKey?: string | undefined;
+	/**
+	 * @generated from field: optional string banner_key = 15;
+	 */
+	bannerKey?: string | undefined;
 
-  /**
-   * @generated from field: bool open = 16;
-   */
-  open: boolean;
+	/**
+	 * @generated from field: bool open = 16;
+	 */
+	open: boolean;
 
-  /**
-   * @generated from field: double rating = 17;
-   */
-  rating: number;
+	/**
+	 * @generated from field: double rating = 17;
+	 */
+	rating: number;
 
-  /**
-   * @generated from field: int64 created_at = 18;
-   */
-  createdAt: bigint;
+	/**
+	 * @generated from field: int64 created_at = 18;
+	 */
+	createdAt: bigint;
 
-  /**
-   * @generated from field: int64 updated_at = 19;
-   */
-  updatedAt: bigint;
+	/**
+	 * @generated from field: int64 updated_at = 19;
+	 */
+	updatedAt: bigint;
 };
 
 /**
  * Describes the message catalog.Store.
  * Use `create(StoreSchema)` to create a new message.
  */
-export const StoreSchema: GenMessage<Store> = /*@__PURE__*/
-  messageDesc(file_catalog, 0);
+export const StoreSchema: GenMessage<Store> = /*@__PURE__*/ messageDesc(file_catalog, 0);
 
 /**
  * name/description/category/emoji/image_key are always populated on the wire even
@@ -128,84 +130,83 @@ export const StoreSchema: GenMessage<Store> = /*@__PURE__*/
  *
  * @generated from message catalog.Product
  */
-export type Product = Message<"catalog.Product"> & {
-  /**
-   * @generated from field: int64 id = 1;
-   */
-  id: bigint;
+export type Product = Message<'catalog.Product'> & {
+	/**
+	 * @generated from field: int64 id = 1;
+	 */
+	id: bigint;
 
-  /**
-   * @generated from field: int64 store_id = 2;
-   */
-  storeId: bigint;
+	/**
+	 * @generated from field: int64 store_id = 2;
+	 */
+	storeId: bigint;
 
-  /**
-   * @generated from field: string name = 3;
-   */
-  name: string;
+	/**
+	 * @generated from field: string name = 3;
+	 */
+	name: string;
 
-  /**
-   * @generated from field: string description = 4;
-   */
-  description: string;
+	/**
+	 * @generated from field: string description = 4;
+	 */
+	description: string;
 
-  /**
-   * @generated from field: int64 price = 5;
-   */
-  price: bigint;
+	/**
+	 * @generated from field: int64 price = 5;
+	 */
+	price: bigint;
 
-  /**
-   * @generated from field: string category = 6;
-   */
-  category: string;
+	/**
+	 * @generated from field: string category = 6;
+	 */
+	category: string;
 
-  /**
-   * @generated from field: string emoji = 7;
-   */
-  emoji: string;
+	/**
+	 * @generated from field: string emoji = 7;
+	 */
+	emoji: string;
 
-  /**
-   * @generated from field: int64 stock = 8;
-   */
-  stock: bigint;
+	/**
+	 * @generated from field: int64 stock = 8;
+	 */
+	stock: bigint;
 
-  /**
-   * @generated from field: bool available = 9;
-   */
-  available: boolean;
+	/**
+	 * @generated from field: bool available = 9;
+	 */
+	available: boolean;
 
-  /**
-   * @generated from field: optional string image_key = 10;
-   */
-  imageKey?: string | undefined;
+	/**
+	 * @generated from field: optional string image_key = 10;
+	 */
+	imageKey?: string | undefined;
 
-  /**
-   * @generated from field: int64 created_at = 11;
-   */
-  createdAt: bigint;
+	/**
+	 * @generated from field: int64 created_at = 11;
+	 */
+	createdAt: bigint;
 
-  /**
-   * @generated from field: int64 updated_at = 12;
-   */
-  updatedAt: bigint;
+	/**
+	 * @generated from field: int64 updated_at = 12;
+	 */
+	updatedAt: bigint;
 
-  /**
-   * @generated from field: optional int64 generic_product_id = 13;
-   */
-  genericProductId?: bigint | undefined;
+	/**
+	 * @generated from field: optional int64 generic_product_id = 13;
+	 */
+	genericProductId?: bigint | undefined;
 
-  /**
-   * @generated from field: optional string ean = 14;
-   */
-  ean?: string | undefined;
+	/**
+	 * @generated from field: optional string ean = 14;
+	 */
+	ean?: string | undefined;
 };
 
 /**
  * Describes the message catalog.Product.
  * Use `create(ProductSchema)` to create a new message.
  */
-export const ProductSchema: GenMessage<Product> = /*@__PURE__*/
-  messageDesc(file_catalog, 1);
+export const ProductSchema: GenMessage<Product> = /*@__PURE__*/ messageDesc(file_catalog, 1);
 
 /**
  * Canonical, shared product data (ADR-007) -- exists once per EAN regardless of how
@@ -214,805 +215,823 @@ export const ProductSchema: GenMessage<Product> = /*@__PURE__*/
  *
  * @generated from message catalog.GenericProduct
  */
-export type GenericProduct = Message<"catalog.GenericProduct"> & {
-  /**
-   * @generated from field: int64 id = 1;
-   */
-  id: bigint;
+export type GenericProduct = Message<'catalog.GenericProduct'> & {
+	/**
+	 * @generated from field: int64 id = 1;
+	 */
+	id: bigint;
 
-  /**
-   * @generated from field: string ean = 2;
-   */
-  ean: string;
+	/**
+	 * @generated from field: string ean = 2;
+	 */
+	ean: string;
 
-  /**
-   * @generated from field: string name = 3;
-   */
-  name: string;
+	/**
+	 * @generated from field: string name = 3;
+	 */
+	name: string;
 
-  /**
-   * @generated from field: string description = 4;
-   */
-  description: string;
+	/**
+	 * @generated from field: string description = 4;
+	 */
+	description: string;
 
-  /**
-   * @generated from field: string category = 5;
-   */
-  category: string;
+	/**
+	 * @generated from field: string category = 5;
+	 */
+	category: string;
 
-  /**
-   * @generated from field: string emoji = 6;
-   */
-  emoji: string;
+	/**
+	 * @generated from field: string emoji = 6;
+	 */
+	emoji: string;
 
-  /**
-   * @generated from field: optional string image_key = 7;
-   */
-  imageKey?: string | undefined;
+	/**
+	 * @generated from field: optional string image_key = 7;
+	 */
+	imageKey?: string | undefined;
 
-  /**
-   * @generated from field: int64 created_at = 8;
-   */
-  createdAt: bigint;
+	/**
+	 * @generated from field: int64 created_at = 8;
+	 */
+	createdAt: bigint;
 
-  /**
-   * @generated from field: int64 updated_at = 9;
-   */
-  updatedAt: bigint;
+	/**
+	 * @generated from field: int64 updated_at = 9;
+	 */
+	updatedAt: bigint;
 };
 
 /**
  * Describes the message catalog.GenericProduct.
  * Use `create(GenericProductSchema)` to create a new message.
  */
-export const GenericProductSchema: GenMessage<GenericProduct> = /*@__PURE__*/
-  messageDesc(file_catalog, 2);
+export const GenericProductSchema: GenMessage<GenericProduct> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 2);
 
 /**
  * @generated from message catalog.Deal
  */
-export type Deal = Message<"catalog.Deal"> & {
-  /**
-   * @generated from field: int64 id = 1;
-   */
-  id: bigint;
+export type Deal = Message<'catalog.Deal'> & {
+	/**
+	 * @generated from field: int64 id = 1;
+	 */
+	id: bigint;
 
-  /**
-   * @generated from field: int64 store_id = 2;
-   */
-  storeId: bigint;
+	/**
+	 * @generated from field: int64 store_id = 2;
+	 */
+	storeId: bigint;
 
-  /**
-   * @generated from field: int64 product_id = 3;
-   */
-  productId: bigint;
+	/**
+	 * @generated from field: int64 product_id = 3;
+	 */
+	productId: bigint;
 
-  /**
-   * @generated from field: int64 deal_price = 4;
-   */
-  dealPrice: bigint;
+	/**
+	 * @generated from field: int64 deal_price = 4;
+	 */
+	dealPrice: bigint;
 
-  /**
-   * @generated from field: int64 original_price = 5;
-   */
-  originalPrice: bigint;
+	/**
+	 * @generated from field: int64 original_price = 5;
+	 */
+	originalPrice: bigint;
 
-  /**
-   * @generated from field: int64 deal_stock = 6;
-   */
-  dealStock: bigint;
+	/**
+	 * @generated from field: int64 deal_stock = 6;
+	 */
+	dealStock: bigint;
 
-  /**
-   * @generated from field: int64 initial_stock = 7;
-   */
-  initialStock: bigint;
+	/**
+	 * @generated from field: int64 initial_stock = 7;
+	 */
+	initialStock: bigint;
 
-  /**
-   * @generated from field: string label = 8;
-   */
-  label: string;
+	/**
+	 * @generated from field: string label = 8;
+	 */
+	label: string;
 
-  /**
-   * @generated from field: bool active = 9;
-   */
-  active: boolean;
+	/**
+	 * @generated from field: bool active = 9;
+	 */
+	active: boolean;
 
-  /**
-   * @generated from field: int64 finish_at = 10;
-   */
-  finishAt: bigint;
+	/**
+	 * @generated from field: int64 finish_at = 10;
+	 */
+	finishAt: bigint;
 
-  /**
-   * @generated from field: int64 created_at = 11;
-   */
-  createdAt: bigint;
+	/**
+	 * @generated from field: int64 created_at = 11;
+	 */
+	createdAt: bigint;
 };
 
 /**
  * Describes the message catalog.Deal.
  * Use `create(DealSchema)` to create a new message.
  */
-export const DealSchema: GenMessage<Deal> = /*@__PURE__*/
-  messageDesc(file_catalog, 3);
+export const DealSchema: GenMessage<Deal> = /*@__PURE__*/ messageDesc(file_catalog, 3);
 
 /**
  * @generated from message catalog.Review
  */
-export type Review = Message<"catalog.Review"> & {
-  /**
-   * @generated from field: int64 id = 1;
-   */
-  id: bigint;
+export type Review = Message<'catalog.Review'> & {
+	/**
+	 * @generated from field: int64 id = 1;
+	 */
+	id: bigint;
 
-  /**
-   * @generated from field: int64 store_id = 2;
-   */
-  storeId: bigint;
+	/**
+	 * @generated from field: int64 store_id = 2;
+	 */
+	storeId: bigint;
 
-  /**
-   * @generated from field: string user_uid = 3;
-   */
-  userUid: string;
+	/**
+	 * @generated from field: string user_uid = 3;
+	 */
+	userUid: string;
 
-  /**
-   * @generated from field: int64 rating = 4;
-   */
-  rating: bigint;
+	/**
+	 * @generated from field: int64 rating = 4;
+	 */
+	rating: bigint;
 
-  /**
-   * @generated from field: string text = 5;
-   */
-  text: string;
+	/**
+	 * @generated from field: string text = 5;
+	 */
+	text: string;
 
-  /**
-   * @generated from field: optional string photo_key = 6;
-   */
-  photoKey?: string | undefined;
+	/**
+	 * @generated from field: optional string photo_key = 6;
+	 */
+	photoKey?: string | undefined;
 
-  /**
-   * @generated from field: int64 created_at = 7;
-   */
-  createdAt: bigint;
+	/**
+	 * @generated from field: int64 created_at = 7;
+	 */
+	createdAt: bigint;
 };
 
 /**
  * Describes the message catalog.Review.
  * Use `create(ReviewSchema)` to create a new message.
  */
-export const ReviewSchema: GenMessage<Review> = /*@__PURE__*/
-  messageDesc(file_catalog, 4);
+export const ReviewSchema: GenMessage<Review> = /*@__PURE__*/ messageDesc(file_catalog, 4);
 
 /**
  * @generated from message catalog.CreateStoreRequest
  */
-export type CreateStoreRequest = Message<"catalog.CreateStoreRequest"> & {
-  /**
-   * @generated from field: string name = 1;
-   */
-  name: string;
+export type CreateStoreRequest = Message<'catalog.CreateStoreRequest'> & {
+	/**
+	 * @generated from field: string name = 1;
+	 */
+	name: string;
 
-  /**
-   * @generated from field: string category = 2;
-   */
-  category: string;
+	/**
+	 * @generated from field: string category = 2;
+	 */
+	category: string;
 
-  /**
-   * @generated from field: string emoji = 3;
-   */
-  emoji: string;
+	/**
+	 * @generated from field: string emoji = 3;
+	 */
+	emoji: string;
 
-  /**
-   * @generated from field: string description = 4;
-   */
-  description: string;
+	/**
+	 * @generated from field: string description = 4;
+	 */
+	description: string;
 
-  /**
-   * @generated from field: string hours = 5;
-   */
-  hours: string;
+	/**
+	 * @generated from field: string hours = 5;
+	 */
+	hours: string;
 
-  /**
-   * @generated from field: string location = 6;
-   */
-  location: string;
+	/**
+	 * @generated from field: string location = 6;
+	 */
+	location: string;
 
-  /**
-   * @generated from field: optional string kind = 7;
-   */
-  kind?: string | undefined;
+	/**
+	 * @generated from field: optional string kind = 7;
+	 */
+	kind?: string | undefined;
 
-  /**
-   * @generated from field: optional string subtype = 8;
-   */
-  subtype?: string | undefined;
+	/**
+	 * @generated from field: optional string subtype = 8;
+	 */
+	subtype?: string | undefined;
 };
 
 /**
  * Describes the message catalog.CreateStoreRequest.
  * Use `create(CreateStoreRequestSchema)` to create a new message.
  */
-export const CreateStoreRequestSchema: GenMessage<CreateStoreRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 5);
+export const CreateStoreRequestSchema: GenMessage<CreateStoreRequest> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 5);
 
 /**
  * @generated from message catalog.UpdateStoreRequest
  */
-export type UpdateStoreRequest = Message<"catalog.UpdateStoreRequest"> & {
-  /**
-   * @generated from field: int64 id = 1;
-   */
-  id: bigint;
+export type UpdateStoreRequest = Message<'catalog.UpdateStoreRequest'> & {
+	/**
+	 * @generated from field: int64 id = 1;
+	 */
+	id: bigint;
 
-  /**
-   * @generated from field: optional string name = 2;
-   */
-  name?: string | undefined;
+	/**
+	 * @generated from field: optional string name = 2;
+	 */
+	name?: string | undefined;
 
-  /**
-   * @generated from field: optional string category = 3;
-   */
-  category?: string | undefined;
+	/**
+	 * @generated from field: optional string category = 3;
+	 */
+	category?: string | undefined;
 
-  /**
-   * @generated from field: optional string kind = 4;
-   */
-  kind?: string | undefined;
+	/**
+	 * @generated from field: optional string kind = 4;
+	 */
+	kind?: string | undefined;
 
-  /**
-   * @generated from field: optional string subtype = 5;
-   */
-  subtype?: string | undefined;
+	/**
+	 * @generated from field: optional string subtype = 5;
+	 */
+	subtype?: string | undefined;
 
-  /**
-   * @generated from field: optional string emoji = 6;
-   */
-  emoji?: string | undefined;
+	/**
+	 * @generated from field: optional string emoji = 6;
+	 */
+	emoji?: string | undefined;
 
-  /**
-   * @generated from field: optional string logo_color = 7;
-   */
-  logoColor?: string | undefined;
+	/**
+	 * @generated from field: optional string logo_color = 7;
+	 */
+	logoColor?: string | undefined;
 
-  /**
-   * @generated from field: optional string banner_gradient = 8;
-   */
-  bannerGradient?: string | undefined;
+	/**
+	 * @generated from field: optional string banner_gradient = 8;
+	 */
+	bannerGradient?: string | undefined;
 
-  /**
-   * @generated from field: optional string description = 9;
-   */
-  description?: string | undefined;
+	/**
+	 * @generated from field: optional string description = 9;
+	 */
+	description?: string | undefined;
 
-  /**
-   * @generated from field: optional string hours = 10;
-   */
-  hours?: string | undefined;
+	/**
+	 * @generated from field: optional string hours = 10;
+	 */
+	hours?: string | undefined;
 
-  /**
-   * @generated from field: optional string location = 11;
-   */
-  location?: string | undefined;
+	/**
+	 * @generated from field: optional string location = 11;
+	 */
+	location?: string | undefined;
 };
 
 /**
  * Describes the message catalog.UpdateStoreRequest.
  * Use `create(UpdateStoreRequestSchema)` to create a new message.
  */
-export const UpdateStoreRequestSchema: GenMessage<UpdateStoreRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 6);
+export const UpdateStoreRequestSchema: GenMessage<UpdateStoreRequest> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 6);
 
 /**
  * @generated from message catalog.ToggleOpenRequest
  */
-export type ToggleOpenRequest = Message<"catalog.ToggleOpenRequest"> & {
-  /**
-   * @generated from field: bool open = 1;
-   */
-  open: boolean;
+export type ToggleOpenRequest = Message<'catalog.ToggleOpenRequest'> & {
+	/**
+	 * @generated from field: bool open = 1;
+	 */
+	open: boolean;
 };
 
 /**
  * Describes the message catalog.ToggleOpenRequest.
  * Use `create(ToggleOpenRequestSchema)` to create a new message.
  */
-export const ToggleOpenRequestSchema: GenMessage<ToggleOpenRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 7);
+export const ToggleOpenRequestSchema: GenMessage<ToggleOpenRequest> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 7);
 
 /**
  * @generated from message catalog.CreateProductRequest
  */
-export type CreateProductRequest = Message<"catalog.CreateProductRequest"> & {
-  /**
-   * @generated from field: string name = 1;
-   */
-  name: string;
+export type CreateProductRequest = Message<'catalog.CreateProductRequest'> & {
+	/**
+	 * @generated from field: string name = 1;
+	 */
+	name: string;
 
-  /**
-   * @generated from field: int64 price = 2;
-   */
-  price: bigint;
+	/**
+	 * @generated from field: int64 price = 2;
+	 */
+	price: bigint;
 
-  /**
-   * @generated from field: string category = 3;
-   */
-  category: string;
+	/**
+	 * @generated from field: string category = 3;
+	 */
+	category: string;
 
-  /**
-   * @generated from field: optional string description = 4;
-   */
-  description?: string | undefined;
+	/**
+	 * @generated from field: optional string description = 4;
+	 */
+	description?: string | undefined;
 
-  /**
-   * @generated from field: optional string emoji = 5;
-   */
-  emoji?: string | undefined;
+	/**
+	 * @generated from field: optional string emoji = 5;
+	 */
+	emoji?: string | undefined;
 
-  /**
-   * @generated from field: optional int64 stock = 6;
-   */
-  stock?: bigint | undefined;
+	/**
+	 * @generated from field: optional int64 stock = 6;
+	 */
+	stock?: bigint | undefined;
 
-  /**
-   * If set, this listing links to (or creates) the GenericProduct with this EAN --
-   * name/category/description/emoji are only used to create it the first time any
-   * store registers this EAN; later stores linking the same EAN have theirs ignored.
-   * If unset, this is a store-custom product: name/category/etc. are stored as-is.
-   *
-   * @generated from field: optional string ean = 7;
-   */
-  ean?: string | undefined;
+	/**
+	 * If set, this listing links to (or creates) the GenericProduct with this EAN --
+	 * name/category/description/emoji are only used to create it the first time any
+	 * store registers this EAN; later stores linking the same EAN have theirs ignored.
+	 * If unset, this is a store-custom product: name/category/etc. are stored as-is.
+	 *
+	 * @generated from field: optional string ean = 7;
+	 */
+	ean?: string | undefined;
 };
 
 /**
  * Describes the message catalog.CreateProductRequest.
  * Use `create(CreateProductRequestSchema)` to create a new message.
  */
-export const CreateProductRequestSchema: GenMessage<CreateProductRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 8);
+export const CreateProductRequestSchema: GenMessage<CreateProductRequest> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 8);
 
 /**
  * @generated from message catalog.UpdateProductRequest
  */
-export type UpdateProductRequest = Message<"catalog.UpdateProductRequest"> & {
-  /**
-   * @generated from field: optional string name = 1;
-   */
-  name?: string | undefined;
+export type UpdateProductRequest = Message<'catalog.UpdateProductRequest'> & {
+	/**
+	 * @generated from field: optional string name = 1;
+	 */
+	name?: string | undefined;
 
-  /**
-   * @generated from field: optional string description = 2;
-   */
-  description?: string | undefined;
+	/**
+	 * @generated from field: optional string description = 2;
+	 */
+	description?: string | undefined;
 
-  /**
-   * @generated from field: optional string category = 3;
-   */
-  category?: string | undefined;
+	/**
+	 * @generated from field: optional string category = 3;
+	 */
+	category?: string | undefined;
 
-  /**
-   * @generated from field: optional string emoji = 4;
-   */
-  emoji?: string | undefined;
+	/**
+	 * @generated from field: optional string emoji = 4;
+	 */
+	emoji?: string | undefined;
 
-  /**
-   * @generated from field: optional int64 price = 5;
-   */
-  price?: bigint | undefined;
+	/**
+	 * @generated from field: optional int64 price = 5;
+	 */
+	price?: bigint | undefined;
 };
 
 /**
  * Describes the message catalog.UpdateProductRequest.
  * Use `create(UpdateProductRequestSchema)` to create a new message.
  */
-export const UpdateProductRequestSchema: GenMessage<UpdateProductRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 9);
+export const UpdateProductRequestSchema: GenMessage<UpdateProductRequest> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 9);
 
 /**
  * @generated from message catalog.UpdateStockRequest
  */
-export type UpdateStockRequest = Message<"catalog.UpdateStockRequest"> & {
-  /**
-   * @generated from field: int64 stock = 1;
-   */
-  stock: bigint;
+export type UpdateStockRequest = Message<'catalog.UpdateStockRequest'> & {
+	/**
+	 * @generated from field: int64 stock = 1;
+	 */
+	stock: bigint;
 };
 
 /**
  * Describes the message catalog.UpdateStockRequest.
  * Use `create(UpdateStockRequestSchema)` to create a new message.
  */
-export const UpdateStockRequestSchema: GenMessage<UpdateStockRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 10);
+export const UpdateStockRequestSchema: GenMessage<UpdateStockRequest> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 10);
 
 /**
  * @generated from message catalog.ToggleAvailableRequest
  */
-export type ToggleAvailableRequest = Message<"catalog.ToggleAvailableRequest"> & {
-  /**
-   * @generated from field: bool available = 1;
-   */
-  available: boolean;
+export type ToggleAvailableRequest = Message<'catalog.ToggleAvailableRequest'> & {
+	/**
+	 * @generated from field: bool available = 1;
+	 */
+	available: boolean;
 };
 
 /**
  * Describes the message catalog.ToggleAvailableRequest.
  * Use `create(ToggleAvailableRequestSchema)` to create a new message.
  */
-export const ToggleAvailableRequestSchema: GenMessage<ToggleAvailableRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 11);
+export const ToggleAvailableRequestSchema: GenMessage<ToggleAvailableRequest> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 11);
 
 /**
  * @generated from message catalog.CreateDealRequest
  */
-export type CreateDealRequest = Message<"catalog.CreateDealRequest"> & {
-  /**
-   * @generated from field: int64 product_id = 1;
-   */
-  productId: bigint;
+export type CreateDealRequest = Message<'catalog.CreateDealRequest'> & {
+	/**
+	 * @generated from field: int64 product_id = 1;
+	 */
+	productId: bigint;
 
-  /**
-   * @generated from field: int64 deal_price = 2;
-   */
-  dealPrice: bigint;
+	/**
+	 * @generated from field: int64 deal_price = 2;
+	 */
+	dealPrice: bigint;
 
-  /**
-   * @generated from field: int64 deal_stock = 3;
-   */
-  dealStock: bigint;
+	/**
+	 * @generated from field: int64 deal_stock = 3;
+	 */
+	dealStock: bigint;
 
-  /**
-   * @generated from field: string label = 4;
-   */
-  label: string;
+	/**
+	 * @generated from field: string label = 4;
+	 */
+	label: string;
 
-  /**
-   * @generated from field: int64 finish_at = 5;
-   */
-  finishAt: bigint;
+	/**
+	 * @generated from field: int64 finish_at = 5;
+	 */
+	finishAt: bigint;
 };
 
 /**
  * Describes the message catalog.CreateDealRequest.
  * Use `create(CreateDealRequestSchema)` to create a new message.
  */
-export const CreateDealRequestSchema: GenMessage<CreateDealRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 12);
+export const CreateDealRequestSchema: GenMessage<CreateDealRequest> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 12);
 
 /**
  * @generated from message catalog.ToggleDealActiveRequest
  */
-export type ToggleDealActiveRequest = Message<"catalog.ToggleDealActiveRequest"> & {
-  /**
-   * @generated from field: bool active = 1;
-   */
-  active: boolean;
+export type ToggleDealActiveRequest = Message<'catalog.ToggleDealActiveRequest'> & {
+	/**
+	 * @generated from field: bool active = 1;
+	 */
+	active: boolean;
 };
 
 /**
  * Describes the message catalog.ToggleDealActiveRequest.
  * Use `create(ToggleDealActiveRequestSchema)` to create a new message.
  */
-export const ToggleDealActiveRequestSchema: GenMessage<ToggleDealActiveRequest> = /*@__PURE__*/
-  messageDesc(file_catalog, 13);
+export const ToggleDealActiveRequestSchema: GenMessage<ToggleDealActiveRequest> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 13);
 
 /**
  * @generated from message catalog.ListStoresResponse
  */
-export type ListStoresResponse = Message<"catalog.ListStoresResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
+export type ListStoresResponse = Message<'catalog.ListStoresResponse'> & {
+	/**
+	 * @generated from field: bool success = 1;
+	 */
+	success: boolean;
 
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
+	/**
+	 * @generated from field: string message = 2;
+	 */
+	message: string;
 
-  /**
-   * @generated from field: repeated catalog.Store stores = 3;
-   */
-  stores: Store[];
+	/**
+	 * @generated from field: repeated catalog.Store stores = 3;
+	 */
+	stores: Store[];
 };
 
 /**
  * Describes the message catalog.ListStoresResponse.
  * Use `create(ListStoresResponseSchema)` to create a new message.
  */
-export const ListStoresResponseSchema: GenMessage<ListStoresResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 14);
+export const ListStoresResponseSchema: GenMessage<ListStoresResponse> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 14);
 
 /**
  * @generated from message catalog.StoreDetailResponse
  */
-export type StoreDetailResponse = Message<"catalog.StoreDetailResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
+export type StoreDetailResponse = Message<'catalog.StoreDetailResponse'> & {
+	/**
+	 * @generated from field: bool success = 1;
+	 */
+	success: boolean;
 
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
+	/**
+	 * @generated from field: string message = 2;
+	 */
+	message: string;
 
-  /**
-   * @generated from field: optional catalog.Store store = 3;
-   */
-  store?: Store | undefined;
+	/**
+	 * @generated from field: optional catalog.Store store = 3;
+	 */
+	store?: Store | undefined;
 };
 
 /**
  * Describes the message catalog.StoreDetailResponse.
  * Use `create(StoreDetailResponseSchema)` to create a new message.
  */
-export const StoreDetailResponseSchema: GenMessage<StoreDetailResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 15);
+export const StoreDetailResponseSchema: GenMessage<StoreDetailResponse> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 15);
 
 /**
  * @generated from message catalog.ListProductsResponse
  */
-export type ListProductsResponse = Message<"catalog.ListProductsResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
+export type ListProductsResponse = Message<'catalog.ListProductsResponse'> & {
+	/**
+	 * @generated from field: bool success = 1;
+	 */
+	success: boolean;
 
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
+	/**
+	 * @generated from field: string message = 2;
+	 */
+	message: string;
 
-  /**
-   * @generated from field: repeated catalog.Product products = 3;
-   */
-  products: Product[];
+	/**
+	 * @generated from field: repeated catalog.Product products = 3;
+	 */
+	products: Product[];
 };
 
 /**
  * Describes the message catalog.ListProductsResponse.
  * Use `create(ListProductsResponseSchema)` to create a new message.
  */
-export const ListProductsResponseSchema: GenMessage<ListProductsResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 16);
+export const ListProductsResponseSchema: GenMessage<ListProductsResponse> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 16);
 
 /**
  * @generated from message catalog.ProductDetailResponse
  */
-export type ProductDetailResponse = Message<"catalog.ProductDetailResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
+export type ProductDetailResponse = Message<'catalog.ProductDetailResponse'> & {
+	/**
+	 * @generated from field: bool success = 1;
+	 */
+	success: boolean;
 
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
+	/**
+	 * @generated from field: string message = 2;
+	 */
+	message: string;
 
-  /**
-   * @generated from field: optional catalog.Product product = 3;
-   */
-  product?: Product | undefined;
+	/**
+	 * @generated from field: optional catalog.Product product = 3;
+	 */
+	product?: Product | undefined;
 };
 
 /**
  * Describes the message catalog.ProductDetailResponse.
  * Use `create(ProductDetailResponseSchema)` to create a new message.
  */
-export const ProductDetailResponseSchema: GenMessage<ProductDetailResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 17);
+export const ProductDetailResponseSchema: GenMessage<ProductDetailResponse> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 17);
 
 /**
  * @generated from message catalog.ListDealsResponse
  */
-export type ListDealsResponse = Message<"catalog.ListDealsResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
+export type ListDealsResponse = Message<'catalog.ListDealsResponse'> & {
+	/**
+	 * @generated from field: bool success = 1;
+	 */
+	success: boolean;
 
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
+	/**
+	 * @generated from field: string message = 2;
+	 */
+	message: string;
 
-  /**
-   * @generated from field: repeated catalog.Deal deals = 3;
-   */
-  deals: Deal[];
+	/**
+	 * @generated from field: repeated catalog.Deal deals = 3;
+	 */
+	deals: Deal[];
 };
 
 /**
  * Describes the message catalog.ListDealsResponse.
  * Use `create(ListDealsResponseSchema)` to create a new message.
  */
-export const ListDealsResponseSchema: GenMessage<ListDealsResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 18);
+export const ListDealsResponseSchema: GenMessage<ListDealsResponse> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 18);
 
 /**
  * @generated from message catalog.ListReviewsResponse
  */
-export type ListReviewsResponse = Message<"catalog.ListReviewsResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
+export type ListReviewsResponse = Message<'catalog.ListReviewsResponse'> & {
+	/**
+	 * @generated from field: bool success = 1;
+	 */
+	success: boolean;
 
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
+	/**
+	 * @generated from field: string message = 2;
+	 */
+	message: string;
 
-  /**
-   * @generated from field: repeated catalog.Review reviews = 3;
-   */
-  reviews: Review[];
+	/**
+	 * @generated from field: repeated catalog.Review reviews = 3;
+	 */
+	reviews: Review[];
 };
 
 /**
  * Describes the message catalog.ListReviewsResponse.
  * Use `create(ListReviewsResponseSchema)` to create a new message.
  */
-export const ListReviewsResponseSchema: GenMessage<ListReviewsResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 19);
+export const ListReviewsResponseSchema: GenMessage<ListReviewsResponse> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 19);
 
 /**
  * @generated from message catalog.FeedResponse
  */
-export type FeedResponse = Message<"catalog.FeedResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
+export type FeedResponse = Message<'catalog.FeedResponse'> & {
+	/**
+	 * @generated from field: bool success = 1;
+	 */
+	success: boolean;
 
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
+	/**
+	 * @generated from field: string message = 2;
+	 */
+	message: string;
 
-  /**
-   * @generated from field: repeated catalog.FeedItem items = 3;
-   */
-  items: FeedItem[];
+	/**
+	 * @generated from field: repeated catalog.FeedItem items = 3;
+	 */
+	items: FeedItem[];
 };
 
 /**
  * Describes the message catalog.FeedResponse.
  * Use `create(FeedResponseSchema)` to create a new message.
  */
-export const FeedResponseSchema: GenMessage<FeedResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 20);
+export const FeedResponseSchema: GenMessage<FeedResponse> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 20);
 
 /**
  * @generated from message catalog.FeedItem
  */
-export type FeedItem = Message<"catalog.FeedItem"> & {
-  /**
-   * @generated from oneof catalog.FeedItem.item
-   */
-  item: {
-    /**
-     * @generated from field: catalog.DealItem deal = 1;
-     */
-    value: DealItem;
-    case: "deal";
-  } | {
-    /**
-     * @generated from field: catalog.ProductItem product = 2;
-     */
-    value: ProductItem;
-    case: "product";
-  } | { case: undefined; value?: undefined };
+export type FeedItem = Message<'catalog.FeedItem'> & {
+	/**
+	 * @generated from oneof catalog.FeedItem.item
+	 */
+	item:
+		| {
+				/**
+				 * @generated from field: catalog.DealItem deal = 1;
+				 */
+				value: DealItem;
+				case: 'deal';
+		  }
+		| {
+				/**
+				 * @generated from field: catalog.ProductItem product = 2;
+				 */
+				value: ProductItem;
+				case: 'product';
+		  }
+		| { case: undefined; value?: undefined };
 };
 
 /**
  * Describes the message catalog.FeedItem.
  * Use `create(FeedItemSchema)` to create a new message.
  */
-export const FeedItemSchema: GenMessage<FeedItem> = /*@__PURE__*/
-  messageDesc(file_catalog, 21);
+export const FeedItemSchema: GenMessage<FeedItem> = /*@__PURE__*/ messageDesc(file_catalog, 21);
 
 /**
  * @generated from message catalog.DealItem
  */
-export type DealItem = Message<"catalog.DealItem"> & {
-  /**
-   * @generated from field: int64 deal_id = 1;
-   */
-  dealId: bigint;
+export type DealItem = Message<'catalog.DealItem'> & {
+	/**
+	 * @generated from field: int64 deal_id = 1;
+	 */
+	dealId: bigint;
 };
 
 /**
  * Describes the message catalog.DealItem.
  * Use `create(DealItemSchema)` to create a new message.
  */
-export const DealItemSchema: GenMessage<DealItem> = /*@__PURE__*/
-  messageDesc(file_catalog, 22);
+export const DealItemSchema: GenMessage<DealItem> = /*@__PURE__*/ messageDesc(file_catalog, 22);
 
 /**
  * @generated from message catalog.ProductItem
  */
-export type ProductItem = Message<"catalog.ProductItem"> & {
-  /**
-   * @generated from field: int64 product_id = 1;
-   */
-  productId: bigint;
+export type ProductItem = Message<'catalog.ProductItem'> & {
+	/**
+	 * @generated from field: int64 product_id = 1;
+	 */
+	productId: bigint;
 
-  /**
-   * @generated from field: optional string extra = 2;
-   */
-  extra?: string | undefined;
+	/**
+	 * @generated from field: optional string extra = 2;
+	 */
+	extra?: string | undefined;
 
-  /**
-   * @generated from field: string time_ago = 3;
-   */
-  timeAgo: string;
+	/**
+	 * @generated from field: string time_ago = 3;
+	 */
+	timeAgo: string;
 };
 
 /**
  * Describes the message catalog.ProductItem.
  * Use `create(ProductItemSchema)` to create a new message.
  */
-export const ProductItemSchema: GenMessage<ProductItem> = /*@__PURE__*/
-  messageDesc(file_catalog, 23);
+export const ProductItemSchema: GenMessage<ProductItem> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 23);
 
 /**
  * @generated from message catalog.SearchResponse
  */
-export type SearchResponse = Message<"catalog.SearchResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
+export type SearchResponse = Message<'catalog.SearchResponse'> & {
+	/**
+	 * @generated from field: bool success = 1;
+	 */
+	success: boolean;
 
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
+	/**
+	 * @generated from field: string message = 2;
+	 */
+	message: string;
 
-  /**
-   * @generated from field: repeated catalog.Store stores = 3;
-   */
-  stores: Store[];
+	/**
+	 * @generated from field: repeated catalog.Store stores = 3;
+	 */
+	stores: Store[];
 
-  /**
-   * @generated from field: repeated catalog.Product products = 4;
-   */
-  products: Product[];
+	/**
+	 * @generated from field: repeated catalog.Product products = 4;
+	 */
+	products: Product[];
 };
 
 /**
  * Describes the message catalog.SearchResponse.
  * Use `create(SearchResponseSchema)` to create a new message.
  */
-export const SearchResponseSchema: GenMessage<SearchResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 24);
+export const SearchResponseSchema: GenMessage<SearchResponse> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 24);
 
 /**
  * @generated from message catalog.GeneralResponse
  */
-export type GeneralResponse = Message<"catalog.GeneralResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
+export type GeneralResponse = Message<'catalog.GeneralResponse'> & {
+	/**
+	 * @generated from field: bool success = 1;
+	 */
+	success: boolean;
 
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
+	/**
+	 * @generated from field: string message = 2;
+	 */
+	message: string;
 
-  /**
-   * @generated from field: int64 id = 3;
-   */
-  id: bigint;
+	/**
+	 * @generated from field: int64 id = 3;
+	 */
+	id: bigint;
 };
 
 /**
  * Describes the message catalog.GeneralResponse.
  * Use `create(GeneralResponseSchema)` to create a new message.
  */
-export const GeneralResponseSchema: GenMessage<GeneralResponse> = /*@__PURE__*/
-  messageDesc(file_catalog, 25);
-
+export const GeneralResponseSchema: GenMessage<GeneralResponse> =
+	/*@__PURE__*/
+	messageDesc(file_catalog, 25);

@@ -15,7 +15,9 @@
 	let remaining = $state(finishAt - Date.now());
 	$effect(() => {
 		const end = finishAt;
-		const id = setInterval(() => { remaining = end - Date.now(); }, 1000);
+		const id = setInterval(() => {
+			remaining = end - Date.now();
+		}, 1000);
 		return () => clearInterval(id);
 	});
 </script>

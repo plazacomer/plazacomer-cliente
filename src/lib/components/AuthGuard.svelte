@@ -13,9 +13,9 @@
 </script>
 
 {#if authStore.loading}
-	<div class="min-h-screen flex items-center justify-center" style="background:var(--c-bg-primary)">
+	<div class="flex min-h-screen items-center justify-center" style="background:var(--c-bg-primary)">
 		<div
-			class="w-8 h-8 border-2 rounded-full animate-spin"
+			class="h-8 w-8 animate-spin rounded-full border-2"
 			style="border-color:var(--c-border);border-top-color:var(--c-brand)"
 		></div>
 	</div>

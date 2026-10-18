@@ -1,5 +1,13 @@
 import { browser } from '$app/environment';
-import { getFirebaseAuth, signInWithGoogle, signInWithFacebook, signInWithApple, signOut as firebaseSignOut, trackEvent, type User } from '$lib/firebase';
+import {
+	getFirebaseAuth,
+	signInWithGoogle,
+	signInWithFacebook,
+	signInWithApple,
+	signOut as firebaseSignOut,
+	trackEvent,
+	type User
+} from '$lib/firebase';
 import { onAuthStateChanged, getAdditionalUserInfo, type UserCredential } from 'firebase/auth';
 import { m } from '$lib/paraglide/messages.js';
 
@@ -35,27 +43,46 @@ function createAuth() {
 		} catch (e: unknown) {
 			const code = (e as { code?: string }).code ?? '';
 			if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') return;
-			error = code === 'auth/account-exists-with-different-credential'
-				? m.login_error_account_exists()
-				: m.login_error_generic();
+			error =
+				code === 'auth/account-exists-with-different-credential'
+					? m.login_error_account_exists()
+					: m.login_error_generic();
 		}
 	}
 
 	return {
-		get user()         { return user; },
-		get loading()      { return loading; },
-		get error()        { return error; },
-		get configured()   { return configured; },
-		get isAuthenticated() { return !!user; },
-		clearError() { error = null; },
-		signInWithGoogle()   { return runSignIn('google', signInWithGoogle); },
-		signInWithFacebook() { return runSignIn('facebook', signInWithFacebook); },
-		signInWithApple()    { return runSignIn('apple', signInWithApple); },
+		get user() {
+			return user;
+		},
+		get loading() {
+			return loading;
+		},
+		get error() {
+			return error;
+		},
+		get configured() {
+			return configured;
+		},
+		get isAuthenticated() {
+			return !!user;
+		},
+		clearError() {
+			error = null;
+		},
+		signInWithGoogle() {
+			return runSignIn('google', signInWithGoogle);
+		},
+		signInWithFacebook() {
+			return runSignIn('facebook', signInWithFacebook);
+		},
+		signInWithApple() {
+			return runSignIn('apple', signInWithApple);
+		},
 		async signOut() {
 			if (!configured) return;
 			await firebaseSignOut();
 			user = null;
-		},
+		}
 	};
 }
 

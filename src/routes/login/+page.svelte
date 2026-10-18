@@ -26,7 +26,7 @@
 			</svg>`,
 			bg: 'white',
 			color: '#1F1F1F',
-			border: '#DADCE0',
+			border: '#DADCE0'
 		},
 		{
 			id: 'facebook',
@@ -36,7 +36,7 @@
 			</svg>`,
 			bg: '#1877F2',
 			color: 'white',
-			border: '#1877F2',
+			border: '#1877F2'
 		},
 		{
 			id: 'apple',
@@ -46,8 +46,8 @@
 			</svg>`,
 			bg: '#000',
 			color: 'white',
-			border: '#000',
-		},
+			border: '#000'
+		}
 	];
 
 	let signingIn = $state<string | null>(null);
@@ -57,9 +57,9 @@
 		signingIn = provider.id;
 		authStore.clearError();
 		const methodMap = {
-			google:   () => authStore.signInWithGoogle(),
+			google: () => authStore.signInWithGoogle(),
 			facebook: () => authStore.signInWithFacebook(),
-			apple:    () => authStore.signInWithApple(),
+			apple: () => authStore.signInWithApple()
 		};
 		await methodMap[provider.id]();
 		signingIn = null;
@@ -68,44 +68,53 @@
 </script>
 
 <div
-	class="min-h-screen flex items-center justify-center p-6"
+	class="flex min-h-screen items-center justify-center p-6"
 	style="background:var(--c-bg-primary)"
 >
 	<div
-		class="w-full grid overflow-hidden"
+		class="grid w-full overflow-hidden"
 		style="max-width:960px;grid-template-columns:1fr;border-radius:24px;box-shadow:0 8px 32px rgba(0,0,0,.12);border:1px solid var(--c-border-soft);background:var(--c-bg-card)"
 	>
 		<style>
 			@media (min-width: 768px) {
-				.login-grid { grid-template-columns: 1fr 1fr !important; }
+				.login-grid {
+					grid-template-columns: 1fr 1fr !important;
+				}
 			}
 		</style>
 		<div class="login-grid grid" style="grid-template-columns:1fr">
-
 			<!-- Hero side -->
 			<div
-				class="flex flex-col items-center justify-center text-center px-8 py-12 relative overflow-hidden min-h-[280px]"
+				class="relative flex min-h-[280px] flex-col items-center justify-center overflow-hidden px-8 py-12 text-center"
 				style="background:radial-gradient(ellipse at center, #1A1A2E 0%, #0A0A14 100%)"
 			>
-				<div class="absolute inset-0"
-					style="background:radial-gradient(circle at 30% 40%, rgba(236,72,153,.15), transparent 50%),radial-gradient(circle at 70% 70%, rgba(37,99,235,.15), transparent 50%)">
-				</div>
-				<div class="relative z-10 animate-radial flex flex-col items-center">
-					<Logo size={120}/>
-					<div class="font-display text-3xl font-extrabold text-white tracking-[1.5px] mt-5">PLAZACOMER</div>
-					<div class="text-[11px] text-[#A0A0B8] tracking-[3px] uppercase mt-1">{m.login_tagline()}</div>
+				<div
+					class="absolute inset-0"
+					style="background:radial-gradient(circle at 30% 40%, rgba(236,72,153,.15), transparent 50%),radial-gradient(circle at 70% 70%, rgba(37,99,235,.15), transparent 50%)"
+				></div>
+				<div class="animate-radial relative z-10 flex flex-col items-center">
+					<Logo size={120} />
+					<div class="mt-5 font-display text-3xl font-extrabold tracking-[1.5px] text-white">
+						PLAZACOMER
+					</div>
+					<div class="mt-1 text-[11px] tracking-[3px] text-[#A0A0B8] uppercase">
+						{m.login_tagline()}
+					</div>
 				</div>
 			</div>
 
 			<!-- Form side -->
 			<div class="px-7 py-10 md:px-12">
-				<h2 class="font-display text-2xl font-bold mb-2">{m.login_title()}</h2>
-				<p class="text-sm mb-7" style="color:var(--c-text-secondary)">
+				<h2 class="mb-2 font-display text-2xl font-bold">{m.login_title()}</h2>
+				<p class="mb-7 text-sm" style="color:var(--c-text-secondary)">
 					{m.login_subtitle()}
 				</p>
 
 				{#if authStore.error}
-					<div class="mb-4 px-4 py-3 rounded-xl text-sm" style="background:rgba(239,68,68,.1);color:var(--c-error);border:1px solid rgba(239,68,68,.2)">
+					<div
+						class="mb-4 rounded-xl px-4 py-3 text-sm"
+						style="background:rgba(239,68,68,.1);color:var(--c-error);border:1px solid rgba(239,68,68,.2)"
+					>
 						{authStore.error}
 					</div>
 				{/if}
@@ -115,25 +124,37 @@
 						<button
 							onclick={() => handleLogin(p)}
 							disabled={!!signingIn}
-							class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-all border cursor-pointer"
-							style="border-color:{p.border};background:{p.bg};color:{p.color};opacity:{signingIn && signingIn !== p.id ? 0.45 : 1};box-shadow:0 1px 3px rgba(0,0,0,.1)"
+							class="flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3.5 text-sm font-semibold transition-all"
+							style="border-color:{p.border};background:{p.bg};color:{p.color};opacity:{signingIn &&
+							signingIn !== p.id
+								? 0.45
+								: 1};box-shadow:0 1px 3px rgba(0,0,0,.1)"
 						>
 							{#if signingIn === p.id}
-								<div class="w-5 h-5 flex items-center justify-center">
-									<div class="w-4 h-4 border-2 rounded-full animate-spin" style="border-color:{p.color}40;border-top-color:{p.color}"></div>
+								<div class="flex h-5 w-5 items-center justify-center">
+									<div
+										class="h-4 w-4 animate-spin rounded-full border-2"
+										style="border-color:{p.color}40;border-top-color:{p.color}"
+									></div>
 								</div>
 							{:else}
-								<span class="w-5 h-5 flex items-center justify-center flex-shrink-0">{@html p.icon}</span>
+								<span class="flex h-5 w-5 flex-shrink-0 items-center justify-center"
+									>{@html p.icon}</span
+								>
 							{/if}
 							<span class="flex-1 text-left">
 								{signingIn === p.id ? m.login_connecting() : p.label}
 							</span>
-							<Icon name="arrowRight" size={16} color={p.color === 'white' ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.3)'}/>
+							<Icon
+								name="arrowRight"
+								size={16}
+								color={p.color === 'white' ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.3)'}
+							/>
 						</button>
 					{/each}
 				</div>
 
-				<p class="mt-7 text-[11px] text-center leading-relaxed" style="color:var(--c-text-muted)">
+				<p class="mt-7 text-center text-[11px] leading-relaxed" style="color:var(--c-text-muted)">
 					{m.login_terms_intro()}
 					<span class="font-semibold" style="color:var(--c-brand)">{m.login_terms_link()}</span>
 					{m.login_terms_and()}
@@ -141,29 +162,33 @@
 				</p>
 
 				<!-- CTAs vendedor / repartidor -->
-				<div class="mt-6 p-4 rounded-2xl" style="background:var(--c-bg-secondary)">
-					<div class="text-[11px] font-bold uppercase tracking-[1px] text-center mb-2.5" style="color:var(--c-text-muted)">
+				<div class="mt-6 rounded-2xl p-4" style="background:var(--c-bg-secondary)">
+					<div
+						class="mb-2.5 text-center text-[11px] font-bold tracking-[1px] uppercase"
+						style="color:var(--c-text-muted)"
+					>
 						{m.login_partner_question()}
 					</div>
 					<div class="grid grid-cols-2 gap-2">
 						<button
 							onclick={() => goto('/onboarding?rol=vendedor')}
-							class="p-3 rounded-xl text-white text-center flex flex-col items-center gap-1 font-semibold text-xs leading-tight cursor-pointer"
-							style="background:linear-gradient(120deg,var(--c-text-primary),var(--c-brand))">
+							class="flex cursor-pointer flex-col items-center gap-1 rounded-xl p-3 text-center text-xs leading-tight font-semibold text-white"
+							style="background:linear-gradient(120deg,var(--c-text-primary),var(--c-brand))"
+						>
 							<span class="text-2xl">🏪</span>
 							{m.login_seller_cta()}
 						</button>
 						<button
 							onclick={() => goto('/onboarding?rol=repartidor')}
-							class="p-3 rounded-xl text-white text-center flex flex-col items-center gap-1 font-semibold text-xs leading-tight cursor-pointer"
-							style="background:linear-gradient(120deg,#16A34A,#0F766E)">
+							class="flex cursor-pointer flex-col items-center gap-1 rounded-xl p-3 text-center text-xs leading-tight font-semibold text-white"
+							style="background:linear-gradient(120deg,#16A34A,#0F766E)"
+						>
 							<span class="text-2xl">🛵</span>
 							{m.login_courier_cta()}
 						</button>
 					</div>
 				</div>
 			</div>
-
 		</div>
 	</div>
 </div>

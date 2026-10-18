@@ -8,7 +8,7 @@ import {
 	signInWithPopup,
 	signOut as _signOut,
 	type Auth,
-	type User,
+	type User
 } from 'firebase/auth';
 import { isSupported, getAnalytics, logEvent, type Analytics } from 'firebase/analytics';
 
@@ -23,14 +23,14 @@ function initFirebase() {
 	_app = getApps().length
 		? getApps()[0]
 		: initializeApp({
-				apiKey:            import.meta.env.VITE_FIREBASE_API_KEY,
-				authDomain:        import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-				projectId:         import.meta.env.VITE_FIREBASE_PROJECT_ID,
-				storageBucket:     import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+				apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+				authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+				projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+				storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
 				messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-				appId:             import.meta.env.VITE_FIREBASE_APP_ID,
-				measurementId:     import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-		  });
+				appId: import.meta.env.VITE_FIREBASE_APP_ID,
+				measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
+			});
 	_auth = getAuth(_app);
 
 	const measurementId = import.meta.env.VITE_FIREBASE_MEASUREMENT_ID;
@@ -54,9 +54,9 @@ export function trackEvent(name: string, params?: Record<string, unknown>) {
 	logEvent(_analytics, name, import.meta.env.DEV ? { ...params, debug_mode: true } : params);
 }
 
-const googleProvider  = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
 const facebookProvider = new FacebookAuthProvider();
-const appleProvider   = new OAuthProvider('apple.com');
+const appleProvider = new OAuthProvider('apple.com');
 appleProvider.addScope('email');
 appleProvider.addScope('name');
 

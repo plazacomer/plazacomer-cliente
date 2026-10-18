@@ -40,7 +40,7 @@ Rust que hablan exclusivamente Protobuf.
   `src/lib/paraglide/` (generado, gitignored) en cada `dev`/`build` — no lo edites a mano, y no hace
   falta correr `paraglide-js compile` manualmente salvo para depurar fuera de Vite.
 - Patrón de uso: `import { m } from '$lib/paraglide/messages.js'; import { setLocale } from
-  '$lib/paraglide/runtime';` — ver el ejemplo real y funcionando en
+'$lib/paraglide/runtime';` — ver el ejemplo real y funcionando en
   [`/demo/paraglide`](src/routes/demo/paraglide/+page.svelte).
 - **Estado real: solo instalado y probado de punta a punta (esta pasada), sin migrar copy
   existente.** Todo el texto Spanish hardcodeado en los ~20 componentes `.svelte` reales
