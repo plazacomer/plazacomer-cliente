@@ -30,10 +30,8 @@
 		storeUi.reset();
 	});
 
-	let siguiendo = $state(false);
-	$effect(() => {
-		siguiendo = tienda.following;
-	});
+	// Arranca en tienda.following y se reinicia al cambiar de tienda; el botón lo sobrescribe localmente.
+	let siguiendo = $derived(tienda.following);
 
 	// Platos con oferta primero — lo más relevante para decidir rápido
 	const menu = $derived(() => {

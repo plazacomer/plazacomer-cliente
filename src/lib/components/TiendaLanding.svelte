@@ -20,10 +20,8 @@
 	};
 	let { tienda, productos, ofertas, resenas, accent, isOpen, onOpenProduct }: Props = $props();
 
-	let siguiendo = $state(false);
-	$effect(() => {
-		siguiendo = tienda.following;
-	});
+	// Arranca en tienda.following y se reinicia al cambiar de tienda; el botón lo sobrescribe localmente.
+	let siguiendo = $derived(tienda.following);
 
 	// Landing helpers
 	type Pillar = { icon: string; titulo: string; desc: string };

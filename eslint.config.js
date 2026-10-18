@@ -47,17 +47,7 @@ export default defineConfig(
 			'@typescript-eslint/no-unused-vars': [
 				'error',
 				{ argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' }
-			],
-			// TODO: volver a 'error' cuando se limpien. Quedaron en warn al activar CI porque
-			// arreglarlas pide criterio por archivo y verificación visual, no un cambio mecánico:
-			// - require-each-key: una key no única revienta en runtime (each_key_duplicate).
-			// - no-navigation-without-resolve: cambia cómo se construyen las rutas.
-			// - no-explicit-any / prefer-svelte-reactivity / prefer-writable-derived: refactors.
-			'svelte/require-each-key': 'warn',
-			'svelte/no-navigation-without-resolve': 'warn',
-			'@typescript-eslint/no-explicit-any': 'warn',
-			'svelte/prefer-svelte-reactivity': 'warn',
-			'svelte/prefer-writable-derived': 'warn'
+			]
 		}
 	}
 );

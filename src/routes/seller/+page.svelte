@@ -4,10 +4,11 @@
 	import { vendedor } from '$lib/stores/vendedor.svelte';
 	import { ESTADOS_CITA, fmtFechaCita } from '$lib/stores/citas.svelte';
 	import { fmtCOP } from '$lib/utils';
+	import type { OrderStatus } from '$lib/stores/app.svelte';
 	import Icon from '$lib/components/ui/Icon.svelte';
 	import { Badge } from '$lib/components/ui/badge';
 
-	const ESTADO_STEPS: Record<string, string> = {
+	const ESTADO_STEPS: Partial<Record<OrderStatus, OrderStatus>> = {
 		confirmed: 'preparing',
 		preparing: 'shipping',
 		shipping: 'delivered'
@@ -189,8 +190,7 @@
 							style="background:var(--c-bg-secondary)"
 						>
 							<button
-								onclick={() =>
-									vendedor.cambiarEstado(pedido.id, ESTADO_STEPS[pedido.status] as any)}
+								onclick={() => vendedor.cambiarEstado(pedido.id, ESTADO_STEPS[pedido.status]!)}
 								class="mt-3 w-full rounded-xl py-2.5 text-sm font-bold text-white"
 								style="background:var(--c-brand)"
 							>

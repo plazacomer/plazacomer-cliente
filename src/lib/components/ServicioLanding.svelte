@@ -22,6 +22,8 @@
 
 	// Group servicios by categoria
 	const serviciosPorCat = $derived(() => {
+		// Map temporal: se arma de cero en cada cálculo del $derived y no se muta después.
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const map = new Map<string, Servicio[]>();
 		for (const s of servicios) {
 			const arr = map.get(s.categoria) ?? [];
