@@ -162,7 +162,7 @@
 
 				<!-- Highlights -->
 				<div class="mb-10 flex flex-col gap-3 text-left">
-					{#each [{ icon: 'store', text: m.onboarding_highlight_stores() }, { icon: 'calendar', text: m.onboarding_highlight_services() }, { icon: 'truck', text: m.onboarding_highlight_delivery() }] as h}
+					{#each [{ icon: 'store', text: m.onboarding_highlight_stores() }, { icon: 'calendar', text: m.onboarding_highlight_services() }, { icon: 'truck', text: m.onboarding_highlight_delivery() }] as h, idx (idx)}
 						<div
 							class="flex items-center gap-3.5 rounded-xl px-4 py-3"
 							style="background:var(--c-bg-card);border:1px solid var(--c-border-soft)"
@@ -216,7 +216,7 @@
 				</p>
 
 				<div class="flex flex-col gap-3">
-					{#each ROLES as role}
+					{#each ROLES as role (role.id)}
 						<button
 							onclick={() => chooseRole(role.id)}
 							class="flex items-center gap-4 rounded-2xl border-2 p-4 text-left transition-all duration-200 hover:-translate-y-0.5"
@@ -335,7 +335,7 @@
 								{m.onboarding_store_emoji_label()}
 							</label>
 							<div class="flex flex-wrap gap-2">
-								{#each STORE_EMOJIS as em}
+								{#each STORE_EMOJIS as em, idx (idx)}
 									<button
 										onclick={() => (storeEmoji = em)}
 										class="flex h-10 w-10 items-center justify-center rounded-xl border-2 text-xl transition-all"
@@ -374,7 +374,7 @@
 								{m.onboarding_category_label()}
 							</label>
 							<div class="grid grid-cols-3 gap-2">
-								{#each CATEGORIES as cat}
+								{#each CATEGORIES as cat (cat.key)}
 									<button
 										onclick={() => (storeCategory = cat.key)}
 										class="flex flex-col items-center gap-1 rounded-xl border-2 px-2 py-2.5 text-[12px] font-bold transition-all"
@@ -403,7 +403,7 @@
 								{m.onboarding_vehicle_type_label()}
 							</label>
 							<div class="grid grid-cols-2 gap-2">
-								{#each VEHICLES as v}
+								{#each VEHICLES as v (v.key)}
 									<button
 										onclick={() => (vehicle = v.key)}
 										class="rounded-xl border-2 py-3 text-[13px] font-bold transition-all"
@@ -493,7 +493,7 @@
 
 				<!-- Dots loader -->
 				<div class="mt-8 flex items-center justify-center gap-2">
-					{#each [0, 150, 300] as delay}
+					{#each [0, 150, 300] as delay (delay)}
 						<div
 							class="h-2.5 w-2.5 animate-pulse rounded-full"
 							style="background:{selectedRoleInfo?.color ??

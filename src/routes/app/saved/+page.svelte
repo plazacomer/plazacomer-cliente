@@ -50,7 +50,7 @@
 
 	<!-- Tabs -->
 	<div class="mb-6 flex rounded-xl p-1" style="background:var(--c-bg-secondary)">
-		{#each [['productos', 'Favoritos'], ['listas', 'Mis listas']] as [Tab, string][] as [id, label]}
+		{#each [['productos', 'Favoritos'], ['listas', 'Mis listas']] as [Tab, string][] as [id, label] (id)}
 			<button
 				onclick={() => (tab = id)}
 				class="flex-1 rounded-[10px] py-2.5 text-[13.5px] font-bold transition-all"
@@ -82,7 +82,7 @@
 			</div>
 		{:else}
 			<div class="grid grid-cols-2 gap-3">
-				{#each favoritos.productos as p}
+				{#each favoritos.productos as p (p.id)}
 					<div
 						class="overflow-hidden rounded-[14px] border border-[var(--c-border-soft)]"
 						style="background:var(--c-bg-card)"
@@ -141,7 +141,7 @@
 				</div>
 			</button>
 
-			{#each favoritos.listas as lista}
+			{#each favoritos.listas as lista (lista.id)}
 				<div
 					class="overflow-hidden rounded-[14px] border border-[var(--c-border-soft)]"
 					style="background:var(--c-bg-card)"
@@ -173,7 +173,7 @@
 
 					{#if lista.items.length > 0}
 						<div class="flex flex-col gap-2 px-4 pb-4">
-							{#each lista.items.slice(0, 3) as item}
+							{#each lista.items.slice(0, 3) as item, idx (idx)}
 								{@const p = favoritos.productos.find((x) => x.id === item.productoId)}
 								{#if p}
 									<div class="flex items-center gap-2.5 text-[12.5px]">
@@ -218,7 +218,7 @@
 				Emoji
 			</div>
 			<div class="flex flex-wrap gap-2">
-				{#each EMOJIS_LISTA as em}
+				{#each EMOJIS_LISTA as em, idx (idx)}
 					<button
 						onclick={() => (nuevoEmoji = em)}
 						class="flex h-9 w-9 items-center justify-center rounded-xl border-2 text-xl transition-all"

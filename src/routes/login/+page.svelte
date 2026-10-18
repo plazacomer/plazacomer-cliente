@@ -120,7 +120,7 @@
 				{/if}
 
 				<div class="flex flex-col gap-2.5">
-					{#each providers as p}
+					{#each providers as p (p.id)}
 						<button
 							onclick={() => handleLogin(p)}
 							disabled={!!signingIn}

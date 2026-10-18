@@ -63,7 +63,7 @@
 				</div>
 			</div>
 
-			{#each NAV as item}
+			{#each NAV as item (item.id)}
 				{@const active = currentId() === item.id}
 				<button
 					onclick={() => goto(item.path)}
@@ -139,7 +139,7 @@
 				class="fixed right-0 bottom-0 left-0 z-30 flex items-center justify-around border-t border-[var(--c-border-soft)] px-1 lg:hidden"
 				style="background:var(--c-bg-card);padding-bottom:max(12px,env(safe-area-inset-bottom));padding-top:8px"
 			>
-				{#each NAV as item}
+				{#each NAV as item (item.id)}
 					{@const active = currentId() === item.id}
 					<button
 						onclick={() => goto(item.path)}

@@ -181,7 +181,7 @@
 				</div>
 
 				<!-- Modificadores -->
-				{#each producto.modifiers ?? [] as mod}
+				{#each producto.modifiers ?? [] as mod (mod.id)}
 					<div>
 						<div class="mb-2.5 flex items-center gap-2">
 							<span class="font-display text-[13px] font-bold">{mod.nombre}</span>
@@ -209,7 +209,7 @@
 								onValueChange={(v) => setSingle(mod, v)}
 								class="flex flex-col gap-1.5"
 							>
-								{#each mod.opciones as op}
+								{#each mod.opciones as op (op.id)}
 									{@const sel = isSelected(mod, op.id)}
 									{@const rowId = `${mod.id}-${op.id}`}
 									<Label
@@ -237,7 +237,7 @@
 							</RadioGroup.Root>
 						{:else}
 							<div class="flex flex-col gap-1.5">
-								{#each mod.opciones as op}
+								{#each mod.opciones as op (op.id)}
 									{@const sel = isChecked(mod, op.id)}
 									{@const rowId = `${mod.id}-${op.id}`}
 									<Label

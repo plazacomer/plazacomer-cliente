@@ -108,7 +108,7 @@
 					</div>
 				{/if}
 
-				{#each storeIds as storeId}
+				{#each storeIds as storeId (storeId)}
 					{@const store = getStore(storeId)}
 					{@const items = groups[storeId]}
 					{@const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)}
@@ -132,7 +132,7 @@
 						</div>
 
 						<!-- Items list -->
-						{#each items as item, i}
+						{#each items as item, i (item.lineId ?? item.productId)}
 							{@const p = getProduct(item.productId)}
 							{@const key = item.lineId ?? item.productId}
 							<div
@@ -153,7 +153,7 @@
 									{#if item.isDeal}
 										<Badge variant="error" class="mb-1">🔥 Oferta</Badge>
 									{/if}
-									{#each selectionSummary(item) as line}
+									{#each selectionSummary(item) as line, idx (idx)}
 										<div class="mt-0.5 text-[11px]" style="color:var(--c-text-muted)">· {line}</div>
 									{/each}
 									{#if item.notes}
@@ -250,7 +250,7 @@
 				<h3 class="mb-3.5 font-display text-base font-bold">Resumen</h3>
 
 				<div class="mb-3.5 flex flex-col gap-2.5">
-					{#each storeIds as storeId}
+					{#each storeIds as storeId (storeId)}
 						{@const store = getStore(storeId)}
 						{@const sub = groups[storeId].reduce((s, i) => s + i.price * i.quantity, 0)}
 						<div class="flex justify-between text-sm">

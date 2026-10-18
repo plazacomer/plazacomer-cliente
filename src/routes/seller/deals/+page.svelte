@@ -87,7 +87,7 @@
 		</div>
 	{:else}
 		<div class="flex flex-col gap-3">
-			{#each vendedor.ofertas as oferta}
+			{#each vendedor.ofertas as oferta (oferta.id)}
 				{@const prod = vendedor.catalogo.find((p) => p.id === oferta.productoId)}
 				<div
 					class="overflow-hidden rounded-2xl border border-[var(--c-border-soft)]"
@@ -177,7 +177,7 @@
 				style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"
 			>
 				<option value="">Selecciona un producto</option>
-				{#each vendedor.catalogo as p}
+				{#each vendedor.catalogo as p (p.id)}
 					<option value={p.id}>{p.emoji} {p.name} — {fmtCOP(p.price)}</option>
 				{/each}
 			</select>
@@ -192,7 +192,7 @@
 				Tipo de descuento
 			</div>
 			<div class="flex gap-2">
-				{#each [['porcentaje', '% Porcentaje'], ['fijo', '$ Monto fijo']] as ['porcentaje' | 'fijo', string][] as [val, lbl]}
+				{#each [['porcentaje', '% Porcentaje'], ['fijo', '$ Monto fijo']] as ['porcentaje' | 'fijo', string][] as [val, lbl] (val)}
 					<button
 						onclick={() => (tipo = val)}
 						class="flex-1 rounded-xl border py-2.5 text-[13px] font-bold transition-all"

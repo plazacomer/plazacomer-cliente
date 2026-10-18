@@ -171,7 +171,7 @@
 				>
 					<h3 class="mb-4 font-display text-[15px] font-bold">Estado del pedido</h3>
 					<div class="relative">
-						{#each pedido.timeline as step, i}
+						{#each pedido.timeline as step, i (i)}
 							{@const isLast = i === pedido.timeline.length - 1}
 							<div class="relative flex gap-3.5" style="padding-bottom:{isLast ? '0' : '18px'}">
 								{#if !isLast}
@@ -258,7 +258,7 @@
 			>
 				<h3 class="mb-3.5 font-display text-[15px] font-bold">Productos</h3>
 				<div class="mb-3.5 flex flex-col gap-2.5">
-					{#each pedido.items as item}
+					{#each pedido.items as item, idx (idx)}
 						{@const p = getProduct(item.productId)}
 						<div class="flex items-center gap-2.5">
 							<div
@@ -364,7 +364,7 @@
 				<div class="mb-4">
 					<div class="mb-3 text-sm font-semibold">¿Cómo fue tu experiencia?</div>
 					<div class="flex justify-center gap-2">
-						{#each EMOJIS as emoji, i}
+						{#each EMOJIS as emoji, i (i)}
 							<button
 								onclick={() => (buzonRating = i + 1)}
 								class="p-1 text-4xl transition-all"
@@ -425,7 +425,7 @@
 
 			<div class="mb-2 text-sm font-semibold">¿Por qué quieres cancelar?</div>
 			<div class="mb-5 flex flex-col gap-1.5">
-				{#each MOTIVOS as motivo}
+				{#each MOTIVOS as motivo (motivo)}
 					{@const isSelected = motivoSeleccionado === motivo}
 					<label
 						class="flex cursor-pointer items-center gap-3 rounded-xl border-[1.5px] p-3 transition-all"

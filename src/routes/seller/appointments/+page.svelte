@@ -89,7 +89,7 @@
 
 	<!-- KPIs citas -->
 	<div class="mt-4 mb-5 grid grid-cols-3 gap-2.5">
-		{#each [{ label: 'Pendientes', value: vendedor.citasPendientes.length, icon: 'clock', color: '#EA580C', bg: 'rgba(234,88,12,.08)' }, { label: 'Hoy', value: vendedor.citasHoy.length, icon: 'calendar', color: '#2563EB', bg: 'rgba(37,99,235,.08)' }, { label: 'Completadas', value: vendedor.citasTienda.filter( (c) => ['completada', 'atendida'].includes(c.estado) ).length, icon: 'check', color: '#16A34A', bg: 'rgba(22,163,74,.08)' }] as kpi}
+		{#each [{ label: 'Pendientes', value: vendedor.citasPendientes.length, icon: 'clock', color: '#EA580C', bg: 'rgba(234,88,12,.08)' }, { label: 'Hoy', value: vendedor.citasHoy.length, icon: 'calendar', color: '#2563EB', bg: 'rgba(37,99,235,.08)' }, { label: 'Completadas', value: vendedor.citasTienda.filter( (c) => ['completada', 'atendida'].includes(c.estado) ).length, icon: 'check', color: '#16A34A', bg: 'rgba(22,163,74,.08)' }] as kpi, idx (idx)}
 			<div
 				class="rounded-2xl border border-[var(--c-border-soft)] p-3.5"
 				style="background:var(--c-bg-card)"
@@ -108,7 +108,7 @@
 
 	<!-- Tabs -->
 	<div class="mb-5 flex rounded-xl p-1" style="background:var(--c-bg-secondary)">
-		{#each [['pendientes', 'Pendientes'], ['hoy', 'Hoy'], ['historial', 'Historial']] as [Tab, string][] as [id, label]}
+		{#each [['pendientes', 'Pendientes'], ['hoy', 'Hoy'], ['historial', 'Historial']] as [Tab, string][] as [id, label] (id)}
 			<button
 				onclick={() => (tab = id)}
 				class="flex-1 rounded-[10px] py-2.5 text-[12.5px] font-bold transition-all"
@@ -141,7 +141,7 @@
 		</div>
 	{:else}
 		<div class="flex flex-col gap-3">
-			{#each lista as cita}
+			{#each lista as cita (cita.id)}
 				{@const estadoInfo = ESTADOS_CITA[cita.estado]}
 				{@const transiciones = TRANSICIONES[cita.estado] ?? []}
 				<div
@@ -238,7 +238,7 @@
 									>
 										Detalles
 									</div>
-									{#each Object.entries(cita.datos) as [k, v]}
+									{#each Object.entries(cita.datos) as [k, v] (k)}
 										{#if v}
 											<div class="mb-1 flex items-start gap-1.5 text-[12.5px]">
 												<span class="font-semibold capitalize" style="color:var(--c-text-secondary)"
@@ -267,7 +267,7 @@
 							<!-- Acciones de transición -->
 							{#if transiciones.length > 0}
 								<div class="mt-1 flex gap-2">
-									{#each transiciones as tr}
+									{#each transiciones as tr (tr.next)}
 										<button
 											onclick={() => {
 												if (tr.next === 'cotizada') {

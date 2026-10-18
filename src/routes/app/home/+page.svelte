@@ -62,7 +62,7 @@
 
 	<!-- Stories rail -->
 	<div class="no-scrollbar flex gap-3.5 overflow-x-auto px-5 py-4">
-		{#each STORES.filter((t) => t.following) as t}
+		{#each STORES.filter((t) => t.following) as t (t.id)}
 			<button
 				onclick={() => goStore(t)}
 				class="flex min-w-[68px] shrink-0 flex-col items-center gap-1.5"
@@ -98,7 +98,7 @@
 				: 'var(--c-bg-card)'};color:{!filterCat ? 'var(--c-bg-card)' : 'var(--c-text-primary)'}"
 			>{m.home_category_all()}</button
 		>
-		{#each Object.entries(CATEGORIES) as [key, cat]}
+		{#each Object.entries(CATEGORIES) as [key, cat] (key)}
 			<button
 				onclick={() => (filterCat = filterCat === key ? null : key)}
 				class="flex shrink-0 items-center gap-1.5 rounded-full border border-[var(--c-border-soft)] px-3.5 py-2 text-[13px] font-semibold transition-colors"
@@ -124,7 +124,7 @@
 				</div>
 			</div>
 		{:else}
-			{#each filtered as item}
+			{#each filtered as item, idx (idx)}
 				{#if item.kind === 'deal'}
 					{@const deal = getDeal(item.dealId)}
 					{@const product = getProduct(deal.productId)}

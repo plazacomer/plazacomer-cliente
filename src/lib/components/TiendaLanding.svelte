@@ -544,7 +544,7 @@
 
 		<!-- ── STATS ── -->
 		<div class="mt-8 grid grid-cols-2 gap-2.5 md:grid-cols-4">
-			{#each stats as s}
+			{#each stats as s, idx (idx)}
 				<div
 					class="rounded-[14px] border border-[var(--c-border-soft)] p-3.5"
 					style="background:var(--c-bg-card)"
@@ -580,7 +580,7 @@
 					</p>
 				</div>
 				<div class="grid grid-cols-2 gap-3 md:grid-cols-4">
-					{#each destacados() as p, i}
+					{#each destacados() as p, i (p.id)}
 						{@const oferta = ofertas.find((o) => o.productId === p.id)}
 						{@const precio = oferta ? oferta.dealPrice : p.price}
 						{@const isFav = favoritos.isFavorito(p.id)}
@@ -689,7 +689,7 @@
 					</h2>
 				</div>
 				<div class="flex flex-col gap-3">
-					{#each ofertas as o}
+					{#each ofertas as o (o.id)}
 						{@const p = productos.find((pr) => pr.id === o.productId)}
 						{#if p}
 							{@const disc = Math.round((1 - o.dealPrice / o.originalPrice) * 100)}
@@ -751,7 +751,7 @@
 					</h2>
 				</div>
 				<div class="grid grid-cols-1 gap-3 md:grid-cols-3">
-					{#each pillars as pillar}
+					{#each pillars as pillar, idx (idx)}
 						<div
 							class="rounded-[14px] border border-[var(--c-border-soft)] p-4"
 							style="background:var(--c-bg-card)"
@@ -796,7 +796,7 @@
 				</div>
 			{:else}
 				<div class="grid grid-cols-2 gap-3.5 md:grid-cols-3 lg:grid-cols-4">
-					{#each productos as p}
+					{#each productos as p (p.id)}
 						{@const isFav = favoritos.isFavorito(p.id)}
 						<div
 							class="cursor-pointer overflow-hidden rounded-[14px] border border-[var(--c-border-soft)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]"
@@ -873,7 +873,7 @@
 					<h2 class="font-display text-[22px] font-extrabold tracking-[-0.3px]">Así trabajamos</h2>
 				</div>
 				<div class="grid grid-cols-2 gap-2.5 md:grid-cols-4">
-					{#each galeria as g}
+					{#each galeria as g, idx (idx)}
 						<div
 							class="relative flex items-end overflow-hidden rounded-[14px] border"
 							style="height:140px;background:{g.tono};border-color:rgba(0,0,0,.1);background-image:repeating-linear-gradient(135deg,rgba(0,0,0,.04) 0,rgba(0,0,0,.04) 1px,transparent 1px,transparent 14px)"
@@ -915,7 +915,7 @@
 							<div class="py-2 text-center">
 								<div class="font-display text-5xl font-extrabold">{rs.average.toFixed(1)}</div>
 								<div class="mt-2 flex justify-center gap-0.5">
-									{#each [1, 2, 3, 4, 5] as s}
+									{#each [1, 2, 3, 4, 5] as s (s)}
 										<span
 											style="font-size:18px;color:{s <= Math.round(rs.average)
 												? '#F59E0B'
@@ -928,7 +928,7 @@
 								</div>
 							</div>
 							<div class="flex flex-col gap-1.5">
-								{#each [5, 4, 3, 2, 1] as stars}
+								{#each [5, 4, 3, 2, 1] as stars (stars)}
 									{@const n = rs.distribution[stars] ?? 0}
 									{@const pct = rs.total ? (n / rs.total) * 100 : 0}
 									<div class="flex items-center gap-2.5 text-[12px]">
@@ -950,7 +950,7 @@
 					</div>
 				{/if}
 				<div class="grid grid-cols-1 gap-3 md:grid-cols-2">
-					{#each resenas.slice(0, 4) as r}
+					{#each resenas.slice(0, 4) as r (r.id)}
 						<div
 							class="rounded-2xl border border-[var(--c-border-soft)] p-3.5"
 							style="background:var(--c-bg-card)"
@@ -972,7 +972,7 @@
 										<span class="text-[11px]" style="color:var(--c-text-muted)">· {r.date}</span>
 									</div>
 									<div class="mt-0.5 flex gap-0.5">
-										{#each [1, 2, 3, 4, 5] as s}
+										{#each [1, 2, 3, 4, 5] as s (s)}
 											<span
 												style="font-size:12px;color:{s <= r.rating ? '#F59E0B' : 'var(--c-border)'}"
 												>★</span
@@ -1025,7 +1025,7 @@
 					</h2>
 				</div>
 				<div class="flex flex-col gap-2">
-					{#each faqs as faq, i}
+					{#each faqs as faq, i (i)}
 						<div
 							class="overflow-hidden rounded-[14px] border border-[var(--c-border-soft)]"
 							style="background:var(--c-bg-card)"
@@ -1096,7 +1096,7 @@
 				</div>
 				<!-- Info rows -->
 				<div class="flex flex-col gap-2.5">
-					{#each [{ icon: 'location', label: 'Ubicación', value: tienda.location }, { icon: 'clock', label: 'Horario', value: tienda.hours }, { icon: 'credit', label: 'Pagos', value: tienda.paymentMethods.join(' · ') }] as row}
+					{#each [{ icon: 'location', label: 'Ubicación', value: tienda.location }, { icon: 'clock', label: 'Horario', value: tienda.hours }, { icon: 'credit', label: 'Pagos', value: tienda.paymentMethods.join(' · ') }] as row, idx (idx)}
 						<div
 							class="flex gap-3 rounded-[14px] border border-[var(--c-border-soft)] p-3.5"
 							style="background:var(--c-bg-card)"

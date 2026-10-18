@@ -73,7 +73,7 @@
 			</div>
 		</a>
 
-		{#each NAV as item}
+		{#each NAV as item (item.id)}
 			{@const active = currentId() === item.id}
 			{@const count = badge(item.id)}
 			<button
@@ -225,7 +225,7 @@
 			class="fixed right-0 bottom-0 left-0 z-30 flex items-center justify-around border-t border-[var(--c-border-soft)] px-1 lg:hidden"
 			style="background:var(--c-bg-card);padding-bottom:max(12px,env(safe-area-inset-bottom));padding-top:8px;box-shadow:0 -4px 20px rgba(0,0,0,.04)"
 		>
-			{#each isStoreDetail ? STORE_NAV : NAV as item}
+			{#each isStoreDetail ? STORE_NAV : NAV as item (item.id)}
 				{@const active = navActive(item)}
 				{@const count = badge(item.id)}
 				<button

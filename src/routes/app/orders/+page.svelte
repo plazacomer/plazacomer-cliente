@@ -67,7 +67,7 @@
 		</div>
 	{:else}
 		<div class="flex flex-col gap-3.5">
-			{#each orders.items as pedido}
+			{#each orders.items as pedido (pedido.id)}
 				{@const tienda = getStore(pedido.storeId)}
 				{@const estado = estadoMap[pedido.status]}
 				<div

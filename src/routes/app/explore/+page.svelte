@@ -101,7 +101,7 @@
 				: 'var(--c-bg-card)'};color:{!filterCat ? 'var(--c-bg-card)' : 'var(--c-text-primary)'}"
 			>Todas</button
 		>
-		{#each Object.entries(CATEGORIES) as [key, cat]}
+		{#each Object.entries(CATEGORIES) as [key, cat] (key)}
 			<button
 				onclick={() => (filterCat = filterCat === key ? null : key)}
 				class="flex shrink-0 items-center gap-1.5 rounded-full border border-[var(--c-border-soft)] px-3.5 py-2 text-[13px] font-semibold"
@@ -126,7 +126,7 @@
 		</div>
 	{:else}
 		<div class="grid gap-4" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">
-			{#each filtered as t}
+			{#each filtered as t (t.id)}
 				<Card.Root
 					role="button"
 					tabindex={0}

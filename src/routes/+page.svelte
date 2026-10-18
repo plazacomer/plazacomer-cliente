@@ -11,7 +11,7 @@
 	style="background:radial-gradient(ellipse at center, #1A1A2E 0%, #0A0A14 100%)"
 >
 	<!-- Colored blobs -->
-	{#each [{ c: '#EA580C', x: '10%', y: '20%', s: 180 }, { c: '#2563EB', x: '80%', y: '15%', s: 220 }, { c: '#7C3AED', x: '85%', y: '75%', s: 200 }, { c: '#16A34A', x: '15%', y: '80%', s: 180 }, { c: '#EC4899', x: '50%', y: '90%', s: 160 }] as blob}
+	{#each [{ c: '#EA580C', x: '10%', y: '20%', s: 180 }, { c: '#2563EB', x: '80%', y: '15%', s: 220 }, { c: '#7C3AED', x: '85%', y: '75%', s: 200 }, { c: '#16A34A', x: '15%', y: '80%', s: 180 }, { c: '#EC4899', x: '50%', y: '90%', s: 160 }] as blob, idx (idx)}
 		<div
 			class="pointer-events-none absolute rounded-full"
 			style="left:{blob.x};top:{blob.y};width:{blob.s}px;height:{blob.s}px;background:{blob.c};opacity:.18;filter:blur(60px)"

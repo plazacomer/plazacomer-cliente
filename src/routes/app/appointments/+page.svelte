@@ -39,7 +39,7 @@
 
 	<!-- Tabs -->
 	<div class="mb-6 flex rounded-xl p-1" style="background:var(--c-bg-secondary)">
-		{#each [['proximas', 'Próximas'], ['historial', 'Historial']] as [Tab, string][] as [id, label]}
+		{#each [['proximas', 'Próximas'], ['historial', 'Historial']] as [Tab, string][] as [id, label] (id)}
 			<button
 				onclick={() => (tab = id)}
 				class="flex-1 rounded-[10px] py-2.5 text-[13.5px] font-bold transition-all"
@@ -82,7 +82,7 @@
 		</div>
 	{:else}
 		<div class="flex flex-col gap-3">
-			{#each lista as cita}
+			{#each lista as cita (cita.id)}
 				{@const tienda = getStore(cita.tiendaId)}
 				{@const estado = ESTADOS_CITA[cita.estado]}
 

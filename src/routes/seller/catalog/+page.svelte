@@ -144,7 +144,7 @@
 
 	<!-- Grid -->
 	<div class="flex flex-col gap-3">
-		{#each productosFiltrados as prod}
+		{#each productosFiltrados as prod (prod.id)}
 			<Card.Root
 				class="flex-row items-center gap-3.5 rounded-2xl border border-[var(--c-border-soft)] p-3.5 ring-0"
 				style="opacity:{prod.disponible ? 1 : 0.55}"
@@ -244,7 +244,7 @@
 				Emoji
 			</div>
 			<div class="flex flex-wrap gap-1.5">
-				{#each EMOJIS as em}
+				{#each EMOJIS as em, idx (idx)}
 					<button
 						onclick={() => (emoji = em)}
 						class="flex h-9 w-9 items-center justify-center rounded-xl border-2 text-lg transition-all"
@@ -340,7 +340,7 @@
 					{categoriaLabel}
 				</Select.Trigger>
 				<Select.Content>
-					{#each CATEGORIAS as c}
+					{#each CATEGORIAS as c (c.value)}
 						<Select.Item value={c.value} label={c.label}>{c.label}</Select.Item>
 					{/each}
 				</Select.Content>

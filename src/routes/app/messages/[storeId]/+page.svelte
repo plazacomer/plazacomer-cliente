@@ -100,7 +100,7 @@
 					</p>
 				</div>
 			{:else}
-				{#each msgs as msg}
+				{#each msgs as msg, idx (idx)}
 					{@const isCliente = msg.author === 'customer'}
 					<div
 						class="animate-fade-in flex"
@@ -135,7 +135,7 @@
 							class="flex items-center gap-1.5 rounded-[16px_16px_16px_4px] border px-4 py-3"
 							style="background:var(--c-bg-card);border-color:var(--c-border-soft)"
 						>
-							{#each [0, 1, 2] as i}
+							{#each [0, 1, 2] as i (i)}
 								<span
 									class="h-1.5 w-1.5 rounded-full"
 									style="background:var(--c-text-muted);animation:bounce 1.2s {i * 0.2}s infinite"

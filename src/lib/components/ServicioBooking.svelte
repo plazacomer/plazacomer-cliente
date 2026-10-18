@@ -204,7 +204,7 @@
 									style="color:var(--c-text-muted)">Modalidad</label
 								>
 								<div class="flex gap-2">
-									{#each servicio.modalidad.split(' o ') as opt}
+									{#each servicio.modalidad.split(' o ') as opt (opt)}
 										<Button
 											onclick={() => (modalidad = opt)}
 											class="h-auto flex-1 rounded-xl border py-2.5 text-[13px] font-semibold hover:opacity-90 active:opacity-80"
@@ -303,7 +303,7 @@
 										</Select.Trigger>
 										<Select.Content>
 											<Select.Item value="" label="Cualquiera">Cualquiera</Select.Item>
-											{#each HORAS as h}
+											{#each HORAS as h (h)}
 												<Select.Item value={h} label={h}>{h}</Select.Item>
 											{/each}
 										</Select.Content>
@@ -359,7 +359,7 @@
 							class="flex flex-col gap-2.5 rounded-[14px] border border-[var(--c-border-soft)] p-4"
 							style="background:var(--c-bg-secondary)"
 						>
-							{#each [{ label: 'Nombre', value: nombre }, { label: 'Teléfono', value: telefono }, ...(email ? [{ label: 'Email', value: email }] : []), ...(fecha ? [{ label: 'Fecha', value: fecha }] : []), ...(hora ? [{ label: 'Hora', value: hora }] : []), ...(modalidad ? [{ label: 'Modalidad', value: modalidad }] : []), ...(notas ? [{ label: 'Notas', value: notas }] : [])] as row}
+							{#each [{ label: 'Nombre', value: nombre }, { label: 'Teléfono', value: telefono }, ...(email ? [{ label: 'Email', value: email }] : []), ...(fecha ? [{ label: 'Fecha', value: fecha }] : []), ...(hora ? [{ label: 'Hora', value: hora }] : []), ...(modalidad ? [{ label: 'Modalidad', value: modalidad }] : []), ...(notas ? [{ label: 'Notas', value: notas }] : [])] as row, idx (idx)}
 								<div class="flex gap-3 text-[13px]">
 									<span class="w-20 shrink-0 font-semibold" style="color:var(--c-text-muted)"
 										>{row.label}</span

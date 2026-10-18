@@ -273,7 +273,7 @@
 						</span>
 					</div>
 					<div class="mb-2.5 flex gap-1.5">
-						{#each Array(loyaltyProgress.config.threshold) as _, i}
+						{#each Array(loyaltyProgress.config.threshold) as _, i (i)}
 							<div
 								class="h-1.5 flex-1 rounded-full"
 								style="background:{i < loyaltyProgress.stamps
@@ -309,7 +309,7 @@
 					</div>
 				{:else}
 					<div class="flex flex-col gap-2.5 md:grid md:grid-cols-2 md:gap-3 lg:grid-cols-3">
-						{#each menu() as p}
+						{#each menu() as p (p.id)}
 							{@render menuItem(p)}
 						{/each}
 					</div>
@@ -343,7 +343,7 @@
 				</div>
 			{:else}
 				<div class="flex flex-col gap-2.5 md:grid md:grid-cols-2 md:gap-3 lg:grid-cols-3">
-					{#each searchResults as p}
+					{#each searchResults as p (p.id)}
 						{@render menuItem(p)}
 					{/each}
 				</div>
@@ -358,7 +358,7 @@
 				</div>
 			{:else}
 				<div class="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-					{#each ofertas as o}
+					{#each ofertas as o (o.id)}
 						{@const p = productos.find((pr) => pr.id === o.productId)}
 						{#if p}
 							{@const disc = Math.round((1 - o.dealPrice / o.originalPrice) * 100)}

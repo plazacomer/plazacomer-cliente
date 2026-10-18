@@ -274,7 +274,7 @@
 			>
 				Comprobantes
 			</div>
-			{#each comprobantes as comp, i}
+			{#each comprobantes as comp, i (i)}
 				{@const t = getStore(comp.storeId)}
 				<div
 					class="flex items-center gap-3 py-3"
@@ -335,7 +335,7 @@
 					Paso {step + 1} de {storeIds.length} — Paga cada tienda por separado
 				</div>
 				<div class="flex gap-2">
-					{#each storeIds as tid, i}
+					{#each storeIds as tid, i (tid)}
 						{@const t = getStore(tid)}
 						{@const isDone = processed.includes(tid)}
 						{@const isCurrent = i === step}
@@ -403,7 +403,7 @@
 								Dirección de entrega
 							</div>
 							<div class="mb-2 flex flex-col gap-1.5">
-								{#each ADDRESSES as dir}
+								{#each ADDRESSES as dir (dir.id)}
 									{@const isSelected = selectedDireccionId === dir.id}
 									<button
 										type="button"
@@ -646,7 +646,7 @@
 						{currentTienda.name} acepta:
 					</p>
 					<div class="flex flex-col gap-2">
-						{#each currentTienda.paymentMethods as pago}
+						{#each currentTienda.paymentMethods as pago (pago)}
 							{@const isSelected = selectedPago === pago}
 							<label
 								class="flex cursor-pointer items-center gap-3 rounded-xl border-[1.5px] p-3 transition-all"
@@ -700,7 +700,7 @@
 			>
 				<h3 class="mb-3.5 font-display text-base font-bold">Tu pedido</h3>
 				<div class="mb-3.5 flex flex-col gap-2.5">
-					{#each currentItems as item}
+					{#each currentItems as item (item.lineId ?? item.productId)}
 						{@const p = getProduct(item.productId)}
 						<div class="flex items-center gap-2.5">
 							<div
@@ -780,7 +780,7 @@
 				>
 			</p>
 			<div class="mb-5 flex flex-col gap-2">
-				{#each PAYMENT_METHODS as m}
+				{#each PAYMENT_METHODS as m (m.id)}
 					{@const isSelected = paymentMethod === m.id}
 					<button
 						onclick={() => (paymentMethod = m.id)}

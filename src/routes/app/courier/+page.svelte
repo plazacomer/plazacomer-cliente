@@ -71,7 +71,7 @@
 
 	<!-- Stats del día -->
 	<div class="mb-5 grid grid-cols-3 gap-2.5">
-		{#each [{ label: 'Ganancias hoy', value: fmtCOP(repartidor.gananciasHoy), icon: 'coin', color: '#16A34A', bg: 'rgba(22,163,74,.08)' }, { label: 'Entregas hoy', value: repartidor.entregasHoy.toString(), icon: 'package', color: '#2563EB', bg: 'rgba(37,99,235,.08)' }, { label: 'Rating', value: REPARTIDOR.rating.toString(), icon: 'starFill', color: '#F59E0B', bg: 'rgba(245,158,11,.08)' }] as s}
+		{#each [{ label: 'Ganancias hoy', value: fmtCOP(repartidor.gananciasHoy), icon: 'coin', color: '#16A34A', bg: 'rgba(22,163,74,.08)' }, { label: 'Entregas hoy', value: repartidor.entregasHoy.toString(), icon: 'package', color: '#2563EB', bg: 'rgba(37,99,235,.08)' }, { label: 'Rating', value: REPARTIDOR.rating.toString(), icon: 'starFill', color: '#F59E0B', bg: 'rgba(245,158,11,.08)' }] as s, idx (idx)}
 			<div
 				class="rounded-2xl border border-[var(--c-border-soft)] p-3.5 text-center"
 				style="background:var(--c-bg-card)"
@@ -226,7 +226,7 @@
 			</div>
 
 			<div class="mb-5 flex flex-col gap-3">
-				{#each repartidor.disponibles as pedido}
+				{#each repartidor.disponibles as pedido (pedido.id)}
 					{@const tienda = getStore(pedido.storeId)}
 					<div
 						class="overflow-hidden rounded-2xl border border-[var(--c-border-soft)]"
@@ -320,7 +320,7 @@
 		<div class="mt-2">
 			<h2 class="mb-3 font-display text-[15px] font-bold">Historial reciente</h2>
 			<div class="flex flex-col gap-2">
-				{#each repartidor.historial.slice(0, 5) as pedido}
+				{#each repartidor.historial.slice(0, 5) as pedido (pedido.id)}
 					{@const tienda = getStore(pedido.storeId)}
 					<div
 						class="flex items-center gap-3 rounded-xl border border-[var(--c-border-soft)] p-3.5"

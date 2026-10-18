@@ -20,7 +20,7 @@
 		</div>
 	{:else}
 		<div class="flex flex-col gap-2">
-			{#each messages.conversations as conv}
+			{#each messages.conversations as conv (conv.storeId)}
 				{@const tienda = getStore(conv.storeId)}
 				<button
 					onclick={() => goto(`/app/messages/${conv.storeId}`)}

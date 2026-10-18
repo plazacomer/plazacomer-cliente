@@ -116,7 +116,7 @@
 				¿Qué compras cuentan?
 			</div>
 			<div class="flex flex-col gap-2">
-				{#each [['all', 'Todos los productos', 'Cualquier compra suma un sello.'], ['selected_products', 'Solo productos seleccionados', 'Elige qué platos participan.'], ['minimum_amount', 'Compras desde un monto mínimo', 'Todos los productos, pero solo si el pedido supera un monto.']] as [LoyaltyCountingMode, string, string][] as [val, label, desc]}
+				{#each [['all', 'Todos los productos', 'Cualquier compra suma un sello.'], ['selected_products', 'Solo productos seleccionados', 'Elige qué platos participan.'], ['minimum_amount', 'Compras desde un monto mínimo', 'Todos los productos, pero solo si el pedido supera un monto.']] as [LoyaltyCountingMode, string, string][] as [val, label, desc] (val)}
 					<button
 						onclick={() => (countingMode = val)}
 						class="rounded-xl border p-3 text-left transition-all"
@@ -133,7 +133,7 @@
 
 			{#if countingMode === 'selected_products'}
 				<div class="mt-2.5 flex max-h-56 flex-col gap-1.5 overflow-y-auto pr-1">
-					{#each vendedor.catalogo as p}
+					{#each vendedor.catalogo as p (p.id)}
 						{@const selected = eligibleProductIds.includes(p.id)}
 						<button
 							onclick={() => toggleProducto(p.id)}
@@ -177,7 +177,7 @@
 				¿Qué reciben gratis?
 			</div>
 			<div class="grid grid-cols-2 gap-2">
-				{#each [['product', 'Producto gratis'], ['discount_percent', '% de descuento'], ['discount_fixed', '$ de descuento'], ['free_shipping', 'Envío gratis']] as [LoyaltyRewardType, string][] as [val, label]}
+				{#each [['product', 'Producto gratis'], ['discount_percent', '% de descuento'], ['discount_fixed', '$ de descuento'], ['free_shipping', 'Envío gratis']] as [LoyaltyRewardType, string][] as [val, label] (val)}
 					<button
 						onclick={() => (rewardType = val)}
 						class="rounded-xl border py-2.5 text-[13px] font-bold transition-all"
@@ -197,7 +197,7 @@
 					style="background:var(--c-bg-secondary);border-color:var(--c-border);color:var(--c-text-primary)"
 				>
 					<option value="">Selecciona un producto</option>
-					{#each vendedor.catalogo as p}
+					{#each vendedor.catalogo as p (p.id)}
 						<option value={p.id}>{p.emoji} {p.name} — {fmtCOP(p.price)}</option>
 					{/each}
 				</select>
