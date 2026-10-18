@@ -1,7 +1,7 @@
 # plazacomer-client
 
 Frontend SvelteKit de Plazacomer. Consume el backend en
-[plazacomer-claudflare](../plazacomer-claudflare/CLAUDE.md), un conjunto de Cloudflare Workers en
+[plazacomer-cloudflare](../plazacomer-cloudflare/CLAUDE.md), un conjunto de Cloudflare Workers en
 Rust que hablan exclusivamente Protobuf.
 
 ## Reglas de arquitectura (no negociables)
@@ -11,9 +11,9 @@ Rust que hablan exclusivamente Protobuf.
    serializados con `@bufbuild/protobuf` (`toBinary`/`fromBinary`/`create`), nunca `fetch(...).json()`
    ni `JSON.stringify` hacia estos endpoints.
 2. **Nunca dupliques tipos a mano.** Los tipos TS de mensajes viven en `src/lib/gen/*_pb.ts`,
-   generados desde `../plazacomer-claudflare/shared/proto/*.proto` vía
-   `npm run generate-proto`. Si falta un campo o mensaje, edítese el `.proto` en
-   `plazacomer-claudflare` y regenera — no agregues un `interface` paralelo en TS.
+   generados desde `../plazacomer-cloudflare/shared/proto/*.proto` vía
+   `yarn generate-proto`. Si falta un campo o mensaje, edítese el `.proto` en
+   `plazacomer-cloudflare` y regenera — no agregues un `interface` paralelo en TS.
 3. **Un cliente de dominio por Worker.** Sigue el patrón actual (`src/lib/catalog.ts`,
    `src/lib/user.ts`): cada archivo encapsula las llamadas a un Worker específico. No mezcles
    llamadas de dominios distintos (ej. chat, tracking GPS) en el mismo módulo cliente cuando se
@@ -21,7 +21,7 @@ Rust que hablan exclusivamente Protobuf.
 4. **El código de `src/lib/*.ts` que habla con los Workers va en inglés** (nombres de función,
    variables, tipos) — refleja uno a uno los identificadores en inglés del `.proto`
    (`GetUserResponse`, `response.success`, `/users/login`, etc., ver
-   [plazacomer-claudflare/CLAUDE.md](../plazacomer-claudflare/CLAUDE.md)).
+   [plazacomer-cloudflare/CLAUDE.md](../plazacomer-cloudflare/CLAUDE.md)).
 5. **El texto que ve el usuario final se traduce con i18n (Paraglide JS), nunca en el backend ni
    hardcodeado en el componente.** El backend devuelve `message` en inglés como texto de
    desarrollo/log, no como copy para mostrar. Todo string visible para el usuario va en
@@ -47,6 +47,34 @@ Rust que hablan exclusivamente Protobuf.
   (`app/home`, `seller/*`, etc.) y en `src/lib/data/mock.ts` **sigue sin pasar por Paraglide** — es
   trabajo incremental pendiente, pantalla por pantalla. No asumas que un string en un componente ya
   usa `m.*` sin verificarlo.
+
+## Tests E2E (`yarn test:api`)
+
+- `tests/run-e2e.js` orquesta la corrida: crea un directorio `--persist-to` **temporal y aislado**
+  (`plazacomer/.wrangler-test-<timestamp>/`, fuera de cualquier repo git), aplica ahí el esquema de
+  los dos dominios D1 desde cero, levanta `worker-user`/`worker-catalog`/`worker-catalog-admin`/
+  `worker-user-admin` apuntando a esa base temporal, y corre `vitest run`.
+  - Dominio `users` (`plazacomer_co_users`): esquema real vía
+    **`wrangler d1 migrations apply`** contra `worker-user/migrations/*.sql` — el mismo mecanismo
+    que se usaría en un deploy real, no un script ad-hoc. `worker-user` es el único de los cuatro
+    Workers con `migrations_dir` configurado (los otros tres comparten la misma base D1, no
+    necesitan su propio migrations_dir). Después se aplica `tests/seed-admin.sql` (fixture de
+    solo test: un usuario admin ya sembrado, con `d1 execute`, nunca parte de la migración misma
+    — sembrar una cuenta admin con ID conocido en una migración real sería un riesgo de seguridad).
+  - Dominio `catalog` (`plazacomer_co_catalog`): sigue vía `tests/init-catalog.sql` con
+    `d1 execute` — ese Worker todavía no tiene `migrations_dir` propio (ver ADR-005 en
+    `arquitectura_applicacion/plazacomer-cloudflare/ADR.md`).
+- **Si todos los tests pasan**, borra el directorio temporal completo. **Si algún test falla**, lo
+  deja intacto y muestra su ruta por consola para poder inspeccionar el estado exacto en el que
+  falló — nunca lo borra en ese caso.
+- Esto mantiene los datos de test completamente separados de la base que usan las sesiones
+  manuales de `wrangler dev` (`yarn wrangler:user/catalog/admin`, que siguen usando el
+  `--persist-to ../../.wrangler` compartido) — la misma base que lee el panel de
+  `plazacomer-admin`. Antes de esto, correr el suite E2E localmente filtraba usuarios de prueba
+  (`e2e-<timestamp>`) a esa base compartida.
+- `yarn db:init:users` corre `wrangler d1 migrations apply` contra la base compartida de dev
+  manual (no la temporal de test) — no siembra el admin de prueba (`seed-admin.sql` es solo para
+  `test:api`); el primer admin real se siembra a mano en D1, no hay ruta de API para eso.
 
 ## Notas de honestidad técnica
 
